@@ -1,0 +1,52 @@
+root {
+    module = "talkweb,stm32f407";
+    device_info {
+        match_attr = "hdf_manager";
+        template host {
+            hostName = "";
+            priority = 100;
+            template device {
+                template deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "";
+                    serviceName = "";
+                    deviceMatchAttr = "";
+                }
+            }
+        }
+        platform :: host {
+            hostName = "platform_host";
+            priority = 50;
+            device_gpio :: device {
+                gpio2 :: deviceNode {
+                    policy = 2;
+                    priority = 60;
+                    moduleName = "STM_TW_GPIO_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_GPIO2";
+                    deviceMatchAttr = "gpio_config_uart";
+                }         
+            }
+            device_uart :: device {
+				uart4 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "STM_TW_UART_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_UART_4";
+                    deviceMatchAttr = "uart_config4";
+				}
+            }
+            device_uart1 :: device {
+				uart5 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "STM_TW_UART_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_UART_5";
+                    deviceMatchAttr = "uart_config5";
+				}
+            }
+        }
+    }
+}

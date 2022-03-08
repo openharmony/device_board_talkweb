@@ -1,0 +1,18 @@
+#include "device_watchdog_info.hcs"
+
+root {
+  platform {
+    template watchdog_controller {
+      id = 0;
+      regBase = 0x12050000;
+      regStep = 0x1000;
+      timeout = 1000;  //看门狗喂狗最大间隔时间,单位ms
+      match_attr = "";
+    }
+
+    st_watchdog :: watchdog_controller {
+      match_attr = "st_watchdog";
+      timeout = 500;
+    }
+  }
+}
