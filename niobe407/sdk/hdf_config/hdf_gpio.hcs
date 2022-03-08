@@ -1,0 +1,18 @@
+#include "device_gpio_info.hcs"
+root {
+    platform {
+        gpio_config {
+            match_attr = "gpio_config";
+            pin = [0, 1, 2, 3];   // pin index when register to hdf framework
+            realPin = [5, 6, 0, 1];       // pin number in stm32 led2 pe5, led3 pe6, key1按键终端 pe0,sw2, key2按键终端pe1,sw3
+            group = [4, 4, 4, 4];          // group of gpio 0:GPIOA 1:GPIOB 2:GPIOC 3:GPIOD 4:GPIOE 5: GPIOF 6:GPIOG 7:GPIOH 8:GPIOI
+			mode = [1, 1, 0, 0];           // 0: input 1: output 2:alternate 3:analog  
+            speed = [0, 0, 0, 0];          // 0: low 1: middle 2:high 3:very_high
+            pull = [0, 0, 0, 0];           // 0: nopull 1:up 2:down
+            pinNum = 4;                    // 如果发现因为加载的gpio个数过多导致无法申请到锁资源，可修改target_config.h中的LOSCFG_BASE_IPC_MUX_LIMIT 增大锁的数量限制
+            output = [0, 0, 0, 0];         // 0:pushpull 1:opendrain
+            alternate = [0, 0, 0, 0];
+        }
+    }
+}
+

@@ -1,0 +1,74 @@
+# Copyright (c) 2021-2022 Talkweb Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//kernel/liteos_m/liteos.gni")
+
+module_name = get_path_info(rebase_path("."), "name")
+kernel_module(module_name) {
+    sources = [
+        "startup/startup_stm32f407xx.s",
+    ]
+
+    sources += [
+        "src/sys_service_config.c",
+        "src/run_sys_before.c",
+        "src/dprintf.c",
+    ]
+
+    include_dirs = [ 
+        "include",
+        "../test",
+        "../fs",
+        "../drivers/watch_dog/include"
+    ]
+    deps = [":tw_sys_boot"]
+}
+
+use_copy_static_library = true
+lite_library("tw_sys_boot") {
+    target_type = "static_library"
+    if(use_copy_static_library) #拷贝并使用当前目录下的静态库
+    {
+      sources = []
+      deps = [":copy_tw_sys_boot"]
+    }    
+}
+
+build_ext_component("copy_tw_sys_boot") {
+    exec_path = rebase_path(".", root_build_dir)
+    command = "cp lib/libtw_sys_boot.a ../../../../../../out/niobe407/niobe407/libs/libtw_sys_boot.a"
+}
+
+#全局配置
+config("public") {
+  include_dirs = [
+    ".",
+    "include",
+    "//device/soc/stmicroelectronics/stm32f4xx/sdk/Core/Inc",
+    "//device/soc/stmicroelectronics/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
+    "//device/soc/stmicroelectronics/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+    "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
+    "//drivers/framework/core/common/include/manager",
+  ]
+  
+  ldflags = [
+    "-Wl,-T" + rebase_path("ld/STM32F407IGTx_FLASH.ld"),
+    "-Wl,-u_printf_float",
+  ]
+
+  libs = [
+    "c",
+    "m",
+    "nosys",
+  ]
+}
