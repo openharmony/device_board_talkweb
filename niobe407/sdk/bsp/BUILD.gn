@@ -54,9 +54,9 @@ config("public") {
   include_dirs = [
     ".",
     "include",
-    "//device/soc/stmicroelectronics/stm32f4xx/sdk/Core/Inc",
-    "//device/soc/stmicroelectronics/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
-    "//device/soc/stmicroelectronics/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+    "//device/soc/st/stm32f4xx/sdk/Core/Inc",
+    "//device/soc/st/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
+    "//device/soc/st/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
     "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
     "//drivers/framework/core/common/include/manager",
   ]
