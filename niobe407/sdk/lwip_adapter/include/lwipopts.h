@@ -104,9 +104,6 @@ extern "C"{
 #undef  UDP_TTL
 #define UDP_TTL                  255
 
-#undef  LWIP_STATS
-#define LWIP_STATS               0
-
 #undef  LWIP_NETIF_LINK_CALLBACK
 #define LWIP_NETIF_LINK_CALLBACK 1
 
