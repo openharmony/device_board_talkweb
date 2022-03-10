@@ -12,12 +12,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include <stdbool.h>
 #include "uart.h"
 #include "watch_dog.h"
 #include "devmgr_service_start.h"
+#include "hiview_def.h"
+#include "hiview_output_log.h"
 
 extern int DeviceManagerStart(void); // hdf init
+
+
+bool HilogProc_Impl(const HiLogContent *hilogContent, uint32_t len)
+{
+  char tempOutStr[LOG_FMT_MAX_LEN];
+  tempOutStr[0] = 0,tempOutStr[1] = 0;
+  if (LogContentFmt(tempOutStr, sizeof(tempOutStr), hilogContent) > 0) {
+    printf(tempOutStr);
+  }
+  return true;
+}
+
+int HiLogWriteInternal(const char *buffer, size_t bufLen)
+{
+  if (!buffer)
+    return -1;
+  if (bufLen < 2)
+    return 0;
+  if (buffer[bufLen - 2] != '\n') {
+    *((char *)buffer + bufLen - 1) = '\n';
+  } else {
+    bufLen--;
+    buffer[bufLen] = '\0';
+  }
+  printf("%s\n",buffer);
+  return 0;
+}
 
 /**
  * @brief 根据内核宏配置在此开启相应功能
@@ -25,6 +54,8 @@ extern int DeviceManagerStart(void); // hdf init
  */
 void sys_service_config()
 {
+    HiviewRegisterHilogProc(HilogProc_Impl);  //初始化HILOG适配初始化
+    
 #ifdef LOSCFG_WATCH_DOG
     watch_dog_init(1100);     //看门狗初始化
 #endif
@@ -36,4 +67,5 @@ void sys_service_config()
 #ifdef LOSCFG_SHELL
     ShellUartInit();          //shell初始化
 #endif
+
 }

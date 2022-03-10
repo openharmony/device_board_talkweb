@@ -31,6 +31,13 @@ kernel_module(module_name) {
         "../fs",
         "../drivers/watch_dog/include"
     ]
+
+    include_dirs += [
+        "//base/hiviewdfx/hiview_lite",
+        "//base/hiviewdfx/hilog_lite/frameworks/mini",
+        "//base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite",
+    ]
+    
     deps = [":tw_sys_boot"]
 }
 
@@ -65,6 +72,29 @@ config("public") {
     "-Wl,-T" + rebase_path("ld/STM32F407IGTx_FLASH.ld"),
     "-Wl,-u_printf_float",
   ]
+
+  if (build_xts)
+  {
+    lib_dirs = [ "$root_out_dir/libs" ]
+    
+    ldflags += [
+      "-Wl,--whole-archive",
+      "-lhctest",
+      "-lmodule_ActsParameterTest",
+      "-lmodule_ActsBootstrapTest",
+      #   "-lmodule_ActsDfxFuncTest",
+      #   "-lmodule_ActsHieventLiteTest",
+      "-lmodule_ActsSamgrTest",
+      #   "-lmodule_ActsDsoftbusMgrTest",
+      #   "-lmodule_ActsBundleMgrTest",
+      #   "-lmodule_ActsAbilityMgrTest",
+      #   "-lmodule_ActsKvStoreTest",
+      #   "-lhuks_test_common",
+      #   "-lmodule_ActsHuksHalFunctionTest",
+      #   "-lmodule_ActsUpdaterFuncTest",
+      "-Wl,--no-whole-archive",
+    ]
+  }
 
   libs = [
     "c",
