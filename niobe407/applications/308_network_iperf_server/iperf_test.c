@@ -22,7 +22,7 @@ static unsigned char iperf_run_flag = 0;
 
 #define LOCAL_PORT        1234
 
-extern EthSysInformation gEthSysInfo;
+EthLinkInfo gEthLinkInfo;
 
 /**
  * @brief iperf server测试线程函数
@@ -32,8 +32,8 @@ extern EthSysInformation gEthSysInfo;
 void iperf_test(void *arg)
 {
     (void)arg;
-    printf("lwiperf_start_tcp_server IP:%s port:%d\n", ipaddr_ntoa(&gEthSysInfo.ipaddr),LOCAL_PORT);
-    lwiperf_start_tcp_server(&gEthSysInfo.ipaddr, LOCAL_PORT, NULL, NULL);
+    printf("lwiperf_start_tcp_server IP:%s port:%d\n", ipaddr_ntoa(&gEthLinkInfo.ipaddr),LOCAL_PORT);
+    lwiperf_start_tcp_server(&gEthLinkInfo.ipaddr, LOCAL_PORT, NULL, NULL);
     printf("lwiperf tcp_server is running...\n");
     iperf_run_flag = 1;
     while(iperf_run_flag)
