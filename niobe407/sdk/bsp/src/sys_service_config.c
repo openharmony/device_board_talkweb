@@ -40,9 +40,6 @@ int HiLogWriteInternal(const char *buffer, size_t bufLen)
     return 0;
   if (buffer[bufLen - 2] != '\n') {
     *((char *)buffer + bufLen - 1) = '\n';
-  } else {
-    bufLen--;
-    buffer[bufLen] = '\0';
   }
   printf("%s\n",buffer);
   return 0;
