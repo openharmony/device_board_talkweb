@@ -32,7 +32,9 @@ EthLinkInfo gEthLinkInfo;
 void iperf_test(void *arg)
 {
     (void)arg;
+    get_ethernet_link_info(&gEthLinkInfo);
     printf("lwiperf_start_tcp_server IP:%s port:%d\n", ipaddr_ntoa(&gEthLinkInfo.ipaddr),LOCAL_PORT);
+
     lwiperf_start_tcp_server(&gEthLinkInfo.ipaddr, LOCAL_PORT, NULL, NULL);
     printf("lwiperf tcp_server is running...\n");
     iperf_run_flag = 1;
