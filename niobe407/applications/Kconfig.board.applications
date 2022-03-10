@@ -40,6 +40,9 @@ choice APPLICATION_CHOOSE_NIOBE407
     config NIOBE407_USE_101_PERIPHERAL
         bool
         prompt "101_peripheral_adc_temperature"
+    config NIOBE407_USE_102_PERIPHERAL
+        bool
+        prompt "102_peripheral_rng_number"
     config NIOBE407_USE_103_PERIPHERAL
         bool
         prompt "103_peripheral_can_send_example"
@@ -90,6 +93,7 @@ config NIOBE407_APPLICATION_NAME
     default "007_system_message"             if NIOBE407_USE_007_SYSTEM
     default "008_system_atomic"              if NIOBE407_USE_008_SYSTEM
     default "101_peripheral_adc_temperature" if NIOBE407_USE_101_PERIPHERAL
+    default "102_peripheral_rng_number"      if NIOBE407_USE_102_PERIPHERAL
     default "103_peripheral_can_example"     if NIOBE407_USE_103_PERIPHERAL
     default "201_hdf_gpio_key"               if NIOBE407_USE_201_HDF
     default "202_hdf_spi_flash"              if NIOBE407_USE_202_HDF
