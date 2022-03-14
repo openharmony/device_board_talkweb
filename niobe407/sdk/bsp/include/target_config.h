@@ -85,10 +85,5 @@ extern unsigned int __los_heap_addr_end__;
                                        Exception module configuration
 =============================================================================*/
 #define LOSCFG_PLATFORM_EXC                                 0
-/*=============================================================================
-                                       shell module configuration
-=============================================================================*/
-#define LOSCFG_USE_SHELL                                    1
-#define LOSCFG_SHELL_PRIO                                   3
 
 #endif /* _TARGET_CONFIG_H */
