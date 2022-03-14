@@ -18,7 +18,7 @@
 #include "los_task.h"
 #define HDF_SHELL_STACK_SIZE 0x1000
 #define HDF_SHELL_TASK_NAME "hdf_shell_task"
-#define HDF_SHELL_TASK_PRIORITY 25 //由于串口读是阻塞的当串口读无数据是一直在循环 优先级和shell处理线程一样或者高，不然消息发送不过去，shell task 优先级是3 持平
+#define HDF_SHELL_TASK_PRIORITY 26 //由于串口读是阻塞的当串口读无数据是一直在循环 优先级和shell处理线程一样或者高，不然消息发送不过去，shell task 优先级是3 持平
 #define MAX_BUF_SIZE 1024
 uint8_t rbuf[MAX_BUF_SIZE] = {0};
 DevHandle handle = NULL;    /* UART设备句柄  */
@@ -178,7 +178,6 @@ static void HdfShellTaskEntry(void)
             if (ret != 0) {
                 return;
             }
-            LOS_TaskDelay(100);
         }
     }
 

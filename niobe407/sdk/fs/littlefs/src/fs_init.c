@@ -36,6 +36,7 @@
 #define CACHE_SIZE     64
 #define LOOKAHEAD_SIZE 64
 #define BLOCK_CYCLES   16
+#define ERASE_FLASH_BULK 0
 
 struct fs_cfg {
     char *mount_point;
@@ -126,8 +127,10 @@ static int32_t FsDriverInit(struct HdfDeviceObject *object)
     if (W25x_InitSpiFlash(0, 0) != 0) {
         HDF_LOGI("InitSpiFlash failed\n");
     }
-    //W25x_BulkErase(); //flash坏的时候手动调用
-    DIR *dir;
+#if (ERASE_FLASH_BULK == 1)
+    W25x_BulkErase(); //flash坏的时候手动调用
+#endif
+    DIR *dir = NULL;
 
     for (int i = 0; i < sizeof(fs) / sizeof(fs[0]); i++) {
         if (fs[i].mount_point == NULL)
@@ -147,13 +150,16 @@ static int32_t FsDriverInit(struct HdfDeviceObject *object)
         int ret = mount(NULL, fs[i].mount_point, "littlefs", 0, &fs[i].lfs_cfg);
         HDF_LOGI("%s: mount fs on '%s' %s\n", __func__, fs[i].mount_point, (ret == 0) ? "succeed" : "failed");
         if ((dir = opendir(fs[i].mount_point)) == NULL) {
-            HDF_LOGI("first time init create forlder");
+            HDF_LOGI("first time create file %s\n", fs[i].mount_point);
             ret = mkdir(fs[i].mount_point, S_IRUSR | S_IWUSR);
             if (ret != LOS_OK) {
                 HDF_LOGE("Mkdir failed %d\n", ret);
                 return;
+            } else {
+                HDF_LOGI("mkdir success %d\n", ret);
             }
         } else {
+            HDF_LOGI("open dir success!\n");
             closedir(dir);
         }
     }

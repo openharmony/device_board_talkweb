@@ -22,4 +22,13 @@ kernel_module(module_name) {
 
 config("public") {
   include_dirs = [ "include" ]
+  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_UART)) {
+    include_dirs += [ 
+      ".",
+      "//drivers/framework/include/platform",
+      "//drivers/framework/include/utils",
+      "//drivers/adapter/khdf/liteos_m/osal/include",
+      "//drivers/framework/include/osal",
+    ]
+  }
 }
