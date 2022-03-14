@@ -13,7 +13,6 @@
 
 import("//kernel/liteos_m/liteos.gni")
 
-assert(defined(LOSCFG_DRIVERS_HDF_PLATFORM_GPIO), "Must Config LOSCFG_DRIVERS_HDF_PLATFORM_GPIO in kernel/liteos_m menuconfig!")
 assert(defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI), "Must Config LOSCFG_DRIVERS_HDF_PLATFORM_SPI in kernel/liteos_m menuconfig!")
 
 module_name = get_path_info(rebase_path("."), "name")

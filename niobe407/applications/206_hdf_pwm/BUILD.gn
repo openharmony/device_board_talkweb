@@ -13,12 +13,12 @@
 
 import("//kernel/liteos_m/liteos.gni")
 
-assert(defined(LOSCFG_DRIVERS_HDF_PLATFORM_UART), "Must Config LOSCFG_DRIVERS_HDF_PLATFORM_UART in kernel/liteos_m menuconfig!")
+assert(defined(LOSCFG_DRIVERS_HDF_PLATFORM_PWM), "Must Config LOSCFG_DRIVERS_HDF_PLATFORM_PWM in kernel/liteos_m menuconfig!")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
     sources =[
-        "hdf_usart_test.c",
+      "hdf_pwm_test.c",
     ]
     
     include_dirs = [ 

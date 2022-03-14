@@ -15,29 +15,27 @@
 
 #include <hdf_log.h>
 #include <uart_if.h>
-#include "los_task.h"
-#include "los_compiler.h"
 #include "cmsis_os2.h"
 #include <stdio.h>
 #include "samgr_lite.h"
 #include "ohos_run.h"
-#define USE_FULL_LL_DRIVER
 
 #define HDF_USART_STACK_SIZE 0x1000
 #define HDF_USART_TASK_NAME "hdf_usart_test_task"
-#define HDF_USART_TASK_PRIORITY 2
+#define HDF_USART_TASK_PRIORITY 25
 
-uint8_t txbuf[80] = "this is usart test function\nthe data will echo later\n";
+uint8_t txbuf[80] = "this is usart test function\n";
 uint8_t rxbuf[80] = {0};
 uint8_t len = 0;
 uint8_t tmp;
 
 static void* HdfUsartTestEntry(void* arg)
 {
+    (void)arg;
     uint32_t port = 4;                  /* UART设备端口号 */
     DevHandle handle = UartOpen(port);
     if (handle == NULL) {
-        HDF_LOGE("UartOpen: failed!\n");
+        HDF_LOGE("UartOpen %u: failed!\n", port);
         return NULL;
     }
 
@@ -100,26 +98,27 @@ static void* HdfUsartTestEntry(void* arg)
         HDF_LOGI("UartRead byte %d content is %s\n", ret, rxbuf);
     }
 
-    UartClose(handle);
 _ERR:
     /* 销毁UART设备句柄 */
-    UartClose(handle); 
+    UartClose(handle);
+    return NULL;
 
 }
 
 void StartHdfUsartTest(void)
 {
-    UINT32 uwRet;
-    UINT32 taskID;
-    TSK_INIT_PARAM_S stTask = {0};
+    osThreadAttr_t attr;
 
-    stTask.pfnTaskEntry = (TSK_ENTRY_FUNC)HdfUsartTestEntry;
-    stTask.uwStackSize = HDF_USART_STACK_SIZE;
-    stTask.pcName = HDF_USART_TASK_NAME;
-    stTask.usTaskPrio = HDF_USART_TASK_PRIORITY; /* Os task priority is 2 */
-    uwRet = LOS_TaskCreate(&taskID, &stTask);
-    if (uwRet != LOS_OK) {
-        printf("Task1 create failed\n");
+    attr.name = HDF_USART_TASK_NAME;
+    attr.attr_bits = 0U;
+    attr.cb_mem = NULL;
+    attr.cb_size = 0U;
+    attr.stack_mem = NULL;
+    attr.stack_size = HDF_USART_STACK_SIZE;
+    attr.priority = HDF_USART_TASK_PRIORITY;
+
+    if (osThreadNew((osThreadFunc_t)HdfUsartTestEntry, NULL, &attr) == NULL) {
+        printf("Falied to create thread1!\n");
     }
 }
 

@@ -17,8 +17,7 @@
 #include "osal_irq.h"
 #include "osal_time.h"
 
-#include "los_task.h"
-#include "los_compiler.h"
+#include "ohos_run.h"
 #include "cmsis_os2.h"
 #include <stdio.h>
 
@@ -29,7 +28,7 @@
 
 #define HDF_GPIO_STACK_SIZE 0x1000
 #define HDF_GPIO_TASK_NAME "hdf_gpio_test_task"
-#define HDF_GPIO_TASK_PRIORITY 2
+#define HDF_GPIO_TASK_PRIORITY 25
 
 #ifdef LOSCFG_DRIVERS_HDF_PLATFORM_GPIO
 /* 中断服务函数*/
@@ -60,6 +59,7 @@ static int32_t TestCaseGpioIrqHandler2(uint16_t gpio, void *data)
 
 static void* HdfGpioTestEntry(void* arg)
 {
+    (void)arg;
     int32_t ret;
     uint16_t mode;
     uint16_t gpio2 = 2;
@@ -94,17 +94,18 @@ static void* HdfGpioTestEntry(void* arg)
 
 void StartHdfGpioTest(void)
 {
-    UINT32 uwRet;
-    UINT32 taskID;
-    TSK_INIT_PARAM_S stTask = {0};
+    osThreadAttr_t attr;
 
-    stTask.pfnTaskEntry = (TSK_ENTRY_FUNC)HdfGpioTestEntry;
-    stTask.uwStackSize = HDF_GPIO_STACK_SIZE;
-    stTask.pcName = HDF_GPIO_TASK_NAME;
-    stTask.usTaskPrio = HDF_GPIO_TASK_PRIORITY; /* Os task priority is 2 */
-    uwRet = LOS_TaskCreate(&taskID, &stTask);
-    if (uwRet != LOS_OK) {
-        printf("Task1 create failed\n");
+    attr.name = HDF_GPIO_TASK_NAME;
+    attr.attr_bits = 0U;
+    attr.cb_mem = NULL;
+    attr.cb_size = 0U;
+    attr.stack_mem = NULL;
+    attr.stack_size = HDF_GPIO_STACK_SIZE;
+    attr.priority = HDF_GPIO_TASK_PRIORITY;
+
+    if (osThreadNew((osThreadFunc_t)HdfGpioTestEntry, NULL, &attr) == NULL) {
+        printf("Falied to create thread1!\n");
     }
 }
 #else

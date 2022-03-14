@@ -1,0 +1,52 @@
+root {
+    module = "talkweb,stm32f407";
+    device_info {
+        match_attr = "hdf_manager";
+        template host {
+            hostName = "";
+            priority = 100;
+            template device {
+                template deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "NIOBE_HDF_PLATFORM_PWM";
+                    serviceName = "";
+                    deviceMatchAttr = "";
+                }
+            }
+        }
+        platform :: host {
+            hostName = "platform_host";
+            priority = 50;
+            device_pwm1 :: device {
+                pwm1 :: deviceNode {  //pwm config
+					 policy = 2;
+					 priority = 100;
+					 //moduleName = "NIOBE_HDF_PLATFORM_PWM";
+					 serviceName = "HDF_PLATFORM_PWM_1";
+					 deviceMatchAttr = "config_pwm1";
+                }
+            }
+            device_pwm2 :: device {
+                pwm2 :: deviceNode {  //pwm config
+					 policy = 2;
+					 priority = 100;
+					 //moduleName = "NIOBE_HDF_PLATFORM_PWM";
+					 serviceName = "HDF_PLATFORM_PWM_2";
+					 deviceMatchAttr = "config_pwm2";
+                }
+            }
+           device_pwm7 :: device {
+                pwm7 :: deviceNode {  //pwm config
+					 policy = 2;
+					 priority = 100;
+					 //moduleName = "NIOBE_HDF_PLATFORM_PWM";
+					 serviceName = "HDF_PLATFORM_PWM_7";
+					 deviceMatchAttr = "config_pwm7";
+                }
+            }
+        }
+    }
+}

@@ -16,16 +16,16 @@
 #include "hdf_log.h"
 #include "spi_if.h"
 
-#include "los_task.h"
-#include "los_compiler.h"
+#include "ohos_run.h"
 #include "cmsis_os2.h"
 #include <stdio.h>
+
+#include <stdio.h>
 #include "samgr_lite.h"
-#include "ohos_run.h"
 
 #define HDF_SPI_STACK_SIZE 0x1000
 #define HDF_SPI_TASK_NAME "hdf_spi_test_task"
-#define HDF_SPI_TASK_PRIORITY 2
+#define HDF_SPI_TASK_PRIORITY 25
 uint8_t txBuffer[] = "welcome to OpenHarmony\n";
 #define WIP_FLAG       0x01
 #define SPI_FLASH_IDx  0x4018
@@ -417,6 +417,7 @@ static void SectorErase(DevHandle spiHandle)
 
 static void* HdfSpiTestEntry(void* arg)
 {
+    (void)arg;
 #ifdef USE_SET_CFG
     int32_t ret;
     struct SpiCfg cfg;                  /* SPI配置信息 */
@@ -430,7 +431,7 @@ static void* HdfSpiTestEntry(void* arg)
     spiHandle = SpiOpen(&spiDevinfo);   /* 根据spiDevinfo获取SPI设备句柄 */
     if (spiHandle == NULL) {
         HDF_LOGE("SpiOpen: failed\n");
-        return;
+        return NULL;
     }
 #ifdef USE_SET_CFG
     /* 获取SPI设备属性 */
@@ -439,7 +440,7 @@ static void* HdfSpiTestEntry(void* arg)
         HDF_LOGE("SpiGetCfg: failed, ret %d\n", ret);
         goto err;
     }
-    HDF_LOGI("speed:%d, bitper:%d, mode:%d, transMode:%d\n", cfg.maxSpeedHz, cfg.bitsPerWord, cfg.mode, cfg.transferMode);
+    HDF_LOGI("speed:%u, bitper:%u, mode:%u, transMode:%u\n", cfg.maxSpeedHz, cfg.bitsPerWord, cfg.mode, cfg.transferMode);
     cfg.maxSpeedHz = 1;                /* spi2，spi3 最大频率为42M, spi1  频率为84M， 此处的值为分频系数，0:1/2 1:1/4， 2:1/8     . */
                                          /* 3: 1/16, 4: 1/32 5:1/64, 6:1/128  7:1/256 */
     cfg.bitsPerWord = 8;                    /* 传输位宽改为8比特 */
@@ -455,7 +456,7 @@ static void* HdfSpiTestEntry(void* arg)
     spiHandle = SpiOpen(&spiDevinfo);   /* 根据spiDevinfo获取SPI设备句柄 */
     if (spiHandle == NULL) {
         HDF_LOGE("SpiOpen: failed\n");
-        return;
+        return NULL;
     }
 #endif
     /* 向SPI设备写入指定长度的数据 */
@@ -483,24 +484,25 @@ err:
 #endif
     /* 销毁SPI设备句柄 */
     SpiClose(spiHandle);
+    return NULL;
 
 }
 
 void StartHdfSpiTest(void)
 {
-    UINT32 uwRet;
-    UINT32 taskID;
-    TSK_INIT_PARAM_S stTask = {0};
+    osThreadAttr_t attr;
 
-    stTask.pfnTaskEntry = (TSK_ENTRY_FUNC)HdfSpiTestEntry;
-    stTask.uwStackSize = HDF_SPI_STACK_SIZE;
-    stTask.pcName = HDF_SPI_TASK_NAME;
-    stTask.usTaskPrio = HDF_SPI_TASK_PRIORITY; /* Os task priority is 2 */
-    uwRet = LOS_TaskCreate(&taskID, &stTask);
-    if (uwRet != LOS_OK) {
-        printf("Task1 create failed\n");
+    attr.name = HDF_SPI_TASK_NAME;
+    attr.attr_bits = 0U;
+    attr.cb_mem = NULL;
+    attr.cb_size = 0U;
+    attr.stack_mem = NULL;
+    attr.stack_size = HDF_SPI_STACK_SIZE;
+    attr.priority = HDF_SPI_TASK_PRIORITY;
+
+    if (osThreadNew((osThreadFunc_t)HdfSpiTestEntry, NULL, &attr) == NULL) {
+        printf("Falied to create thread1!\n");
     }
 }
 
 OHOS_APP_RUN(StartHdfSpiTest);
-

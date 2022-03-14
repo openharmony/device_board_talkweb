@@ -15,7 +15,6 @@
     [*] Enable Driver
     [*]     HDF driver framework support
     [*]         Enable HDF platform driver
-    [*]             Enable HDF platform gpio driver
     [*]             Enable HDF platform spi driver
 ```
 - 回到sdk根目录，执行`hb build -f`脚本进行编译。
@@ -58,16 +57,6 @@ root {
         }
         platform :: host {
             hostName = "platform_host";
-            priority = 50;
-            device_gpio :: device {
-                gpio1 :: deviceNode {  //spi gpio 配置信息
-					 policy = 2;
-					 priority = 60;  
-					 moduleName = "STM_TW_GPIO_MODULE_HDF"; // 名字唯一且不变
-					 serviceName = "HDF_PLATFORM_GPIO1";
-					 deviceMatchAttr = "gpio_config_spi";
-                }
-            }
             device_spi :: device {
 				spi0 :: deviceNode {
                     policy = 2;
@@ -87,37 +76,36 @@ root {
 #include "device_spi_info.hcs"
 root {
     platform {
-        gpio_config {
-            match_attr = "gpio_config_spi";
-            pin = [ 1, 2, 3, 4];   // pin index when register to hdf framework
-            realPin = [ 5, 5, 4, 15];       // pa5 clc mosi:pb5 miso:pb4 cs:pa15
-            group = [ 0, 1, 1, 0];          // group of gpio 0:GPIOA 1:GPIOB 2:GPIOC 3:GPIOD 4:GPIOE 5: GPIOF 6:GPIOG 7:GPIOH 8:GPIOI
-			mode = [ 2, 2, 2, 1];           // 0: input 1: output 2:alternate 3:analog  
-            speed = [ 3, 3, 3, 3];          // 0: low 1: middle 2:high 3:very_high
-            pull = [ 0, 0, 0, 0];           // 0: nopull 1:up 2:down
-            pinNum = 4;                     // 如果发现因为加载的gpio个数过多导致无法申请到锁资源，可修改target_config.h中的LOSCFG_BASE_IPC_MUX_LIMIT 增大锁的数量限制
-            output = [ 0, 0, 0, 0];         // 0:pushpull 1:opendrain
-            alternate = [ 5, 5, 5, 0];
-        }    
-        spi_config {
-            match_attr = "spi_w25q_config";
-			busNum = 0; // 注册的总线号
-			csNum = 0;  // 片选号
-			transDir = 0;  // 0: TW_HAL_SPI_FULL_DUPLEX 1: TW_HAL_SPI_SIMPLEX_RX 2: TW_HAL_SPI_HALF_DUPLEX_RX 3: TW_HAL_SPI_HALF_DUPLEX_TX
-			transMode = 1; // 1: normal 0:dma
-			smMode = 1;      //  0: slave 1: master
-			dataWidth = 0; // 0:8bit 1:16bit
-			clkMode = 0;   // 0: cpol 0 cpha 0  1:CPOL = 1; CPHA = 0 2:CPOL = 0; CPHA = 1 3:CPOL = 1; CPHA = 1
-			nss = 0;       // 0:NSS SOFT 1: NSS HARDWARE INPUT 2: NSS HARDWARE OUTPUT
-			baudRate = 1; // 0:div2 1:div4 2:div8 3:div16 4:div32 5:div64 6:div128 6:div256
-			bitOrder = 0; // 0: MSB first 1: LSB first
-			crcEnable = 0; // 0: crc disable 1: crc enable
-			crcPoly = 10;  // Min_Data = 0x00 and Max_Data = 0xFFFF
-			spix = 0;   // 0: spi1  1: spi2  2:spi3 本例程使用SPI1作为示例
-			csPin = 15;  // cs pin
-			csGpiox = 0; // cs pin group
-			standard = 0; // 0:motorola 1: ti
-			dummyByte = 255;
+        spi1_config {
+			spi1_gpio {
+			    // 要配置的引脚个数，接下来的引脚名必须定义成gpio_num_1, gpio_num_2, gpio_num_3...
+                gpio_num_max = 4; 
+                // port, pin, mode, speed, outputType, pull, alternate
+                gpio_num_1 = [0, 5, 2, 3, 0, 0, 5]; // clk pa5 
+                gpio_num_2 = [1, 5, 2, 3, 0, 0, 5]; // mosi pb5
+                gpio_num_3 = [1, 4, 2, 3, 0, 0, 5]; // miso pb4
+                gpio_num_4 = [0, 15, 1, 3, 0, 0 ,0]; // cs pa15
+	        }
+	        spi_config : spi1_gpio {
+                match_attr = "spi_w25q_config";
+                busNum = 0; // 注册的总线号
+                csNum = 0;  // 片选号
+                transDir = 0;  // 0: TW_HAL_SPI_FULL_DUPLEX 1: TW_HAL_SPI_SIMPLEX_RX 2: TW_HAL_SPI_HALF_DUPLEX_RX 3: TW_HAL_SPI_HALF_DUPLEX_TX
+                transMode = 1; // 1: normal 0:dma
+                smMode = 1;      //  0: slave 1: master
+                dataWidth = 0; // 0:8bit 1:16bit
+                clkMode = 0;   // 0: cpol 0 cpha 0  1:CPOL = 1; CPHA = 0 2:CPOL = 0; CPHA = 1 3:CPOL = 1; CPHA = 1
+                nss = 0;       // 0:NSS SOFT 1: NSS HARDWARE INPUT 2: NSS HARDWARE OUTPUT
+                baudRate = 1; // 0:div2 1:div4 2:div8 3:div16 4:div32 5:div64 6:div128 6:div256
+                bitOrder = 0; // 0: MSB first 1: LSB first
+                crcEnable = 0; // 0: crc disable 1: crc enable
+                crcPoly = 10;  // Min_Data = 0x00 and Max_Data = 0xFFFF
+                spix = 0;   // 0: spi1  1: spi2  2:spi3 本例程使用SPI1作为示例
+                csPin = 15;  // cs pin
+                csGpiox = 0; // cs pin group
+                standard = 0; // 0:motorola 1: ti
+                dummyByte = 255;
+	        }
         }
     }
 }
