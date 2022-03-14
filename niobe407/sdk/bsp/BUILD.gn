@@ -79,9 +79,11 @@ config("public") {
     
     ldflags += [
       "-Wl,--whole-archive",
+      "-lbootstrap",
+      "-lbroadcast",
       "-lhctest",
-      "-lmodule_ActsParameterTest",
-      "-lmodule_ActsBootstrapTest",
+      # "-lmodule_ActsParameterTest",
+      # "-lmodule_ActsBootstrapTest",
       #   "-lmodule_ActsDfxFuncTest",
       #   "-lmodule_ActsHieventLiteTest",
       "-lmodule_ActsSamgrTest",
