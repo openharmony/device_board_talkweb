@@ -26,27 +26,20 @@
 #define wifi2_name_key "talkweb1"
 #define wifi2_passwd_value "3456789"
 
-/*****kv store test*****/
 void kvStoreTestEntry(void)
 {	
 	char temp[128] = {0};
-	//设置关键值 wifi1_name_key 和值 wifi1_passwd_value，学员自行补充
 	UtilsSetValue(wifi1_name_key, wifi1_passwd_value);
 	printf("[wifi manage] set key = %s, value = %s\n", wifi1_name_key, wifi1_passwd_value);
-	//设置关键值 wifi2_name_key 和值 wifi2_passwd_value，学员自行补充
 	UtilsSetValue(wifi2_name_key, wifi2_passwd_value);
 	printf("[wifi manage] set key = %s, value = %s\n", wifi2_name_key, wifi2_passwd_value);
 	
-	//根据关键字（wifi1 账号），获取值（wifi1 密码），学员自行补充
 	UtilsGetValue(wifi1_name_key, temp, 128);
 	printf("[wifi manage] get %s passwd = %s\n", wifi1_name_key, temp);
-	//根据关键字（wifi2 账号），获取值（wifi2 密码），学员自行补充
 	UtilsGetValue(wifi2_name_key, temp, 128);
 	printf("[wifi manage] get %s passwd = %s\n", wifi2_name_key, temp);
 	
-	//删除关键字 wifi1_name_key，学员自行补充
 	UtilsDeleteValue(wifi1_name_key);
-	//删除关键字 wifi2_name_key，学员自行补充
 	UtilsDeleteValue(wifi2_name_key);
 }
 

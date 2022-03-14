@@ -20,7 +20,6 @@
 #include "ohos_run.h"
 #include "cmsis_os2.h"
 
-/*****任务一*****/
 void thread_entry1(void)
 {
     int sum = 0;
@@ -31,7 +30,6 @@ void thread_entry1(void)
     }
 }
 
-/*****任务二*****/
 void thread_entry2(void)
 {
     int sum = 0;
@@ -42,7 +40,6 @@ void thread_entry2(void)
     }
 }
 
-/*****任务创建*****/
 static void OS_Thread_example(void)
 {
     osThreadAttr_t attr;

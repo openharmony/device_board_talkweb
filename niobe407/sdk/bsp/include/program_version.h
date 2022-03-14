@@ -20,9 +20,8 @@
 extern "C"{
 #endif /* __cplusplus */
 
-//软件版本
 #define APP_VERSION "1.0.0"
-//硬件版本
+
 #define HW_VERSION "1.0.0"
 
 #ifdef __cplusplus

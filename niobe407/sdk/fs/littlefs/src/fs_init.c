@@ -127,8 +127,9 @@ static int32_t FsDriverInit(struct HdfDeviceObject *object)
     if (W25x_InitSpiFlash(0, 0) != 0) {
         HDF_LOGI("InitSpiFlash failed\n");
     }
+
 #if (ERASE_FLASH_BULK == 1)
-    W25x_BulkErase(); //flash坏的时候手动调用
+    W25x_BulkErase();
 #endif
     DIR *dir = NULL;
 

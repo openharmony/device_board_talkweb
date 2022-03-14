@@ -30,7 +30,6 @@ void tcp_client(void *thread_param)
 
     while (1)
     {
-        /* 申请套接字，本质是netconn_new函数的封装 */
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0)
         {
@@ -39,16 +38,13 @@ void tcp_client(void *thread_param)
             continue;
         }
 
-        /* 清空sockaddr_in结构体内存空间 */
         memset(&(client_addr), 0, sizeof(client_addr));
 
-        /* 为sockaddr_in结构体成员赋值，用于以下的connect绑定 */
         client_addr.sin_family = AF_INET;
         client_addr.sin_port = htons(SERVER_PORT);
         client_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
 
         printf("try connect to server " SERVER_IP ":%d\n", SERVER_PORT);
-        /* 将远端server的ip地址与端口进行绑定 */
         if (connect(sock, (struct sockaddr *)&client_addr, sizeof(struct sockaddr)) == -1)
         {
             closesocket(sock);
@@ -59,16 +55,13 @@ void tcp_client(void *thread_param)
         printf("Connect to tcp server successful!\n");
         while (1)
         {
-            /* 成功接收到数据，返回接收的数据长度 */
             recv_data_len = recv(sock, recv_data, 511, 0);
             if (recv_data_len <= 0)
                 break;
             else
                 recv_data[recv_data_len] = '\0';
 
-            /* 串口打印接收的数据内容 */
             printf("recv:%s\n", recv_data);
-            /* 发送数据内容 */
             write(sock, recv_data, recv_data_len);
         }
     }
@@ -76,14 +69,12 @@ void tcp_client(void *thread_param)
 
 static void eth_enable_state_callBack(EthLinkState state)
 {
-    /* ETH连接断开*/
     if (state == STATE_UPDATE_LINK_DOWN)
     {
         printf("ETH LINK STATE: DisConnected!\r\n");
         osThreadTerminate(tcp_client_id);
         tcp_client_id = NULL;
     }
-    /* ETH连接成功*/
     else if (state == STATE_UPDATE_LINK_UP)
     {
         printf("ETH LINK STATE: Connected!\r\n");
@@ -104,12 +95,6 @@ static void eth_enable_state_callBack(EthLinkState state)
     }
 }
 
-/**
- *当需要使用静态IP时， 将useStaticIp设置成1，补充相应的IP参数。
- *当需要使用静态MAC时，将useStaticMac设置成1，补充MAC参数。
- *当使用DHCP和随机MAC地址时，无需设置参数，直接调用ethernet_enable()即可。
- *此例程使用的是静态IP和静态MAC地址的模式
- **/
 void tcp_client_example(void)
 {
     EthLinkInfo info = {
@@ -123,7 +108,7 @@ void tcp_client_example(void)
     };
 
     set_ethernet_link_info(&info);
-    ethernet_enable(eth_enable_state_callBack); //有线网络使能
+    ethernet_enable(eth_enable_state_callBack);
 }
 
 OHOS_APP_RUN(tcp_client_example);

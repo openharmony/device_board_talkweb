@@ -32,27 +32,22 @@ void tcp_server(void *argument)
     int recv_data_len;
 
     printf("start tcp_server test\r\n");
-    /* 申请套接字，本质是netconn_new函数的封装 */
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0){
         printf("Socket error\n");
         goto __exit;
     }
-    /* 为sockaddr_in结构体成员赋值，用于以下的bind绑定 */
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(SERVER_LISTEN_PORT);
-    /* 清空sockaddr_in结构体内存空间 */
     memset(&(server_addr.sin_zero), 0, sizeof(server_addr.sin_zero));
 
-    /* 服务器绑定ip地址与端口 */
     if (bind(sock, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
     {
         printf("Unable to bind\n");
         goto __exit;
     }
 
-    /* 服务器进入监听状态 */
     if (listen(sock, 5) == -1)
     {
         printf("Listen error\n");
@@ -62,14 +57,12 @@ void tcp_server(void *argument)
     while(1)
     {
         sin_size = sizeof(struct sockaddr_in);
-        /* 等待远端client的链接 */
         connected = accept(sock, (struct sockaddr *)&client_addr, &sin_size);
 
         printf("new client connected from (%s, %d)\n",
         inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
         {
             int flag = 1;
-            /* 设置套接字的选项 */
             setsockopt(connected,
             IPPROTO_TCP,     /* set option at TCP level */
             TCP_NODELAY,     /* name of option */
@@ -79,15 +72,13 @@ void tcp_server(void *argument)
 
         while(1)
         {
-            /* 成功接收到数据，返回接收的数据长度 */
             recv_data_len = recv(connected, recv_data, 511, 0);
 
             if (recv_data_len <= 0) 
                 break;
             else
                 recv_data[recv_data_len] = '\0';
-            printf("recv %s\n",recv_data);  
-            /* 发送数据内容 */			
+            printf("recv %s\n",recv_data);
             write(connected,recv_data,recv_data_len);
 
             osDelay(200);	
@@ -105,11 +96,9 @@ void tcp_server(void *argument)
 static void eth_enable_state_callBack(EthLinkState state)
 {
     static int net_init_finish = 0;
-    /* ETH连接断开*/
     if(state == STATE_UPDATE_LINK_DOWN){
         printf("ETH LINK STATE: DisConnected!\r\n");
     }
-     /* ETH连接成功*/
     else if(state == STATE_UPDATE_LINK_UP){ 
         printf("ETH LINK STATE: Connected!\r\n");
         if(net_init_finish == 0)

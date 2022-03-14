@@ -19,7 +19,7 @@ module_switch = defined(LOSCFG_NET_LWIP)
 module_name = "lwip"
 kernel_module(module_name) {
   sources = LWIP_PORTING_FILES + LWIPNOAPPSFILES - [ "$LWIPDIR/api/sockets.c" ]
-  if( defined(LOSCFG_NIOBE407_USE_308_NETWORK) ) #如果开启了application中iperf server示例
+  if( defined(LOSCFG_NIOBE407_USE_308_NETWORK) )
   {
     sources += LWIPERFFILES
   }
@@ -29,12 +29,12 @@ kernel_module(module_name) {
 use_copy_static_library = true
 lite_library("tw_ethernet_static") {
     target_type = "static_library"
-    if(use_copy_static_library) #拷贝并使用当前目录下的静态库
+    if(use_copy_static_library)
     {
       sources = []
       deps = [":copy_tw_ethernet_static"]
     }
-    else  #使编译源码生成的静态库
+    else
     {
       sources =  [ 
         "src/ethernetif.c", 
@@ -49,13 +49,6 @@ build_ext_component("copy_tw_ethernet_static") {
     command = "cp lib/libtw_ethernet_static.a ../../../../../../out/niobe407/niobe407/libs/libtw_ethernet_static.a"
 }
 
-#添加新增加的适配头文件路径include
 config("public") {
   include_dirs = [ "include" ] + LWIP_PORTING_INCLUDE_DIRS + LWIP_INCLUDE_DIRS
 }
-
-#########################################################################
-#                        注意: 若修改此文件请同步修改             
-# https://git.talkweb.com.cn/oneos/harmony/stmicroelectronics/tools.git 
-#                   仓库中auto_publish目录下相应文件
-#########################################################################

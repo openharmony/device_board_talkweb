@@ -31,7 +31,7 @@
 #define HDF_GPIO_TASK_PRIORITY 25
 
 #ifdef LOSCFG_DRIVERS_HDF_PLATFORM_GPIO
-/* 中断服务函数*/
+
 static int32_t TestCaseGpioIrqHandler1(uint16_t gpio, void *data)
 {
     HDF_LOGE("%s: irq triggered! on gpio:%u, data=%p", __func__, gpio, data);

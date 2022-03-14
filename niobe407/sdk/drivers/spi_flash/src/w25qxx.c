@@ -39,13 +39,13 @@
 #define Dummy_Byte                 0xFF
 
 #ifdef LOSCFG_DRIVERS_HDF_PLATFORM_SPI
-DevHandle spiHandle = NULL; /* SPI设备句柄 */
+DevHandle spiHandle = NULL;
 uint8_t W25x_InitSpiFlash(uint32_t busNum, uint32_t csNum)
 {
-    struct SpiDevInfo spiDevinfo;       /* SPI设备描述符 */
-    spiDevinfo.busNum = busNum;         /* SPI设备总线号 */
-    spiDevinfo.csNum = csNum;           /* SPI设备片选号 */
-    spiHandle = SpiOpen(&spiDevinfo);   /* 根据spiDevinfo获取SPI设备句柄 */
+    struct SpiDevInfo spiDevinfo;
+    spiDevinfo.busNum = busNum;
+    spiDevinfo.csNum = csNum;
+    spiHandle = SpiOpen(&spiDevinfo);
     if (spiHandle == NULL) {
         HDF_LOGE("SpiOpen: failed\n");
         return HDF_FAILURE;
@@ -70,7 +70,6 @@ DevHandle W25x_GetSpiHandle(void)
 
 void W25x_SectorErase(uint32_t SectorAddr)
 {
-    /* 发送FLASH写使能命令 */
     if (spiHandle == NULL) {
         HDF_LOGE("spi flash haven't been inited\n");
         return;
@@ -90,7 +89,6 @@ void W25x_SectorErase(uint32_t SectorAddr)
       HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
       return;
     }
-    /* 等待擦除完毕*/
     W25x_WaitForWriteEnd();
 
 }
@@ -115,7 +113,6 @@ void W25x_BulkErase(void)
       HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
       return;
     }
-    /* 等待擦除完毕*/
     W25x_WaitForWriteEnd();
 
     return;
@@ -301,17 +298,16 @@ uint32_t W25x_ReadDeviceID(void)
         HDF_LOGE("spi flash haven't been inited\n");
         return;
     }
-    struct SpiMsg msg;                  /* 自定义传输的消息 */
+    struct SpiMsg msg;
     uint16_t deviceId = 0;
     uint8_t rbuff[5] = { 0 };
     uint8_t wbuff[5] = { W25X_DeviceID, Dummy_Byte, Dummy_Byte, Dummy_Byte, Dummy_Byte };
     int32_t ret = 0;
-    msg.wbuf = wbuff;  /* 写入的数据 */
-    msg.rbuf = rbuff;   /* 读取的数据 */
-    msg.len = 5;        /* 读取写入数据的长度为4 */
-    msg.csChange = 1;   /* 进行下一次传输前关闭片选 */
-    msg.delayUs = 0;    /* 进行下一次传输前不进行延时 */
-    /* 进行一次自定义传输，传输的msg个数为1 */
+    msg.wbuf = wbuff;
+    msg.rbuf = rbuff;
+    msg.len = 5;
+    msg.csChange = 1;
+    msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
       HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
@@ -328,16 +324,15 @@ void W25x_StartReadSequence(uint32_t ReadAddr)
         HDF_LOGE("spi flash haven't been inited\n");
         return;
     }
-    struct SpiMsg msg;                  /* 自定义传输的消息 */
+    struct SpiMsg msg;
     uint8_t rbuff[4] = { 0 };
     uint8_t wbuff[4] = { W25X_ReadData, (ReadAddr & 0xff0000) >> 16, (ReadAddr & 0xff00) >> 8, ReadAddr & 0xff };
     int32_t ret = 0;
-    msg.wbuf = wbuff;  /* 写入的数据 */
-    msg.rbuf = rbuff;   /* 读取的数据 */
-    msg.len = 4;        /* 读取写入数据的长度为4 */
-    msg.csChange = 1;   /* 进行下一次传输前关闭片选 */
-    msg.delayUs = 0;    /* 进行下一次传输前不进行延时 */
-    /* 进行一次自定义传输，传输的msg个数为1 */
+    msg.wbuf = wbuff;
+    msg.rbuf = rbuff;
+    msg.len = 4;
+    msg.csChange = 1;
+    msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
       HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
@@ -386,7 +381,7 @@ void W25x_WaitForWriteEnd(void)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = 1;
-    msg.csChange = 0; // 不关片选
+    msg.csChange = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -399,7 +394,6 @@ void W25x_WaitForWriteEnd(void)
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
     msg.len = 1;
-    // 等待写结束 不能关闭片选
     msg.csChange = 0;
     msg.delayUs = 0;
 
@@ -411,7 +405,6 @@ void W25x_WaitForWriteEnd(void)
     }
     while ((FLASH_Status & WIP_Flag) == 1); /* Write in progress */
 
-    // 等待写结束后关闭片选
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
     msg.len = 1;

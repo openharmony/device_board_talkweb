@@ -26,12 +26,12 @@ uint32_t USART_Block_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size
 {
     while(size)
     {
-        while(!LL_USART_IsActiveFlag_TXE(UART)){} // 等待发送为空
+        while(!LL_USART_IsActiveFlag_TXE(UART)){}
         LL_USART_TransmitData8(UART, *p_data);
         size--;
         p_data++;
     }
-    while(LL_USART_IsActiveFlag_TC(UART)==RESET){} // 等待发送完成
+    while(LL_USART_IsActiveFlag_TC(UART)==RESET){}
     return size;
 }
 

@@ -51,18 +51,17 @@ static uint8_t BufferCmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLe
 #if (USE_TRANSFER_API == 1)
 static uint16_t ReadDeviceId(DevHandle spiHandle)
 {
-    struct SpiMsg msg;                  /* 自定义传输的消息 */
+    struct SpiMsg msg;
     uint16_t deviceId = 0;
     uint8_t rbuff[5] = { 0 };
     uint8_t wbuff[5] = { 0xAB, 0xFF, 0xFF, 0xFF, 0xFF };
     int32_t ret = 0;
-    msg.wbuf = wbuff;  /* 写入的数据 */
-    msg.rbuf = rbuff;   /* 读取的数据 */
-    msg.len = 5;        /* 读取写入数据的长度为4 */
-    msg.csChange = 1;   /* 进行下一次传输前关闭片选 */
-    msg.delayUs = 0;    /* 进行下一次传输前不进行延时 */
-    //msg.speed = 115200; /* 本次传输的速度 */
-    /* 进行一次自定义传输，传输的msg个数为1 */
+    msg.wbuf = wbuff;
+    msg.rbuf = rbuff;
+    msg.len = 5;
+    msg.csChange = 1;
+    msg.delayUs = 0;
+    //msg.speed = 115200;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
@@ -107,7 +106,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = 1;
-    msg.csChange = 0; // 不关片选
+    msg.csChange = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -120,7 +119,6 @@ static void WaitForWriteEnd(DevHandle spiHandle)
       msg.wbuf = wbuf1;
       msg.rbuf = rbuf;
       msg.len = 1;
-      // 等待写结束 不能关闭片选
       msg.csChange = 0;
       msg.delayUs = 0;
 
@@ -132,7 +130,6 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     }
     while ((FLASH_Status & WIP_FLAG) == 1); /* Write in progress */
 
-    // 等待写结束后关闭片选
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
     msg.len = 1;
@@ -241,7 +238,6 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
 
 static void SectorErase(DevHandle spiHandle)
 {
-    /* 发送FLASH写使能命令 */
     WriteEnable(spiHandle);
     WaitForWriteEnd(spiHandle);
     uint8_t wbuf[4] = {0x20, 0x00, 0x00, 0x00};
@@ -257,19 +253,17 @@ static void SectorErase(DevHandle spiHandle)
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
         return;
     }
-    /* 等待擦除完毕*/
     WaitForWriteEnd(spiHandle);
 }
 #else
 static uint16_t ReadDeviceId(DevHandle spiHandle)
 {
-    struct SpiMsg msg;                  /* 自定义传输的消息 */
+    struct SpiMsg msg;
     uint16_t deviceId = 0;
     uint8_t rbuff1[2] = { 0 };
     uint8_t wbuff1[5] = {0x00, 0xAB, 0xff,0xff, 0xff};
     int32_t ret = 0;
 
-    /* 发送命令：读取芯片型号ID */
     ret =SpiWrite(spiHandle, wbuff1, 5);
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
@@ -399,7 +393,6 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
 
 static void SectorErase(DevHandle spiHandle)
 {
-    /* 发送FLASH写使能命令 */
     WriteEnable(spiHandle);
     WaitForWriteEnd(spiHandle);
     uint8_t wbuf[5] = {0x01, 0x20, 0x00, 0x00, 0x00};
@@ -409,7 +402,6 @@ static void SectorErase(DevHandle spiHandle)
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
-    /* 等待擦除完毕*/
     WaitForWriteEnd(spiHandle);
 }
 
@@ -420,46 +412,42 @@ static void* HdfSpiTestEntry(void* arg)
     (void)arg;
 #ifdef USE_SET_CFG
     int32_t ret;
-    struct SpiCfg cfg;                  /* SPI配置信息 */
+    struct SpiCfg cfg;
 #endif
     uint16_t flashId = 0;
     uint16_t deviceId = 0;
-    struct SpiDevInfo spiDevinfo;       /* SPI设备描述符 */
-    DevHandle spiHandle;                /* SPI设备句柄 */
-    spiDevinfo.busNum = 0;              /* SPI设备总线号 */
-    spiDevinfo.csNum = 0;               /* SPI设备片选号 */
-    spiHandle = SpiOpen(&spiDevinfo);   /* 根据spiDevinfo获取SPI设备句柄 */
+    struct SpiDevInfo spiDevinfo;
+    DevHandle spiHandle;
+    spiDevinfo.busNum = 0;
+    spiDevinfo.csNum = 0;
+    spiHandle = SpiOpen(&spiDevinfo);
     if (spiHandle == NULL) {
         HDF_LOGE("SpiOpen: failed\n");
         return NULL;
     }
 #ifdef USE_SET_CFG
-    /* 获取SPI设备属性 */
     ret = SpiGetCfg(spiHandle, &cfg);
     if (ret != 0) {
         HDF_LOGE("SpiGetCfg: failed, ret %d\n", ret);
         goto err;
     }
-    HDF_LOGI("speed:%u, bitper:%u, mode:%u, transMode:%u\n", cfg.maxSpeedHz, cfg.bitsPerWord, cfg.mode, cfg.transferMode);
-    cfg.maxSpeedHz = 1;                /* spi2，spi3 最大频率为42M, spi1  频率为84M， 此处的值为分频系数，0:1/2 1:1/4， 2:1/8     . */
-                                         /* 3: 1/16, 4: 1/32 5:1/64, 6:1/128  7:1/256 */
-    cfg.bitsPerWord = 8;                    /* 传输位宽改为8比特 */
+    HDF_LOGI("speed:%d, bitper:%d, mode:%d, transMode:%d\n", cfg.maxSpeedHz, cfg.bitsPerWord, cfg.mode, cfg.transferMode);
+    cfg.maxSpeedHz = 1;
+    cfg.bitsPerWord = 8;
     cfg.mode = 0;
-    cfg.transferMode = 1;              /* 0:dma  1:normal */
-    /* 配置SPI设备属性 */
+    cfg.transferMode = 1;
     ret = SpiSetCfg(spiHandle, &cfg);
     if (ret != 0) {
         HDF_LOGE("SpiSetCfg: failed, ret %d\n", ret);
         goto err;
     }
     SpiClose(spiHandle);
-    spiHandle = SpiOpen(&spiDevinfo);   /* 根据spiDevinfo获取SPI设备句柄 */
+    spiHandle = SpiOpen(&spiDevinfo);
     if (spiHandle == NULL) {
         HDF_LOGE("SpiOpen: failed\n");
         return NULL;
     }
 #endif
-    /* 向SPI设备写入指定长度的数据 */
     deviceId = ReadDeviceId(spiHandle);
     HDF_LOGI("read device id is 0x%02x\n", deviceId);
     flashId = ReadFlashId(spiHandle);
@@ -482,7 +470,6 @@ static void* HdfSpiTestEntry(void* arg)
 #ifdef USE_SET_CFG
 err:
 #endif
-    /* 销毁SPI设备句柄 */
     SpiClose(spiHandle);
     return NULL;
 

@@ -24,10 +24,9 @@
 #include "lwip/dhcp.h"
 #include "lwip/udp.h"
 
-/* DHCP连接超时(单位:秒)*/
+
 #define DHCP_TIMEOUT_S 30
 
-/* ETH配置检测线程优先级*/
 #define ETH_THREAD_PRIORITY 5
 
 typedef union
@@ -36,35 +35,29 @@ typedef union
     unsigned char u8_addr[4];
 } IPUnion;
 
-/* ETH状态回调枚举*/
 typedef enum
 {
-    STATE_UPDATE_LINK_DOWN = 0, // 网络连接状态更新(连接->断开)
-    STATE_UPDATE_LINK_UP = 1,   // 网络连接状态更新(断开->连接)
+    STATE_UPDATE_LINK_DOWN = 0,
+    STATE_UPDATE_LINK_UP = 1,
 } EthLinkState;
 
-/* ETH PHY LINK相关参数*/
 typedef struct
 {
-    unsigned char useStaticIp; // 1= 使用静态IP，0= 使用DHCP功能
-    IPUnion ipaddr;            //当使用静态IP时有效，为静态IP地址
-    IPUnion netmask;           //当使用静态IP时有效，为静态子网掩码
-    IPUnion gw;                //当使用静态IP时有效，为静态默认网关
+    unsigned char useStaticIp;
+    IPUnion ipaddr;
+    IPUnion netmask;
+    IPUnion gw;
 
-    unsigned char useStaticMac; // 1=使用静态MAC地址， 0=使用库随机生成的MAC地址
-    unsigned char macAddr[6];   //当使用静态MAC地址时有效
+    unsigned char useStaticMac;
+    unsigned char macAddr[6];
 } EthLinkInfo;
 
-// 获取ETH PHY LINK相关参数
 void get_ethernet_link_info(EthLinkInfo *info);
 
-// 设置ETH PHY LINK相关参数
 void set_ethernet_link_info(EthLinkInfo *info);
 
-/* ETH PHY状态更新回调函数*/
 typedef void (*eth_state_callBack)(EthLinkState state);
 
-/* ETH使能函数*/
 void ethernet_enable(eth_state_callBack callback);
 
 #endif

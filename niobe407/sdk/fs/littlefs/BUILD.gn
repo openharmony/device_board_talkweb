@@ -23,7 +23,6 @@ kernel_module(module_name) {
   }
 }
 
-#全局配置
 config("public") {
   if(defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
     include_dirs = [

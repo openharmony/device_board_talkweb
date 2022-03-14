@@ -22,31 +22,16 @@
 
 unsigned int timer1Exec=1, timer2Exec=100;
 
-/***
- *定时器1 回调函数
- *\param[in]   arg  回调参数
- *
- *
- */
 void OS_Timer1_Callback(void *arg)
 {
     printf("This is Niobe407 Timer1_Callback:%u!\r\n", *(unsigned int*)arg);
 }
 
-/***
- *定时器2 回调函数
- *\param[in]   arg  回调参数
- *
- *
- */
 void OS_Timer2_Callback(void *arg)
 {
     printf("This is Niobe407 Timer2_Callback:%u!\r\n", *(unsigned int*)arg);
 }
 
-/**
- * 创建定时器
- */
 static void OS_Timer_example(void)
 {
     osTimerId_t timerId1, timerId2;
@@ -54,21 +39,10 @@ static void OS_Timer_example(void)
     osStatus_t status;
 
     timer1Exec = 1U;
-    /// Create and Initialize a timer.
-    /// \param[in]     func          function pointer to callback function.
-    /// \param[in]     type          \ref osTimerOnce for one-shot or \ref osTimerPeriodic for periodic behavior.
-    /// \param[in]     argument      argument to the timer callback function.
-    /// \param[in]     attr          timer attributes; NULL: default values.
-    /// \return timer ID for reference by other functions or NULL in case of error.
     timerId1 = osTimerNew((osTimerFunc_t)OS_Timer1_Callback, osTimerPeriodic, &timer1Exec, NULL);
     if (timerId1 != NULL)
     {
         delay = 100U;
-        /// Start or restart a timer.
-        /// \param[in]     timer_id      timer ID obtained by \ref osTimerNew.
-        /// \param[in]     ticks         \ref CMSIS_RTOS_TimeOutValue "time ticks" value of the timer.
-        /// \return status code that indicates the execution status of the function.
-        //osStatus_t osTimerStart(osTimerId_t timer_id, unsigned int ticks);
         status = osTimerStart(timerId1, delay);
         if (status != osOK)
         {

@@ -43,7 +43,6 @@ static void* HdfWatchdogTestEntry(void* arg)
         return NULL;
     }
 
-    /* 获取Watchdog启动状态 */
     ret = WatchdogGetStatus(handle, &status);
     if (ret != 0) {
         HDF_LOGE("WatchdogGetStatus: failed, ret %d\n", ret);
@@ -72,7 +71,6 @@ static void* HdfWatchdogTestEntry(void* arg)
     }else
         HDF_LOGE("WatchdogGetTimeout: %d\n", timeOut);
 
-    /* 启动看门狗 */
     ret = WatchdogStart(handle);
     if (ret != 0) {
         HDF_LOGE("WatchdogStart: failed, ret %d\n", ret);
@@ -89,7 +87,7 @@ static void* HdfWatchdogTestEntry(void* arg)
 
     while (1)
     {
-        ret = WatchdogFeed(handle);  //喂狗操作
+        ret = WatchdogFeed(handle);
         if (ret != 0) {
             HDF_LOGE("WatchdogFeed: failed, ret %d\n", ret);
             return NULL;

@@ -25,7 +25,7 @@
 #define HDF_PWM_TASK_NAME "hdf_pwm_test_task"
 #define HDF_PWM_TASK_PRIORITY 25
 
-#define PWM2 1 /* PWM设备编号，要填写实际平台上的编号 */
+#define PWM2 1
 #define PWM3 2
 #define PWM8 7
 
@@ -37,13 +37,12 @@ static void* HdfPwmTestEntry(void* arg)
     DevHandle handle = NULL;
 
     struct PwmConfig pcfg;
-    pcfg.duty = 10000000; /*占空时间为250000000纳秒*/
-    pcfg.period = 50000000; /*周期为50000000纳秒*/
-    pcfg.number = 0; /*生成无限个方波*/
-    pcfg.polarity = PWM_NORMAL_POLARITY; /*极性为正*/
-    pcfg.status = PWM_ENABLE_STATUS; /*运行状态为启用*/
+    pcfg.duty = 10000000;
+    pcfg.period = 50000000;
+    pcfg.number = 0;
+    pcfg.polarity = PWM_NORMAL_POLARITY;
+    pcfg.status = PWM_ENABLE_STATUS;
 
-    /* 获取PWM设备句柄 */
     handle = PwmOpen(PWM2);
     if (handle == NULL) {
         HDF_LOGE("PwmOpen: failed!\n");
@@ -52,7 +51,6 @@ static void* HdfPwmTestEntry(void* arg)
         HDF_LOGI("open pwm %u success!\n", PWM2 + 1);
     }
 
-    /*设置PWM设备参数*/
     ret = PwmSetConfig(handle, &pcfg);
     if (ret != 0) {
         HDF_LOGE("PwmSetConfig: failed, ret %d\n", ret);
@@ -64,13 +62,11 @@ static void* HdfPwmTestEntry(void* arg)
     DevHandle handle1 = NULL;
 
     struct PwmConfig pcfg1;
-    pcfg1.duty = 10000000; /*占空时间为25000000纳秒*/
-    pcfg1.period = 100000000; /*周期为50000000纳秒 10HZ*/
-    pcfg1.number = 0; /*生成无限个方波*/
-    pcfg1.polarity = PWM_NORMAL_POLARITY; /*极性为正*/
-    pcfg1.status = PWM_ENABLE_STATUS; /*运行状态为启用*/
-
-    /* PWM设备编号，要填写实际平台上的编号 */
+    pcfg1.duty = 10000000;
+    pcfg1.period = 100000000;
+    pcfg1.number = 0;
+    pcfg1.polarity = PWM_NORMAL_POLARITY;
+    pcfg1.status = PWM_ENABLE_STATUS;
 
     handle1 = PwmOpen(PWM3);
     if (handle1 == NULL) {
@@ -80,7 +76,6 @@ static void* HdfPwmTestEntry(void* arg)
         HDF_LOGI("open pwm %u success!\n", PWM3 + 1);
     }
 
-    /*设置PWM设备参数*/
     ret = PwmSetConfig(handle1, &pcfg1);
     if (ret != 0) {
         HDF_LOGE("PwmSetConfig: failed, ret %d\n", ret);
@@ -91,11 +86,11 @@ static void* HdfPwmTestEntry(void* arg)
 #if (BEEP_ON == 1)
     DevHandle handle2 = NULL;
     struct PwmConfig pcfg2;
-    pcfg2.duty = 200000; /*占空时间为25000000纳秒*/
-    pcfg2.period = 400000; /*周期为50000000纳秒 2.5kHZ*/
-    pcfg2.number = 0; /*生成无限个方波*/
-    pcfg2.polarity = PWM_NORMAL_POLARITY; /*极性为正*/
-    pcfg2.status = PWM_ENABLE_STATUS; /*运行状态为启用*/
+    pcfg2.duty = 200000;
+    pcfg2.period = 400000;
+    pcfg2.number = 0;
+    pcfg2.polarity = PWM_NORMAL_POLARITY;
+    pcfg2.status = PWM_ENABLE_STATUS;
 
     handle2 = PwmOpen(PWM8);
     if (handle2 == NULL) {
@@ -105,7 +100,6 @@ static void* HdfPwmTestEntry(void* arg)
         HDF_LOGI("open pwm %u success!\n", PWM8 + 1);
     }
 
-    /*设置PWM设备参数*/
     ret = PwmSetConfig(handle2, &pcfg2);
     if (ret != 0) {
         HDF_LOGE("PwmSetConfig: failed, ret %d\n", ret);
@@ -118,7 +112,6 @@ static void* HdfPwmTestEntry(void* arg)
         LOS_TaskDelay(1000);
     }
 _ERR1:
-    /* 销毁PWM设备句柄 */
     PwmClose(handle);
 _ERR2:
     PwmClose(handle1);

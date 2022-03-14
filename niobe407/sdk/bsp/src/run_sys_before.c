@@ -16,11 +16,6 @@
 #include "ohos_run.h"
 #include "program_version.h"
 
-
-/**
- * @brief 输出开发板欢迎信息
- * 
- */
 void welcome_info()
 {
     printf( "*************************************************************\n");                                         
@@ -38,15 +33,11 @@ void welcome_info()
     printf( "*************************************************************\n");
 }
 
-/**
- * @brief 该函数用于在系统启动之前进行初始化等操作
- * 
- */
 void run_sys_before()
 {
     welcome_info();
 
-    /* 此处添加需要在openharmony启动之前运行的函数 */
+    /* Run code before openharmony run */
 }
 
 BEFORE_OHOS_RUN(run_sys_before);

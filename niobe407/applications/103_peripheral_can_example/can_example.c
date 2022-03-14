@@ -27,7 +27,6 @@ CAN_TxHeaderTypeDef TxHeader;
 CAN_TxHeaderTypeDef RxHeader;
 CAN_FilterTypeDef Filter;
 
-/* CAN数据接收回调 */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
     uint8_t aRxData[8]={0};
@@ -54,7 +53,6 @@ void thread_entry(void)
     TxHeader.TransmitGlobalTime = DISABLE;
     TxHeader.DLC = 8;
 
-    /* 配置过滤 */
     Filter.FilterIdHigh             = 0;
     Filter.FilterIdLow              = 0;
     Filter.FilterMaskIdHigh         = 0;
@@ -95,7 +93,7 @@ void thread_entry(void)
 
 static void can_send_example(void)
 {
-    MX_CAN1_Init();  //CAN1初始化
+    MX_CAN1_Init();
 
     osThreadAttr_t attr;
     attr.name = "thread1";

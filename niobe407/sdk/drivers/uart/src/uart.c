@@ -18,11 +18,11 @@
 #include "los_task.h"
 #define HDF_SHELL_STACK_SIZE 0x1000
 #define HDF_SHELL_TASK_NAME "hdf_shell_task"
-#define HDF_SHELL_TASK_PRIORITY 26 //由于串口读是阻塞的当串口读无数据是一直在循环 优先级和shell处理线程一样或者高，不然消息发送不过去，shell task 优先级是3 持平
+#define HDF_SHELL_TASK_PRIORITY 26
 #define MAX_BUF_SIZE 1024
 uint8_t rbuf[MAX_BUF_SIZE] = {0};
-DevHandle handle = NULL;    /* UART设备句柄  */
-#define UART_DEBUG_SHELL_PORT 1  // 调试 shell端口设置 uart5 485建议用rs232的读取
+DevHandle handle = NULL;
+#define UART_DEBUG_SHELL_PORT 1
 #endif
 
 #include "stdio.h"
@@ -204,7 +204,7 @@ void StartUartShell(void)
 
 VOID ShellUartInit(VOID)
 {
-    LosShellInit(); //shell初始化
+    LosShellInit();
     g_debugRingBuf = RingBufInit(CN_RCV_RING_BUFLEN);
     if (g_debugRingBuf == NULL) {
         return;
@@ -234,7 +234,7 @@ static void huart1_irq(void)
 
 VOID ShellUartInit(VOID)
 {
-    LosShellInit(); //shell初始化
+    LosShellInit();
     g_debugRingBuf = RingBufInit(CN_RCV_RING_BUFLEN);
     if (g_debugRingBuf == NULL) {
         printf("RingBufInit fail!\n");

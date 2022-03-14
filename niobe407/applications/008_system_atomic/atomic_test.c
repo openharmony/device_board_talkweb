@@ -158,7 +158,7 @@ void AtomicTest3()
     newVal = 0xff;
     oldVal = 1;
     value = 0;
-    ret = LOS_AtomicCmpXchg32bits(&value, newVal, oldVal); // 如果value != oldvalue 返回1，但是不会更新value 到 new value
+    ret = LOS_AtomicCmpXchg32bits(&value, newVal, oldVal);
     STM32_ASSERT_EQUAL(ret, 1, ret);
     STM32_ASSERT_EQUAL(value, 0, value);
 
