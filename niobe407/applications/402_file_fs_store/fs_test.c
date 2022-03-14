@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
+#include <dirent.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdbool.h>
 #include <sys/mount.h>
 #include "los_config.h"
 #include "los_memory.h"
 #include "los_task.h"
-#include <dirent.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include "ohos_run.h"
-#include <stdbool.h>
 
 static void dir_test(const char *path)
 {
@@ -38,7 +38,7 @@ static void dir_test(const char *path)
         }
         struct stat st_buf = {0};
         char realpath[260];
-        snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
+        snprintf_s(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
         if (stat(realpath, &st_buf) != 0) {
             printf("can not access %s\n", realpath);
             closedir(dir);
@@ -52,17 +52,17 @@ static void dir_test(const char *path)
     }
     closedir(dir);
 
-    ret = mkdir("/talkweb/fstestdir",S_IRUSR | S_IWUSR);
-    if(ret){
-       printf("mkdir failed \n");
-       return; 
+    ret = mkdir("/talkweb/fstestdir", S_IRUSR | S_IWUSR);
+    if (ret) {
+        printf("mkdir failed \n");
+        return;
     }
     ret = rmdir("/talkweb/fstestdir");
-    if(ret){
-       printf("rmdir failed \n");
-       return; 
+    if (ret) {
+        printf("rmdir failed \n");
+        return;
     }
-    printf("%s ok \n",__func__);
+    printf("%s ok \n", __func__);
 }
 
 static void read_test(const char *file, bool print_str)
@@ -75,53 +75,45 @@ static void read_test(const char *file, bool print_str)
     int bytes = 0;
     char buf[513];
     while (1) {
-        memset(buf, 0, sizeof(buf));
+        memset_s(buf, 0, sizeof(buf));
         int rc = _read(fd, buf, sizeof(buf) - 1);
-        if (rc > 0)
+        if (rc > 0) {
             bytes += rc;
+        }
 
         if (print_str) {
             buf[rc] = '\0';
             printf("%s\r\n", buf);
         }
 
-        if (rc < sizeof(buf) - 1)
+        if (rc < sizeof(buf) - 1) {
             break;
+        }
     }
     _close(fd);
     printf("read file '%s' total bytes: %d\r\n", file, bytes);
-    printf("%s ok \n",__func__);
+    printf("%s ok \n", __func__);
 }
 
 static void write_test(const char *file, const char *data)
 {
     int fd = _open(file, O_RDWR | O_CREAT);
-     if (fd < 0) {
+    if (fd < 0) {
         printf("open file '%s' failed \r\n", file);
         return;
     }
-    int bytes = _write(fd,data,strlen(data));
+    int bytes = _write(fd, data, strlen(data));
     _close(fd);
     printf("write file '%s' total bytes: %d, %s\r\n", file, bytes, data);
-    printf("%s ok \n",__func__);
+    printf("%s ok \n", __func__);
 }
 
 void littlefs_test(void)
 {
-    printf("%s\r\n",__func__);
+    printf("%s\r\n", __func__);
     dir_test("/talkweb");
     read_test("/talkweb/wifi.cfg", true);
     write_test("/talkweb/wifi.cfg", "ssid:talkweb password:123456");
     read_test("/talkweb/wifi.cfg", true);
-
-    //dir_test("/niobe");
-    //read_test("/niobe/wifi.cfg", true);
-    //write_test("/niobe/wifi.cfg", "ssid:niobe password:654321");
-    //read_test("/niobe/wifi.cfg", true);
-
-    //dir_test("/esp");
-    //read_test("/esp/wifi.cfg", true);
-    //write_test("/esp/wifi.cfg", "ssid:esp password:esp32");
-    //read_test("/esp/wifi.cfg", true);
 }
 OHOS_APP_RUN(littlefs_test);

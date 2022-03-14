@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,12 +24,11 @@ __attribute__((section(".ccmram"))) unsigned int test_buff [TEST_BUFF_LEN] = {0}
 
 __attribute__((section(".ccmram_func"))) void test_ccmram(void)
 {
-    for(int i=0; i<TEST_BUFF_LEN; i++)
-    {
+    for(int i=0; i<TEST_BUFF_LEN; i++) {
         test_buff[i] = i;   
     }
     
-    if(test_buff[0] == 0 && test_buff[4095] == 4095)
+    if (test_buff[0] == 0 && test_buff[4095] == 4095)
         printf("---use CCMRAM buff success!\n");
     else
         printf("---use CCMRAM buff fail!\n");

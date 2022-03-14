@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -54,20 +54,17 @@ void semp_example(void)
     attr.priority = 10;
 
     attr.name = "Thread_Semp1";
-    if (osThreadNew((osThreadFunc_t)Thread_Semp1, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)Thread_Semp1, NULL, &attr) == NULL) {
         printf("create Thread_Semp1 failed!\n");
     }
 
     attr.name = "Thread_Semp2";
-    if (osThreadNew((osThreadFunc_t)Thread_Semp2, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)Thread_Semp2, NULL, &attr) == NULL) {
         printf("create Thread_Semp2 failed!\n");
     }
 	
     sem1 = osSemaphoreNew(3, 0, NULL);
-    if (sem1 == NULL)
-    {
+    if (sem1 == NULL) {
         printf("Semp1 create failed!\n");
     }
 }

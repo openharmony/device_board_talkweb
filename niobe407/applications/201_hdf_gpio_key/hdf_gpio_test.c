@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include "ohos_run.h"
 #include "osal_irq.h"
 #include "osal_time.h"
 
 #include "ohos_run.h"
 #include "cmsis_os2.h"
-#include <stdio.h>
 
 #ifdef LOSCFG_DRIVERS_HDF_PLATFORM_GPIO
 #include "hdf_log.h"

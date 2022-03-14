@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@
 #define __PROGRAM_VERSION_H__
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif /* __cplusplus */
 
 #define APP_VERSION "1.0.0"

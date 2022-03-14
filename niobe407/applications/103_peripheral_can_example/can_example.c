@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,8 +20,7 @@
 #include "ohos_run.h"
 #include "cmsis_os2.h"
 #include "stm32f4xx_hal.h"
-
-extern CAN_HandleTypeDef hcan1;
+#include "can_init.h"
 
 CAN_TxHeaderTypeDef TxHeader;
 CAN_TxHeaderTypeDef RxHeader;
@@ -29,9 +28,8 @@ CAN_FilterTypeDef Filter;
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-    uint8_t aRxData[8]={0};
-    if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, aRxData) == HAL_OK)
-    {
+    uint8_t aRxData[8] = {0};
+    if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, aRxData) == HAL_OK) {
         uint32_t canid = (RxHeader.IDE == CAN_ID_STD)?RxHeader.StdId:RxHeader.ExtId;
         printf("\nRecv CANID:0x%08X Data:",canid);
         for(uint8_t i=0; i<8; i++)
@@ -66,8 +64,7 @@ void thread_entry(void)
 
     HAL_CAN_ConfigFilter(&hcan1, &Filter);
 
-    while(HAL_OK != HAL_CAN_Start(&hcan1))
-    {
+    while(HAL_OK != HAL_CAN_Start(&hcan1)) {
         printf("HAL_CAN_Start fail! try again!\n");
         osDelay(100);
     }
@@ -75,16 +72,13 @@ void thread_entry(void)
     printf("HAL_CAN_Start success!\n");
     HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 
-    while (1)
-    {
+    while (1) {
         uint32_t ret = HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
-        if(ret == HAL_OK)
-        {
+        if (ret == HAL_OK) {
             printf("send can data [0x%04X : %02X %02X %02X %02X %02X %02X %02X %02X] success! Tx_Mail:%u\n",
                 send_can_id, TxData[0],TxData[1],TxData[2],TxData[3],TxData[4],TxData[5],TxData[6],TxData[7], TxMailbox);
         }
-        else
-        {
+        else {
             printf("send can data fail,ret = %s\n", (ret==HAL_ERROR)?"HAL_ERROR":((ret==HAL_BUSY)?"HAL_BUSY":"HAL_TIMEOUT"));
         }
         osDelay(1000);
@@ -104,8 +98,7 @@ static void can_send_example(void)
     attr.stack_size = 4096;
     attr.priority = 25;
 
-    if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL) {
         printf("Falied to create thread!\n");
     }
 }

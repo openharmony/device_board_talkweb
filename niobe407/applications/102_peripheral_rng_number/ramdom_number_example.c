@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,15 +21,12 @@
 #include "cmsis_os2.h"
 #include "rng_init.h"
 
-extern RNG_HandleTypeDef hrng;
-
 void thread_entry(void)
 {
     unsigned int rng_num = 0;
     RngInit();
-    while (1)
-    {
-        if(HAL_OK == HAL_RNG_GenerateRandomNumber(&hrng, &rng_num))
+    while (1) {
+        if (HAL_OK == HAL_RNG_GenerateRandomNumber(&hrng, &rng_num))
            printf("Generate 32bit Random number is %u\r\n", rng_num);		
         else
            printf("Generate Random Number fail!\r\n");	
@@ -49,8 +46,7 @@ static void get_ramdom_number_example(void)
     attr.stack_size = 1024 * 4;
     attr.priority = 25;
 
-    if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL) {
         printf("Falied to create thread!\n");
     }
 }

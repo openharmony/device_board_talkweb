@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,8 @@
 #include "los_compiler.h"
 #include <stdio.h>
 
+
+extern UART_HandleTypeDef huart1;
 extern EVENT_CB_S g_shellInputEvent;
 
 extern VOID ShellUartInit(VOID);

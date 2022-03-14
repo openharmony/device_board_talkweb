@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,23 +16,22 @@
 #ifndef __OHOS_RUN_H__
 #define __OHOS_RUN_H__
 
-#ifdef __cplusplus
-extern "C"{
-#endif /* __cplusplus */
-
 #include "los_task.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#define BEFORE_OHOS_RUN(func)  \
-void before_ohos_run(){\
-    func();\
+#define BEFORE_OHOS_RUN(func) \
+void before_ohos_run(void) { \
+    func(); \
 }
 
-#define OHOS_APP_RUN(func)  \
-void ohos_app_main(){\
-    LOS_TaskDelay(100);\
-    printf("\n\033[1;32m<--------------- OHOS Application Start Here --------------->\033[0m\n");\
-    func();\
+#define OHOS_APP_RUN(func) \
+void ohos_app_main(void) { \
+    LOS_TaskDelay(100); \
+    printf("\n\033[1;32m<--------------- OHOS Application Start Here --------------->\033[0m\n"); \
+    func(); \
 }
 
 #ifdef __cplusplus

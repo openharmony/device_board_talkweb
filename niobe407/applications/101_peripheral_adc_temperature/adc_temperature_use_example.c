@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,8 +23,7 @@
 
 void thread_entry(void)
 {
-    while (1)
-    {
+    while (1) {
         double Current_Temperature = Temperature_Get();
         printf("The IC current temperature is %.2f\r\n",Current_Temperature);		
         osDelay(1000);
@@ -45,8 +44,7 @@ static void adc_temperature_example(void)
 
     Temperature_ADC_Init();
 
-    if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL) {
         printf("Falied to create thread!\n");
     }
 }

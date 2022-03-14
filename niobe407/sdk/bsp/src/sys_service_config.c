@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,36 +19,33 @@
 #include "hiview_def.h"
 #include "hiview_output_log.h"
 
-extern int DeviceManagerStart(void); // hdf init
-
-
 bool HilogProc_Impl(const HiLogContent *hilogContent, uint32_t len)
 {
-  char tempOutStr[LOG_FMT_MAX_LEN];
-  tempOutStr[0] = 0,tempOutStr[1] = 0;
-  if (LogContentFmt(tempOutStr, sizeof(tempOutStr), hilogContent) > 0) {
-    printf(tempOutStr);
-  }
-  return true;
+    char tempOutStr[LOG_FMT_MAX_LEN];
+    tempOutStr[0] = 0,tempOutStr[1] = 0;
+    if (LogContentFmt(tempOutStr, sizeof(tempOutStr), hilogContent) > 0) {
+        printf(tempOutStr);
+    }
+    return true;
 }
 
 int HiLogWriteInternal(const char *buffer, size_t bufLen)
 {
-  if (!buffer)
-    return -1;
-  if (bufLen < 2)
+    if (!buffer)
+        return -1;
+    if (bufLen < 2)
+        return 0;
+    if (buffer[bufLen - 2] != '\n') {
+        *((char *)buffer + bufLen - 1) = '\n';
+    }
+    printf("%s\n",buffer);
     return 0;
-  if (buffer[bufLen - 2] != '\n') {
-    *((char *)buffer + bufLen - 1) = '\n';
-  }
-  printf("%s\n",buffer);
-  return 0;
 }
 
 void sys_service_config()
 {
     HiviewRegisterHilogProc(HilogProc_Impl);
-    
+
 #ifdef LOSCFG_WATCH_DOG
     watch_dog_init(1100);
 #endif
@@ -60,5 +57,4 @@ void sys_service_config()
 #ifdef LOSCFG_SHELL
     ShellUartInit();
 #endif
-
 }

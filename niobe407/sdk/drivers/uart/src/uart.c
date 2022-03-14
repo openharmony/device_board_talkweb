@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,15 +33,14 @@ DevHandle handle = NULL;
 #include "stm32f4xx_hal_uart.h"
 #include "uart.h"
 
-extern UART_HandleTypeDef huart1;
-
 #ifdef LOSCFG_DRIVERS_HDF_PLATFORM_UART
 INT32 UartPutc(INT32 ch, VOID *file)
 {
     char RL = '\r';
     if (handle == NULL) {
-        if(ch =='\n')
+        if (ch =='\n') {
             HAL_UART_Transmit(&huart1, &RL, 1, 0xFFFF);
+        }
         return HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
     } else {
         if (ch == '\n') {
@@ -54,7 +53,7 @@ INT32 UartPutc(INT32 ch, VOID *file)
 INT32 UartPutc(INT32 ch, VOID *file)
 {
     char RL = '\r';
-    if(ch =='\n') {
+    if (ch =='\n') {
         HAL_UART_Transmit(&huart1, &RL, 1, 0xFFFF);
     }
 
@@ -65,7 +64,6 @@ INT32 UartPutc(INT32 ch, VOID *file)
 #ifdef LOSCFG_SHELL
 
 #define CN_RCV_RING_BUFLEN  128
-//we make a ring here to storage the data
 typedef struct {
     int size;
     int posW;
@@ -132,9 +130,7 @@ RingBuffer* RingBufInit(int size)
     if (size <= 0) {
         return NULL;
     }
-
     buf = malloc(size + sizeof(RingBuffer));
-
     if (buf != NULL) {
         buf->buf = (unsigned char*) buf + sizeof(RingBuffer);
         buf->dataLen = 0;
@@ -168,7 +164,7 @@ static INT32 InitDebugShellUart(uint32_t port)
 static void HdfShellTaskEntry(void)
 {
     while(1) {
-        memset(rbuf, 0, MAX_BUF_SIZE);
+        memset_s(rbuf, 0, MAX_BUF_SIZE);
         int32_t ret = UartRead(handle, rbuf, MAX_BUF_SIZE);
         if (ret < 0) {
             return;
@@ -225,8 +221,7 @@ static void huart1_irq(void)
         value = (uint8_t) (huart1.Instance->DR & 0x00FF);
         RingBufWrite(g_debugRingBuf, value);
     }
-    else if (__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE) != RESET) 
-    {
+    else if (__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE) != RESET) {
         __HAL_UART_CLEAR_IDLEFLAG(&huart1);
         (void)LOS_EventWrite(&g_shellInputEvent, 0x1);
     }
@@ -240,14 +235,9 @@ VOID ShellUartInit(VOID)
         printf("RingBufInit fail!\n");
         return;
     }
-
     LOS_HwiCreate(USART1_IRQn, 0, 1, (HWI_PROC_FUNC)huart1_irq, 0);
-
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
 }
 #endif
 #endif
-
-
-

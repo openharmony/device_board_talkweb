@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,25 +29,21 @@
 
 #define ETH_THREAD_PRIORITY 5
 
-typedef union
-{
+typedef union {
     ip_addr_t u32_addr;
     unsigned char u8_addr[4];
 } IPUnion;
 
-typedef enum
-{
+typedef enum {
     STATE_UPDATE_LINK_DOWN = 0,
     STATE_UPDATE_LINK_UP = 1,
 } EthLinkState;
 
-typedef struct
-{
+typedef struct {
     unsigned char useStaticIp;
     IPUnion ipaddr;
     IPUnion netmask;
     IPUnion gw;
-
     unsigned char useStaticMac;
     unsigned char macAddr[6];
 } EthLinkInfo;

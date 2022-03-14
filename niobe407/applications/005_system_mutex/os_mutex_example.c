@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -67,28 +67,24 @@ void os_mutex_example(void)
 
     attr.name = "firstThread";
     attr.priority = 26;
-    if (osThreadNew((osThreadFunc_t)firstThread, NULL, &attr) == NULL)
-	{
+    if (osThreadNew((osThreadFunc_t)firstThread, NULL, &attr) == NULL) {
     	printf("create firstThread failed!\n");
     }
 
 	attr.name = "twoThread";
     attr.priority = 25;
-    if (osThreadNew((osThreadFunc_t)twoThread, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)twoThread, NULL, &attr) == NULL) {
       	printf("create twoThread failed!\n");
     }
 
     attr.name = "threeThread";
     attr.priority = 24;
-    if (osThreadNew((osThreadFunc_t)threeThread, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)threeThread, NULL, &attr) == NULL) {
       	printf("create threeThread failed!\n");
     }
 
 	mutex_id = osMutexNew(NULL);
-    if (mutex_id == NULL)
-    {
+    if (mutex_id == NULL) {
       	printf("create Mutex failed!\n");
     }
 }

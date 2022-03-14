@@ -65,7 +65,7 @@
             static osThreadId_t tcp_client_id = NULL;
 
             /* ETH连接断开*/
-            if(state == STATE_UPDATE_LINK_DOWN){
+            if (state == STATE_UPDATE_LINK_DOWN){
                 printf("ETH LINK STATE: DisConnected!\r\n");
 
                 // 断开ETH连接时删除TCP线程
@@ -73,7 +73,7 @@
                 tcp_client_id = NULL;
             }
             /* ETH连接成功*/
-            else if(state == STATE_UPDATE_LINK_UP){ 
+            else if (state == STATE_UPDATE_LINK_UP){ 
                 printf("ETH LINK STATE: Connected!\r\n");
 
                 // ETH连接成功后 创建TCP线程

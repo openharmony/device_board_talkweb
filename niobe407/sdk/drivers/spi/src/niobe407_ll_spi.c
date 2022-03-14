@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,10 +24,10 @@
 uint8_t LL_SPI_Transmit(SPI_TypeDef* SPIx ,uint8_t byte)
 {
     uint8_t read,send = byte;
-    while (LL_SPI_IsActiveFlag_TXE(SPIx) == 0){};
-        LL_SPI_TransmitData8(SPIx, send);
-    while (LL_SPI_IsActiveFlag_RXNE(SPIx) == 0){};
-        read = LL_SPI_ReceiveData8(SPIx);
+    while (LL_SPI_IsActiveFlag_TXE(SPIx) == 0);
+    LL_SPI_TransmitData8(SPIx, send);
+    while (LL_SPI_IsActiveFlag_RXNE(SPIx) == 0);
+    read = LL_SPI_ReceiveData8(SPIx);
     return read;
 }
 

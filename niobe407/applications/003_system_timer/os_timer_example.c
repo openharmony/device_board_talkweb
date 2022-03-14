@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@
 #include "ohos_run.h"
 #include "cmsis_os2.h"
 
-unsigned int timer1Exec=1, timer2Exec=100;
+unsigned int timer1Exec = 1, timer2Exec = 100;
 
 void OS_Timer1_Callback(void *arg)
 {
@@ -40,24 +40,20 @@ static void OS_Timer_example(void)
 
     timer1Exec = 1U;
     timerId1 = osTimerNew((osTimerFunc_t)OS_Timer1_Callback, osTimerPeriodic, &timer1Exec, NULL);
-    if (timerId1 != NULL)
-    {
+    if (timerId1 != NULL) {
         delay = 100U;
         status = osTimerStart(timerId1, delay);
-        if (status != osOK)
-        {
+        if (status != osOK) {
             printf("Falied to start timer1!\n");
         }
     }
 
     timer2Exec = 100U;
     timerId2 = osTimerNew((osTimerFunc_t)OS_Timer2_Callback, osTimerPeriodic, &timer2Exec, NULL);
-    if (timerId2 != NULL)
-    {
+    if (timerId2 != NULL) {
         delay = 300U;
         status = osTimerStart(timerId2, delay);
-        if (status != osOK)
-        {
+        if (status != osOK) {
             printf("Falied to start timer2!\n");
         }
     }

@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 Talkweb Co., Ltd.
+# Copyright (c) 2022 Talkweb Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,7 +15,7 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-  if(defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
+  if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
     sources = [
       "src/fs_init.c",
       "src/littlefs.c",
@@ -24,7 +24,7 @@ kernel_module(module_name) {
 }
 
 config("public") {
-  if(defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
+  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
     include_dirs = [
       "include",
       "//drivers/framework/include/platform",

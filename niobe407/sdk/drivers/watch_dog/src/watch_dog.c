@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ IWDG_HandleTypeDef hiwdg;
 
 int watch_dog_init(unsigned int timeout)
 {
-    if(timeout < 1 || timeout > 4096)
+    if (timeout < WATCHDOG_MIN_TIMEOUT || timeout > WATCHDOG_MAX_TIMEOUT)
         return -1;
     hiwdg.Instance = IWDG;
     hiwdg.Init.Prescaler = IWDG_PRESCALER_32;
@@ -29,7 +29,7 @@ int watch_dog_init(unsigned int timeout)
     return 0;
 }
 
-void feed_dog()
+void feed_dog(void)
 {
 #ifdef LOSCFG_WATCH_DOG
     HAL_IWDG_Refresh(&hiwdg);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,24 +16,24 @@
 #include "ohos_run.h"
 #include "program_version.h"
 
-void welcome_info()
+void welcome_info(void)
 {
-    printf( "*************************************************************\n");                                         
-    printf( "\n");
-    printf( "████████╗ █████╗ ██╗     ██╗  ██╗██╗    ██╗███████╗██████╗\n");
-    printf( "╚══██╔══╝██╔══██╗██║     ██║ ██╔╝██║    ██║██╔════╝██╔══██╗\n");
-    printf( "   ██║   ███████║██║     █████╔╝ ██║ █╗ ██║█████╗  ██████╔╝\n");
-    printf( "   ██║   ██╔══██║██║     ██╔═██╗ ██║███╗██║██╔══╝  ██╔══██╗\n");
-    printf( "   ██║   ██║  ██║███████╗██║  ██╗╚███╔███╔╝███████╗██████╔╝\n");
-    printf( "   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚══════╝╚═════╝\n");                                         
-    printf( "\n");
-    printf( "         Welcome to use Niobe407 development board!\n");
-    printf( "             Hardware version: "APP_VERSION"\n");
-    printf( "             Software version: "HW_VERSION"\n");
-    printf( "*************************************************************\n");
+    printf("*************************************************************\n");
+    printf("\n");
+    printf("████████╗ █████╗ ██╗     ██╗  ██╗██╗    ██╗███████╗██████╗\n");
+    printf("╚══██╔══╝██╔══██╗██║     ██║ ██╔╝██║    ██║██╔════╝██╔══██╗\n");
+    printf("   ██║   ███████║██║     █████╔╝ ██║ █╗ ██║█████╗  ██████╔╝\n");
+    printf("   ██║   ██╔══██║██║     ██╔═██╗ ██║███╗██║██╔══╝  ██╔══██╗\n");
+    printf("   ██║   ██║  ██║███████╗██║  ██╗╚███╔███╔╝███████╗██████╔╝\n");
+    printf("   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚══════╝╚═════╝\n");
+    printf("\n");
+    printf("         Welcome to use Niobe407 development board!\n");
+    printf("             Hardware version: "APP_VERSION"\n");
+    printf("             Software version: "HW_VERSION"\n");
+    printf("*************************************************************\n");
 }
 
-void run_sys_before()
+void run_sys_before(void)
 {
     welcome_info();
 

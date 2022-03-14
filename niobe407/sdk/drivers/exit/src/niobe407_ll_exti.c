@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,11 +71,9 @@ static void LL_Gpio_Exti_Handler(void* arg)
     } else {
         status = SET;
     }
-    if (LL_EXTI_IsActiveFlag_0_31(exitLine) != status)
-    {
+    if (LL_EXTI_IsActiveFlag_0_31(exitLine) != status) {
         LL_EXTI_ClearFlag_0_31(exitLine);
-        if(LL_GPIO_IsInputPinSet(gpiox, pinReg) == status)
-        {
+        if (LL_GPIO_IsInputPinSet(gpiox, pinReg) == status) {
             pinInfo->handler(pinInfo->localPin);
         }
     }
@@ -94,11 +92,9 @@ static void LL_Gpio_Exti_Handler(void)
             } else {
                 status = SET;
             }
-            if (LL_EXTI_IsActiveFlag_0_31(g_pinsGroup[index].exitLine) != status)
-            {
+            if (LL_EXTI_IsActiveFlag_0_31(g_pinsGroup[index].exitLine) != status) {
                 LL_EXTI_ClearFlag_0_31(g_pinsGroup[index].exitLine);
-                if(LL_GPIO_IsInputPinSet(g_pinsGroup[index].gpiox, g_pinsGroup[index].pinReg) == status)
-                {
+                if (LL_GPIO_IsInputPinSet(g_pinsGroup[index].gpiox, g_pinsGroup[index].pinReg) == status) {
                     g_pinsGroup[index].handler(g_pinsGroup[index].localPin);
                     break;
                 }
@@ -140,11 +136,11 @@ uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, ui
         irqParam.swIrq = EXTI0_IRQn + pin;
         irqParam.pDevId = &g_pinsGroup[pin][group];
         ret = ArchHwiCreate(EXTI0_IRQn + pin, 0, 1, LL_Gpio_Exti_Handler, &irqParam);
-    } else if (pin >= PIN_EXIT_FIVE && pin < PIN_EXIT_TEN){
+    } else if (pin >= PIN_EXIT_FIVE && pin < PIN_EXIT_TEN) {
         irqParam.swIrq = EXTI9_5_IRQn;
         irqParam.pDevId = &g_pinsGroup[pin][group];
         ret = ArchHwiCreate(EXTI9_5_IRQn, 0, 1, LL_Gpio_Exti_Handler, &irqParam);
-    } else if (pin >= PIN_EXIT_TEN && pin < PIN_EXIT_SIXTEEN){
+    } else if (pin >= PIN_EXIT_TEN && pin < PIN_EXIT_SIXTEEN) {
         irqParam.swIrq = EXTI15_10_IRQn;
         irqParam.pDevId = &g_pinsGroup[pin][group];
         ret = ArchHwiCreate(EXTI15_10_IRQn, 0, 1, LL_Gpio_Exti_Handler, &irqParam);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -225,6 +225,7 @@ static unsigned int GetLLGpioAlternateMatch(unsigned int alternate)
 
     return (unsigned int)HDF_LL_GPIO_ALTERNATE_MAP[alternate];
 }
+inline 
 
 static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
 {
@@ -232,61 +233,22 @@ static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
         HDF_LOGE("ERR: MakeLLGpioMatch param is NULL\r\n");
         return false;
     }
-
     if (GpioUseRegister(attr->port, attr->pin) != true) {
-        HDF_LOGE("[%s]: GpioUseRegister fail \r\n", __func__);
         return false;
     }
-
     unsigned int llClk = GetLLGpioClkMatch(attr->port);
-    if (llClk == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioClkMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llPort = GetLLGpioPortMatch(attr->port);
-    if (llPort == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioPortMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llPin = GetLLGpioPinMatch(attr->pin);
-    if (llPin == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioPinMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llMode = GetLLGpioModeMatch(attr->mode);
-    if (llMode == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioModeMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llSpeed = GetLLGpioSpeedMatch(attr->speed);
-    if (llSpeed == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioSpeedMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llOutputType = GetLLGpioOutputTypeMatch(attr->outputType);
-    if (llOutputType == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioOutputTypeMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llPull = GetLLGpioPullMatch(attr->pull);
-    if (llPull == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioPullMatch fail \r\n", __func__);
-        return false;
-    }
-
     unsigned int llAlternate = GetLLGpioAlternateMatch(attr->alternate);
-    if (llAlternate == GPIO_ERR) {
-        HDF_LOGE("[%s]: GetLLGpioAlternateMatch fail, alternate = %d   %d\r\n", __func__, attr->alternate, llAlternate);
+    if (llClk == GPIO_ERR || llPort == GPIO_ERR || llPin == GPIO_ERR || llMode == GPIO_ERR ||
+        llSpeed == GPIO_ERR || llOutputType == GPIO_ERR || llPull == GPIO_ERR || llAlternate == GPIO_ERR ) {
         return false;
     }
 
-    LL_AHB1_GRP1_EnableClock(llClk);
     LL_GPIO_InitTypeDef GPIO_Initstruct;
     GPIO_Initstruct.Pin = llPin;
     GPIO_Initstruct.Mode = llMode;
@@ -294,11 +256,11 @@ static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
     GPIO_Initstruct.Pull = llPull;
     GPIO_Initstruct.Speed = llSpeed;
     GPIO_Initstruct.Alternate = llAlternate;
+    LL_AHB1_GRP1_EnableClock(llClk);
     if (LL_GPIO_Init(llPort, &GPIO_Initstruct) == ERROR) {
         HDF_LOGE("[%s]: LL_GPIO_Init fail \r\n", __func__);
         return false;
     }
-
     return true;
 }
 
@@ -321,27 +283,23 @@ bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct Devi
     }
 
     if (gpio_num_max > GPIO_NUM_CONFIG_MAX) {
-        HDF_LOGE("i2c config gpio_num_max is too much, gpio_num = %d, NUM_CONFIG_MAX = %d\r\n", gpio_num_max, GPIO_NUM_CONFIG_MAX);
+        HDF_LOGE("i2c config gpio_num_max is too much, gpio_num = %d, NUM_CONFIG_MAX = %d\r\n",
+        gpio_num_max, GPIO_NUM_CONFIG_MAX);
         return false;
     }
 
     for (int i = 0; i < gpio_num_max; i++) {
-        sprintf(gpio_str, "gpio_num_%d", i + 1);
-        if (gpioDir->GetUint32Array(resourceNode, gpio_str, &gpioAttr, 7, 0) != HDF_SUCCESS) {
+        sprintf_s(gpio_str, "gpio_num_%d", i + 1);
+        if (gpioDir->GetUint32Array(resourceNode, gpio_str, &gpioAttr, 
+            sizeof(gpioAttr)/sizeof(unsigned int), 0) != HDF_SUCCESS) {
             HDF_LOGE("i2c config %s fail\r\n", gpio_str);
             return false;
         }
-
         if (MakeLLGpioInit(&gpioAttr) == false) {
             HDF_LOGE("MakeLLGpioInit fail\r\n");
             return false;
         }
-
-        // HDF_LOGE("%s: [%d, %d, %d, %d, %d, %d, %d]\r\n",gpio_str, gpioAttr.port, gpioAttr.pin, \
-        // gpioAttr.mode, gpioAttr.speed,gpioAttr.outputType,gpioAttr.pull,gpioAttr.alternate);
-
-        memset(&gpioAttr, 0, sizeof(gpioAttr));
+        memset_s(&gpioAttr, 0, sizeof(gpioAttr));
     }
-
     return true;
 }

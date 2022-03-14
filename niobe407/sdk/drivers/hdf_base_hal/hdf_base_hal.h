@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,47 +45,38 @@ enum PIN_ALTERNATE_MAP {
 };
 
 typedef struct {
-
     /*port num
      GPIOA ~ GPIOH relative to 0~8
     */
     unsigned int port;
-
     /*pin num
      GPIO_PIN_0 ~ GPIO_PIN_15 relative to 0~15
     */
     unsigned int pin;
-
     /*mode：
     LL_GPIO_MODE_INPUT = 0
     LL_GPIO_MODE_OUTPUT = 1
     LL_GPIO_MODE_ALTERNATE = 2
     LL_GPIO_MODE_ANALOG = 3 */
     unsigned int mode;
-
     /* speed:
     LL_GPIO_SPEED_FREQ_LOW = 0
     LL_GPIO_SPEED_FREQ_MEDIUM = 1
     LL_GPIO_SPEED_FREQ_HIGH = 2
     LL_GPIO_SPEED_FREQ_VERY_HIGH = 3*/
     unsigned int speed;
-
     /* output type:
     LL_GPIO_OUTPUT_PUSHPULL = 0
     LL_GPIO_OUTPUT_OPENDRAIN = 1*/
     unsigned int outputType;
-
     /* pull up or pull down:
     LL_GPIO_PULL_NO = 0
     LL_GPIO_PULL_UP = 1
     LL_GPIO_PULL_DOWN = 2*/
     unsigned int pull;
-
     /* multiplexing: Valid when mode = LL_GPIO_MODE_ALTERNATE */
     enum PIN_ALTERNATE_MAP alternate;
-
 } NIOBE_HDF_GPIO_ATTR;
-
 
 bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct DeviceResourceIface *dir);
 
