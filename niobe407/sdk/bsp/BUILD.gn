@@ -44,7 +44,7 @@ kernel_module(module_name) {
 use_copy_static_library = true
 lite_library("tw_sys_boot") {
     target_type = "static_library"
-    if(use_copy_static_library) #拷贝并使用当前目录下的静态库
+    if(use_copy_static_library)
     {
       sources = []
       deps = [":copy_tw_sys_boot"]
@@ -56,7 +56,6 @@ build_ext_component("copy_tw_sys_boot") {
     command = "cp lib/libtw_sys_boot.a ../../../../../../out/niobe407/niobe407/libs/libtw_sys_boot.a"
 }
 
-#全局配置
 config("public") {
   include_dirs = [
     ".",

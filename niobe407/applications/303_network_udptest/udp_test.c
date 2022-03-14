@@ -25,15 +25,6 @@ static unsigned char udp_rcv_flag = 0;
 #define DESTINATION_PORT  5678
 #define DESTINATION_IP    "192.168.8.119"
 
-/**
- * @brief UDP接收回调函数
- * 
- * @param arg   参数
- * @param upcb  UDP句柄
- * @param p     收到的数据
- * @param addr  地址
- * @param port  端口
- */
 void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port)
 {
 	if(p != NULL)
@@ -58,41 +49,28 @@ void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const
 void udp_client_send(char *pData)
 {
       struct pbuf *p;
-      /* 分配缓冲区空间 */
       p = pbuf_alloc(PBUF_TRANSPORT, strlen(pData), PBUF_POOL);
       if (p != NULL)
       {
-          /* 填充缓冲区数据 */
           pbuf_take(p, pData, strlen(pData));
-          /* 发送udp数据 */
           udp_send(upcb, p);
-          /* 释放缓冲区空间 */
           pbuf_free(p);
       }
 }
 
-/**
- * @brief UDP测试线程函数
- * 
- * @param argument 
- */
 void udp_test(void *arg)
 {
     (void)arg;
     ip_addr_t serverIP;
     err_t err;
-    ipaddr_aton(DESTINATION_IP, &serverIP);//目标IP地址
+    ipaddr_aton(DESTINATION_IP, &serverIP);
     upcb = udp_new();
     if (upcb != NULL)
     {
-        /* 配置本地端口 */
-        upcb->local_port = LOCAL_PORT;  //开发板端口
-        
-        /* 配置目标IP和端口 */
-        err = udp_connect(upcb, &serverIP, DESTINATION_PORT);  //目标端口号
+        upcb->local_port = LOCAL_PORT;
+        err = udp_connect(upcb, &serverIP, DESTINATION_PORT);
         if (err == ERR_OK)
         {
-            /* 注册接收回调函数 */
             udp_recv(upcb, udp_receive_callback, NULL);
             printf("udp client connected\r\n");
         }
@@ -112,11 +90,9 @@ void udp_test(void *arg)
 static void eth_enable_state_callBack(EthLinkState state)
 {
     static int net_init_finish = 0;
-    /* ETH连接断开*/
     if(state == STATE_UPDATE_LINK_DOWN){
         printf("ETH LINK STATE: DisConnected!\r\n");
     }
-     /* ETH连接成功*/
     else if(state == STATE_UPDATE_LINK_UP){ 
         printf("ETH LINK STATE: Connected!\r\n");
         if(net_init_finish == 0)

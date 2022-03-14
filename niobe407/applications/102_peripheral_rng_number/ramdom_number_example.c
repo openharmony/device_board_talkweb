@@ -26,7 +26,7 @@ extern RNG_HandleTypeDef hrng;
 void thread_entry(void)
 {
     unsigned int rng_num = 0;
-    RngInit(); //RNG模块初始化
+    RngInit();
     while (1)
     {
         if(HAL_OK == HAL_RNG_GenerateRandomNumber(&hrng, &rng_num))

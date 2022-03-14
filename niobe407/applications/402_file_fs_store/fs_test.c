@@ -28,7 +28,6 @@ static void dir_test(const char *path)
     DIR *dir;
     int ret ;
     struct dirent *dp;
-    /*文件夹打开关闭测试*/
     if ((dir = opendir(path)) == NULL) {
         printf("opendir %s failed \n", path);
         return;
@@ -53,7 +52,6 @@ static void dir_test(const char *path)
     }
     closedir(dir);
 
-    /*文件夹创建删除测试*/
     ret = mkdir("/talkweb/fstestdir",S_IRUSR | S_IWUSR);
     if(ret){
        printf("mkdir failed \n");
@@ -110,22 +108,18 @@ static void write_test(const char *file, const char *data)
 
 void littlefs_test(void)
 {
-    /*分区1 文件夹打开创建测试*/
     printf("%s\r\n",__func__);
     dir_test("/talkweb");
-    /*文件读写测试*/
     read_test("/talkweb/wifi.cfg", true);
     write_test("/talkweb/wifi.cfg", "ssid:talkweb password:123456");
     read_test("/talkweb/wifi.cfg", true);
 
     //dir_test("/niobe");
-    /*分区2 文件读写测试*/
     //read_test("/niobe/wifi.cfg", true);
     //write_test("/niobe/wifi.cfg", "ssid:niobe password:654321");
     //read_test("/niobe/wifi.cfg", true);
 
     //dir_test("/esp");
-    /*分区2 文件读写测试*/
     //read_test("/esp/wifi.cfg", true);
     //write_test("/esp/wifi.cfg", "ssid:esp password:esp32");
     //read_test("/esp/wifi.cfg", true);

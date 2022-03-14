@@ -24,11 +24,6 @@ static unsigned char iperf_run_flag = 0;
 
 EthLinkInfo gEthLinkInfo;
 
-/**
- * @brief iperf server测试线程函数
- * 
- * @param argument 
- */
 void iperf_test(void *arg)
 {
     (void)arg;
@@ -47,14 +42,12 @@ void iperf_test(void *arg)
 static void eth_enable_state_callBack(EthLinkState state)
 {
     static int net_init_finish = 0;
-    /* ETH连接断开*/
     if(state == STATE_UPDATE_LINK_DOWN){
         iperf_run_flag = 0;
         osThreadTerminate(iperf_test_id);
 		iperf_test_id = NULL;
         printf("ETH LINK STATE: DisConnected!\r\n");
     }
-     /* ETH连接成功*/
     else if(state == STATE_UPDATE_LINK_UP){ 
         printf("ETH LINK STATE: Connected!\r\n");
         if(net_init_finish == 0)

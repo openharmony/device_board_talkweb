@@ -30,10 +30,6 @@
 
 static unsigned char g_GpioRegisterCache[NIOBE_GPIO_PORT_MAX][NIOBE_GPIO_PIN_MAX] = {0};
 
-/**
- * @brief GPIO端口映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_PORT_MAP[NIOBE_GPIO_PORT_MAX] = {
     GPIOA,
     GPIOB,
@@ -45,10 +41,6 @@ static const unsigned int HDF_LL_GPIO_PORT_MAP[NIOBE_GPIO_PORT_MAX] = {
     GPIOH,
     GPIOI};
 
-/**
- * @brief GPIO pin引脚映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_PIN_MAP[NIOBE_GPIO_PIN_MAX] = {
     LL_GPIO_PIN_0,
     LL_GPIO_PIN_1,
@@ -67,10 +59,6 @@ static const unsigned int HDF_LL_GPIO_PIN_MAP[NIOBE_GPIO_PIN_MAX] = {
     LL_GPIO_PIN_14,
     LL_GPIO_PIN_15};
 
-/**
- * @brief GPIO GRP1使能时钟映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_CLOCK_MAP[NIOBE_GPIO_PORT_MAX] = {
     LL_AHB1_GRP1_PERIPH_GPIOA,
     LL_AHB1_GRP1_PERIPH_GPIOB,
@@ -82,47 +70,27 @@ static const unsigned int HDF_LL_GPIO_CLOCK_MAP[NIOBE_GPIO_PORT_MAX] = {
     LL_AHB1_GRP1_PERIPH_GPIOH,
     LL_AHB1_GRP1_PERIPH_GPIOI};
 
-/**
- * @brief GPIO 引脚模式映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_MODE_MAP[NIOBE_GPIO_MODE_MAX] = {
     LL_GPIO_MODE_INPUT,
     LL_GPIO_MODE_OUTPUT,
     LL_GPIO_MODE_ALTERNATE,
     LL_GPIO_MODE_ANALOG};
 
-/**
- * @brief GPIO 引脚速率映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_SPEED_MAP[NIOBE_GPIO_SPEED_MAX] = {
     LL_GPIO_SPEED_FREQ_LOW,
     LL_GPIO_SPEED_FREQ_MEDIUM,
     LL_GPIO_SPEED_FREQ_HIGH,
     LL_GPIO_SPEED_FREQ_VERY_HIGH};
 
-/**
- * @brief GPIO 引脚输出类型映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_OUTPUTTYPE_MAP[NIOBE_GPIO_OUTPUTTYPE_MAX] = {
     LL_GPIO_OUTPUT_PUSHPULL,
     LL_GPIO_OUTPUT_OPENDRAIN};
 
-/**
- * @brief GPIO 引脚上下拉映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_PULL_MAP[NIOBE_GPIO_PULL_MAX] = {
     LL_GPIO_PULL_NO,
     LL_GPIO_PULL_UP,
     LL_GPIO_PULL_DOWN};
 
-/**
- * @brief GPIO 引脚复用功能映射表
- *
- */
 static const unsigned int HDF_LL_GPIO_ALTERNATE_MAP[NIOBE_GPIO_ALTERNATE_MAX] = {
     LL_GPIO_AF_0,
     LL_GPIO_AF_1,
@@ -141,14 +109,6 @@ static const unsigned int HDF_LL_GPIO_ALTERNATE_MAP[NIOBE_GPIO_ALTERNATE_MAX] = 
     LL_GPIO_AF_14,
     LL_GPIO_AF_15};
 
-/**
- * @brief 注册GPIO
- *
- * @param port 注册端口号
- * @param pin 注册引脚号
- * @return true 注册成功
- * @return false 注册失败
- */
 static bool GpioUseRegister(unsigned int port, unsigned int pin)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
@@ -170,14 +130,6 @@ static bool GpioUseRegister(unsigned int port, unsigned int pin)
     return true;
 }
 
-/**
- * @brief GPIO去除注册信息
- *
- * @param port 去注册端口号
- * @param pin 去注册引脚号
- * @return true 去注册成功
- * @return false 去注册失败
- */
 static bool GpioUseRemove(unsigned int port, unsigned int pin)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
@@ -194,12 +146,6 @@ static bool GpioUseRemove(unsigned int port, unsigned int pin)
     return true;
 }
 
-/**
- * @brief 传入GPIO端口号，获取LL库对应的GPIO时钟
- *
- * @param port 传入的端口号
- * @return 返回对应的GPIO时钟
- */
 static unsigned int GetLLGpioClkMatch(unsigned char port)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
@@ -210,12 +156,6 @@ static unsigned int GetLLGpioClkMatch(unsigned char port)
     return (unsigned int)HDF_LL_GPIO_CLOCK_MAP[port];
 }
 
-/**
- * @brief 传入端口号，获取LL库对应的端口值
- *
- * @param port 传入的端口号
- * @return 返回对应的LL库端口值
- */
 static unsigned int GetLLGpioPortMatch(unsigned char port)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
@@ -226,12 +166,6 @@ static unsigned int GetLLGpioPortMatch(unsigned char port)
     return (unsigned int)HDF_LL_GPIO_PORT_MAP[port];
 }
 
-/**
- * @brief 传入引脚号，获取LL库对应的引脚值
- *
- * @param pin 传入的引脚号
- * @return 返回对应的LL库引脚值
- */
 static unsigned int GetLLGpioPinMatch(unsigned char pin)
 {
     if (pin >= NIOBE_GPIO_PIN_MAX) {
@@ -242,12 +176,6 @@ static unsigned int GetLLGpioPinMatch(unsigned char pin)
     return (unsigned int)HDF_LL_GPIO_PIN_MAP[pin];
 }
 
-/**
- * @brief 传入GPIO模式号，获取LL库对应的模式
- *
- * @param mode 模式号
- * @return 返回对应的LL库模式
- */
 static unsigned int GetLLGpioModeMatch(unsigned int mode)
 {
     if (mode >= NIOBE_GPIO_MODE_MAX) {
@@ -258,12 +186,6 @@ static unsigned int GetLLGpioModeMatch(unsigned int mode)
     return (unsigned int)HDF_LL_GPIO_MODE_MAP[mode];
 }
 
-/**
- * @brief 传入GPIO速率序号，获取LL库对应的速率
- *
- * @param speed 速率序号
- * @return 返回对应的LL库速率定义
- */
 static unsigned int GetLLGpioSpeedMatch(unsigned int speed)
 {
     if (speed >= NIOBE_GPIO_SPEED_MAX) {
@@ -274,12 +196,6 @@ static unsigned int GetLLGpioSpeedMatch(unsigned int speed)
     return (unsigned int)HDF_LL_GPIO_SPEED_MAP[speed];
 }
 
-/**
- * @brief 传入GPIO输出类型序号，获取LL库对应的输出类型
- *
- * @param outputType 类型序号
- * @return 返回对应的LL库输出类型
- */
 static unsigned int GetLLGpioOutputTypeMatch(unsigned int outputType)
 {
     if (outputType >= NIOBE_GPIO_OUTPUTTYPE_MAX) {
@@ -290,12 +206,6 @@ static unsigned int GetLLGpioOutputTypeMatch(unsigned int outputType)
     return (unsigned int)HDF_LL_GPIO_OUTPUTTYPE_MAP[outputType];
 }
 
-/**
- * @brief 传入GPIO输出上下拉序号，获取LL库对应的输出上下拉类型
- *
- * @param pull 上下拉序号
- * @return 返回对应的LL库上下拉类型
- */
 static unsigned int GetLLGpioPullMatch(unsigned int pull)
 {
     if (pull >= NIOBE_GPIO_PULL_MAX) {
@@ -306,12 +216,6 @@ static unsigned int GetLLGpioPullMatch(unsigned int pull)
     return (unsigned int)HDF_LL_GPIO_PULL_MAP[pull];
 }
 
-/**
- * @brief 传入GPIO 复用序号，获取LL库对应的复用值
- *
- * @param pull 复用序号
- * @return 返回对应的LL库复用值
- */
 static unsigned int GetLLGpioAlternateMatch(unsigned int alternate)
 {
     if (alternate >= NIOBE_GPIO_ALTERNATE_MAX) {
@@ -322,13 +226,6 @@ static unsigned int GetLLGpioAlternateMatch(unsigned int alternate)
     return (unsigned int)HDF_LL_GPIO_ALTERNATE_MAP[alternate];
 }
 
-/**
- * @brief 配对LL库GPIO参数，并初始化GPIO
- *
- * @param attr 输入的GPIO参数
- * @return true 初始化成功
- * @return false 初始化失败
- */
 static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
 {
     if (attr == NULL) {
@@ -405,14 +302,6 @@ static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
     return true;
 }
 
-/**
- * @brief 初始化GPIO端口
- *
- * @param resourceNode 传入的hcs配置节点源
- * @param dir 传入的节点dir
- * @return true 初始化成功
- * @return false 初始化失败
- */
 bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct DeviceResourceIface *dir)
 {
     if ((resourceNode == NULL) || (dir == NULL)) {

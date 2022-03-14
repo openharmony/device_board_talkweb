@@ -45,24 +45,20 @@ int HiLogWriteInternal(const char *buffer, size_t bufLen)
   return 0;
 }
 
-/**
- * @brief 根据内核宏配置在此开启相应功能
- * 注意该函数不能被阻塞
- */
 void sys_service_config()
 {
-    HiviewRegisterHilogProc(HilogProc_Impl);  //初始化HILOG适配初始化
+    HiviewRegisterHilogProc(HilogProc_Impl);
     
 #ifdef LOSCFG_WATCH_DOG
-    watch_dog_init(1100);     //看门狗初始化
+    watch_dog_init(1100);
 #endif
 
 #ifdef LOSCFG_DRIVERS_HDF
-    DeviceManagerStart();     //HDF驱动初始化
+    DeviceManagerStart();
 #endif
 
 #ifdef LOSCFG_SHELL
-    ShellUartInit();          //shell初始化
+    ShellUartInit();
 #endif
 
 }

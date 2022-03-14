@@ -23,19 +23,11 @@ extern "C"{
 #include "los_task.h"
 
 
-/**
- * @brief 用与指定系统运行之前的程序入口函数
- * 
- */
 #define BEFORE_OHOS_RUN(func)  \
 void before_ohos_run(){\
     func();\
 }
 
-/**
- * @brief 用与指定系统运行之后的程序入口函数
- * 
- */
 #define OHOS_APP_RUN(func)  \
 void ohos_app_main(){\
     LOS_TaskDelay(100);\

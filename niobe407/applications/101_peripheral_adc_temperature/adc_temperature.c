@@ -93,11 +93,8 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 
 void Temperature_ADC_Init()
 {
-  /*DMA初始化*/
   MX_DMA_Init();
-  /*ADC 初始化*/
   MX_ADCx_Init();
-  /*启动DMA搬运ADC采集到的芯片内部温度到ADC_ConvertedValue*/
   HAL_ADC_Start_DMA(&hadcx,(uint32_t *)&ADC_ConvertedValue,sizeof(ADC_ConvertedValue));  
 }
 

@@ -32,7 +32,7 @@ uint8_t tmp;
 static void* HdfUsartTestEntry(void* arg)
 {
     (void)arg;
-    uint32_t port = 4;                  /* UART设备端口号 */
+    uint32_t port = 4; 
     DevHandle handle = UartOpen(port);
     if (handle == NULL) {
         HDF_LOGE("UartOpen %u: failed!\n", port);
@@ -41,7 +41,6 @@ static void* HdfUsartTestEntry(void* arg)
 
     int32_t ret;
     uint32_t baudRate;
-    /* 获取UART波特率 */
     ret = UartGetBaud(handle, &baudRate);
     if (ret != 0) {
         HDF_LOGE("UartGetBaud: failed, ret %d\n", ret);
@@ -99,10 +98,8 @@ static void* HdfUsartTestEntry(void* arg)
     }
 
 _ERR:
-    /* 销毁UART设备句柄 */
     UartClose(handle);
     return NULL;
-
 }
 
 void StartHdfUsartTest(void)

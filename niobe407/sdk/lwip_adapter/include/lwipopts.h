@@ -167,7 +167,7 @@ extern "C"{
 #define MQTT_DEBUG                  LWIP_DBG_ON
 
 #undef SNTP_SET_SYSTEM_TIME 
-#define SNTP_SET_SYSTEM_TIME(sec)   SntpSetTime(sec)  /*设置系统时间接口*/
+#define SNTP_SET_SYSTEM_TIME(sec)   SntpSetTime(sec)
 
 #undef  SNTP_RECV_TIMEOUT
 #define SNTP_RECV_TIMEOUT           5000

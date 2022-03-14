@@ -21,10 +21,6 @@
 #include "stm32f4xx_ll_gpio.h"
 #include "stm32f4xx_ll_rcc.h"
 
-/**
- * @brief 外设复用功能映射表
- *
- */
 enum PIN_ALTERNATE_MAP {
     ALTERNATE_SYSTEM = 0,
     ALTERNATE_TIM1_2 = 1,
@@ -48,48 +44,44 @@ enum PIN_ALTERNATE_MAP {
     ALTERNATE_EVENTOUT = 15,
 };
 
-/**
- * @brief HDF GPIO初始化入参
- *
- */
 typedef struct {
 
-    /*端口号
-     GPIOA ~ GPIOH对应0~8
+    /*port num
+     GPIOA ~ GPIOH relative to 0~8
     */
     unsigned int port;
 
-    /*引脚号
-     GPIO_PIN_0 ~ GPIO_PIN_15对应0~15
+    /*pin num
+     GPIO_PIN_0 ~ GPIO_PIN_15 relative to 0~15
     */
     unsigned int pin;
 
-    /*模式：
+    /*mode：
     LL_GPIO_MODE_INPUT = 0
     LL_GPIO_MODE_OUTPUT = 1
     LL_GPIO_MODE_ALTERNATE = 2
     LL_GPIO_MODE_ANALOG = 3 */
     unsigned int mode;
 
-    /* 速度:
+    /* speed:
     LL_GPIO_SPEED_FREQ_LOW = 0
     LL_GPIO_SPEED_FREQ_MEDIUM = 1
     LL_GPIO_SPEED_FREQ_HIGH = 2
     LL_GPIO_SPEED_FREQ_VERY_HIGH = 3*/
     unsigned int speed;
 
-    /* 输出类型:
+    /* output type:
     LL_GPIO_OUTPUT_PUSHPULL = 0
     LL_GPIO_OUTPUT_OPENDRAIN = 1*/
     unsigned int outputType;
 
-    /* 上下拉:
+    /* pull up or pull down:
     LL_GPIO_PULL_NO = 0
     LL_GPIO_PULL_UP = 1
     LL_GPIO_PULL_DOWN = 2*/
     unsigned int pull;
 
-    /* 复用: 当mode = LL_GPIO_MODE_ALTERNATE时有效*/
+    /* multiplexing: Valid when mode = LL_GPIO_MODE_ALTERNATE */
     enum PIN_ALTERNATE_MAP alternate;
 
 } NIOBE_HDF_GPIO_ATTR;
