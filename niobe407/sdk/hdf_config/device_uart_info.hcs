@@ -19,16 +19,6 @@ root {
         }
         platform :: host {
             hostName = "platform_host";
-            priority = 50;
-            device_gpio :: device {
-                gpio2 :: deviceNode {
-                    policy = 2;
-                    priority = 60;
-                    moduleName = "STM_TW_GPIO_MODULE_HDF";
-                    serviceName = "HDF_PLATFORM_GPIO2";
-                    deviceMatchAttr = "gpio_config_uart";
-                }         
-            }
             device_uart :: device {
 				uart4 :: deviceNode {
                     policy = 2;

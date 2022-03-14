@@ -38,7 +38,7 @@ hiview init success.
 [HDF:E/HDF_LOG_TAG]HdfGpioTestEntry: mode:2
 ```
 
-当按下开发板上的按钮sw2时，led1:d11点亮或者点灭， 按下开发板上按钮sw3时， led2:d10点亮或者点灭 ,可通过串口助手查看到如下日志:
+当按下开发板上的按钮sw2时，点亮或者点灭， 按下开发板上按钮sw3时， 绿灯点亮或者点灭 ,可通过串口助手查看到如下日志:
 ```
 [HDF:E/HDF_LOG_TAG]TestCaseGpioIrqHandler1: irq triggered! on gpio:2, data=(nil)
 [HDF:E/gpio_stm32_c]GpioDevWrite 433 ,write pin num 5

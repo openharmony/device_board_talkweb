@@ -1,5 +1,5 @@
 # Niobe407开发板OpenHarmony基于HDF驱动框架编程开发——UART
-本示例将演示如何在Niobe407开发板上通过HDF驱动框架，使用UART接口对USART2进行读写操作。
+本示例将演示如何在Niobe407开发板上通过HDF驱动框架，使用UART接口对USART4进行读写操作。
 
 
 ## 编译调试
@@ -7,7 +7,7 @@
 
      `(Top) → Platform → Board Selection → select board niobe407 → use talkweb niobe407 application → niobe407 application choose`
 
-- 选择 `202_hdf_spi_flash`
+- 选择 `203_hdf_usart_read_write`
 
 - 在menuconfig的`(Top) → Driver`选项中使能如下配置:
 
@@ -15,7 +15,6 @@
     [*] Enable Driver
     [*]     HDF driver framework support
     [*]         Enable HDF platform driver
-    [*]             Enable HDF platform gpio driver
     [*]             Enable HDF platform uart driver
 ```
 - 回到sdk根目录，执行`hb build -f`脚本进行编译。
@@ -58,7 +57,7 @@
 ## 接口说明
     1. uart open初始化函数:DevHandle UartOpen(uint32_t port);
         参数说明: 
-            port:     对应的uart号，ESP32U4芯片有三组uart，分别为0、1、2
+            port:     对应的uart号，stm32f407芯片有6组uart，分别为uart1-uart6 0-5
             return:  不为NULL,表示初始化成功
     2. uart设置波特率函数：int32_t UartSetBaud(DevHandle handle, uint32_t baudRate);
         参数说明：
@@ -108,16 +107,6 @@ root {
         }
         platform :: host {
             hostName = "platform_host";
-            priority = 50;
-            device_gpio :: device {
-                gpio2 :: deviceNode { // uart配置的gpio引脚信息
-                    policy = 2;
-                    priority = 60;
-                    moduleName = "STM_TW_GPIO_MODULE_HDF";
-                    serviceName = "HDF_PLATFORM_GPIO2";
-                    deviceMatchAttr = "gpio_config_uart";
-                }         
-            }
             device_uart :: device {
 				uart4 :: deviceNode { // uart4配置信息
                     policy = 2;//驱动服务发布的策略，policy大于等于1（用户态可见为2，仅内核态可见为1）；
@@ -146,52 +135,60 @@ root {
 #include "device_uart_info.hcs"
 root {
     platform {
-        gpio_config2 {
-            match_attr = "gpio_config_uart";
-            pin = [0, 1, 2, 3, 4];   // pin index when register to hdf framework
-            realPin = [10, 11, 12, 2, 12];       // uart4 tx pc10, rx pc11  uart5 tx:pc12 rx:pd2 de:pg12 此处将uart4配置为232， 将uart5配置为485
-            group = [2, 2, 2, 3, 6];          // group of gpio 0:GPIOA 1:GPIOB 2:GPIOC 3:GPIOD 4:GPIOE 5: GPIOF 6:GPIOG 7:GPIOH 8:GPIOI
-			mode = [2, 2, 2, 2, 1];           // 0: input 1: output 2:alternate 3:analog  
-            speed = [3, 3, 3, 3, 3];          // 0: low 1: middle 2:high 3:very_high
-            pull = [1, 1, 1, 1, 2];           // 0: nopull 1:up 2:down
-            pinNum = 5;
-            output = [0, 0, 0, 0, 0];         // 0:pushpull 1:opendrain
-            alternate = [8, 8, 8, 8, 0];      // uart4,5 复用AF_8 USART1-3 复用AF_7
-        }
         uart_config4 {
-            match_attr = "uart_config4";
-            num = 4;     // 1 :uart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6 串口总线号此处为uart4
-            baudRate = 115200; // baudrate
-            dataWidth =  0; // 0:8bit 1:9bit
-            stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
-            parity = 0;   // 0: none 1: event 2:odd
-            transDir = 0; // 0: dir none  1: rx  2: tx 3:tx and rx
-            flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
-            overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
-            idleIrq = 1;   // 0: disable idle irq  1: enable idle irq
-            transMode = 0; /// 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA 目前还不支持DMA传输方式，只支持0,1阻塞读写方式和非阻塞读写方式
-            阻塞读写是指，写时等可写并且写完才返回，阻塞读是指读到设定读取个数或者产生闲时中断才返回，非阻塞读写是指不管串口可读或者可写，直接调用读写接口进行读写，不一定能正确读写成功，一般建议阻塞读写
-            maxBufSize = 1024;
-            uartType = 0; // 0 : 232 1: 485
-            uartDePin = 0;  // usart 485 pin
-            uartDeGroup = 0; // usart 485 control line
+	        uart4_gpio {
+			    // 要配置的引脚个数，接下来的引脚名必须定义成gpio_num_1, gpio_num_2, gpio_num_3...
+                gpio_num_max = 2; // uart4 做232 示例 2个脚
+                // port, pin, mode, speed, outputType, pull, alternate
+                gpio_num_1 = [2, 10, 2, 3, 0, 1, 8]; // tx pc10 
+                gpio_num_2 = [2, 11, 2, 3, 0, 1, 8]; // rx pc11
+		    }
+	        uart4 : uart4_gpio {
+                match_attr = "uart_config4";
+                num = 4;     // 1 :uart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6 串口总线号此处为uart4
+                baudRate = 115200; // baudrate
+                dataWidth =  0; // 0:8bit 1:9bit
+                stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
+                parity = 0;   // 0: none 1: event 2:odd
+                transDir = 0; // 0: dir none  1: rx  2: tx 3:tx and rx
+                flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
+                overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
+                idleIrq = 1;   // 0: disable idle irq  1: enable idle irq
+                transMode = 0; /// 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA 目前还不支持DMA传输方式，只支持0,1阻塞读写方式和非阻塞读写方式
+                阻塞读写是指，写时等可写并且写完才返回，阻塞读是指读到设定读取个数或者产生闲时中断才返回，非阻塞读写是指不管串口可读或者可写，直接调用读写接口进行读写，不一定能正确读写成功，一般建议阻塞读写
+                maxBufSize = 1024;
+                uartType = 0; // 0 : 232 1: 485
+                uartDePin = 0;  // usart 485 pin
+                uartDeGroup = 0; // usart 485 control line
+	        }
         }
+
         uart_config5 {
-            match_attr = "uart_config5";
-            num = 5;     // 1 :uart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6 串口总线号此处为uart5 485
-            baudRate = 115200; // baudrate
-            dataWidth =  0; // 0:8bit 1:9bit
-            stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
-            parity = 0;   // 0: none 1: event 2:odd
-            transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
-            flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
-            overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
-            idleIrq = 1;   // 0: disable idle irq  1: enable idle irq
-            transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA 目前还不支持DMA传输方式，只支持0,1阻塞读写方式和非阻塞读写方式
-            阻塞读写是指，写时等可写并且写完才返回，阻塞读是指读到设定读取个数或者产生闲时中断才返回，非阻塞读写是指不管串口可读或者可写，直接调用读写接口进行读写，不一定能正确读写成功，一般建议阻塞读写
-            uartType = 1; // 0 : 232 1: 485
-            uartDePin = 12;  // uart5 485 pin
-            uartDeGroup = 6; // uart5 485 control line group
+        	 uart5_gpio {
+			    // 要配置的引脚个数，接下来的引脚名必须定义成gpio_num_1, gpio_num_2, gpio_num_3...
+                gpio_num_max = 3; // uart5 做485 示例 3个脚
+                // port, pin, mode, speed, outputType, pull, alternate
+                gpio_num_1 = [2, 12, 2, 3, 0, 1, 8]; // tx pc12
+                gpio_num_2 = [3, 2, 2, 3, 0, 1, 8]; // rx pd2
+                gpio_num_3 = [6, 12, 1, 3, 0, 2, 0]; // de pg12
+		    }
+	        uart5 : uart5_gpio {
+                match_attr = "uart_config5";
+                num = 5;     // 1 :uart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6 串口总线号此处为uart5 485
+                baudRate = 115200; // baudrate
+                dataWidth =  0; // 0:8bit 1:9bit
+                stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
+                parity = 0;   // 0: none 1: event 2:odd
+                transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
+                flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
+                overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
+                idleIrq = 1;   // 0: disable idle irq  1: enable idle irq
+                transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA 目前还不支持DMA传输方式，只支持0,1阻塞读写方式和非阻塞读写方式
+                阻塞读写是指，写时等可写并且写完才返回，阻塞读是指读到设定读取个数或者产生闲时中断才返回，非阻塞读写是指不管串口可读或者可写，直接调用读写接口进行读写，不一定能正确读写成功，一般建议阻塞读写
+                uartType = 1; // 0 : 232 1: 485
+                uartDePin = 12;  // uart5 485 pin
+                uartDeGroup = 6; // uart5 485 control line group
+	        }
         }
     }
 }

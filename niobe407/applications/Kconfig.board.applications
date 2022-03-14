@@ -58,6 +58,9 @@ choice APPLICATION_CHOOSE_NIOBE407
     config NIOBE407_USE_205_HDF
         bool
         prompt "205_hdf_watchdog"
+    config NIOBE407_USE_206_HDF
+        bool
+        prompt "206_hdf_pwm"
     config NIOBE407_USE_301_NETWORK
         bool
         prompt "301_network_tcpclient"
@@ -99,6 +102,7 @@ config NIOBE407_APPLICATION_NAME
     default "202_hdf_spi_flash"              if NIOBE407_USE_202_HDF
     default "203_hdf_usart"                  if NIOBE407_USE_203_HDF
     default "205_hdf_watchdog"               if NIOBE407_USE_205_HDF
+    default "206_hdf_pwm"                    if NIOBE407_USE_206_HDF
     default "301_network_tcpclient"          if NIOBE407_USE_301_NETWORK
     default "302_network_tcpserver"          if NIOBE407_USE_302_NETWORK
     default "303_network_udptest"            if NIOBE407_USE_303_NETWORK
