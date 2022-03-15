@@ -13,8 +13,8 @@
 * limitations under the License.
 */
 
-#ifndef __NIOBE407_LL_GPIO_H
-#define __NIOBE407_LL_GPIO_H
+#ifndef __HAL_GPIO_H
+#define __HAL_GPIO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,19 +60,13 @@ typedef enum {
     STM32_GPIO_GROUP_MAX,
 }STM32_GPIO_GROUP;
 
-typedef enum {
-    TW_HAL_GPIO_RESET = 0,
-    TW_HAL_GPIO_SET,
-} LL_PIN_STATE;
-
-
 __STATIC_INLINE uint16_t LL_GPIO_ReadInputPin(GPIO_TypeDef *GPIOx, uint32_t pinMask)
 {
     return (uint32_t)(((READ_REG(GPIOx->IDR)) & pinMask) >> (POSITION_VAL(pinMask)));
 }
 
 GPIO_TypeDef* LL_GET_GPIOX(STM32_GPIO_GROUP group);
-uint32_t    LL_GET_HAL_PIN(STM32_GPIO_PIN pin);
+uint32_t LL_GET_HAL_PIN(STM32_GPIO_PIN pin);
 
 #endif /* USE_FULL_LL_DRIVER */
 
@@ -82,4 +76,4 @@ uint32_t    LL_GET_HAL_PIN(STM32_GPIO_PIN pin);
 }
 #endif
 
-#endif /* __NIOBE407_LL_GPIO_H */
+#endif /* __HAL_GPIO_H */

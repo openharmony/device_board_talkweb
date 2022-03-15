@@ -16,7 +16,7 @@ import("//kernel/liteos_m/liteos.gni")
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
     sources = [
-      "src/niobe407_ll_gpio.c",
+      "src/hal_gpio.c",
     ]
 }
 

@@ -15,19 +15,14 @@
 
 #if defined(USE_FULL_LL_DRIVER)
 
-#include "niobe407_ll_exti.h"
-#include "niobe407_ll_gpio.h"
+#include "hal_exti.h"
+#include "hal_gpio.h"
 #include "stm32f4xx_ll_system.h"
 
 #if defined (EXTI)
 
-#ifdef USE_SYSTEM_IRQ_HADNLER
-#include "los_interrupt.h"
-Pin_ST g_pinsGroup[STM32_GPIO_GROUP_MAX][STM32_GPIO_PIN_MAX] = {0};
-#else
 Pin_ST g_pinsGroup[STM32_GPIO_GROUP_MAX*STM32_GPIO_PIN_MAX] = {0};
 static uint16_t g_exitSetupCounts = 0;
-#endif
 
 static const uint32_t g_sysCfgExitLineMap[] = {
     LL_SYSCFG_EXTI_LINE0,
@@ -53,34 +48,6 @@ static const uint32_t g_sysCfgExitLineMap[] = {
 #define PIN_EXIT_TEN  10
 #define PIN_EXIT_SIXTEEN  16
 
-#ifdef USE_SYSTEM_IRQ_HADNLER
-static void LL_Gpio_Exti_Handler(void* arg)
-{
-    if (arg == NULL) {
-        return;
-    }
-    Pin_ST* pinInfo  = (Pin_ST*)arg;
-    uint32_t exitLine = pinInfo->exitLine;
-    GPIO_TypeDef* gpiox = pinInfo->gpiox;
-    uint32_t pinReg = pinInfo->pinReg;
-
-    ITStatus status = RESET;
-
-    if (pinInfo->trigger == LL_EXTI_TRIGGER_FALLING) {
-        status = RESET;
-    } else {
-        status = SET;
-    }
-    if (LL_EXTI_IsActiveFlag_0_31(exitLine) != status) {
-        LL_EXTI_ClearFlag_0_31(exitLine);
-        if (LL_GPIO_IsInputPinSet(gpiox, pinReg) == status) {
-            pinInfo->handler(pinInfo->localPin);
-        }
-    }
-
-    return;
-}
-#else
 static void LL_Gpio_Exti_Handler(void)
 {
     uint32_t pinIndex;
@@ -102,7 +69,7 @@ static void LL_Gpio_Exti_Handler(void)
         }
     }
 }
-#endif
+
 uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, uint8_t group)
 {
     ErrorStatus status = SUCCESS;
@@ -117,35 +84,7 @@ uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, ui
     if (status != SUCCESS) {
         return status;
     }
-#ifdef USE_SYSTEM_IRQ_HADNLER
-    if (cfg->initType.LineCommand) {
-        g_pinsGroup[group][pin].setup = SET;
-    } else {
-        g_pinsGroup[group][pin].setup= RESET;
-    }
-    g_pinsGroup[group][pin].pin = pin;
-    g_pinsGroup[group][pin].localPin = local;
-    g_pinsGroup[group][pin].exitLine = cfg->initType.Line_0_31;
-    g_pinsGroup[group][pin].group = group;
-    g_pinsGroup[group][pin].handler = cfg->Exithandler;
-    g_pinsGroup[group][pin].trigger = cfg->initType.Trigger;
-    g_pinsGroup[group][pin].pinReg = cfg->PinReg;
-    g_pinsGroup[group][pin].gpiox = cfg->Gpiox;
-    HwiIrqParam irqParam = {0};
-    if ( pin < PIN_EXIT_FIVE ) {
-        irqParam.swIrq = EXTI0_IRQn + pin;
-        irqParam.pDevId = &g_pinsGroup[pin][group];
-        ret = ArchHwiCreate(EXTI0_IRQn + pin, 0, 1, LL_Gpio_Exti_Handler, &irqParam);
-    } else if (pin >= PIN_EXIT_FIVE && pin < PIN_EXIT_TEN) {
-        irqParam.swIrq = EXTI9_5_IRQn;
-        irqParam.pDevId = &g_pinsGroup[pin][group];
-        ret = ArchHwiCreate(EXTI9_5_IRQn, 0, 1, LL_Gpio_Exti_Handler, &irqParam);
-    } else if (pin >= PIN_EXIT_TEN && pin < PIN_EXIT_SIXTEEN) {
-        irqParam.swIrq = EXTI15_10_IRQn;
-        irqParam.pDevId = &g_pinsGroup[pin][group];
-        ret = ArchHwiCreate(EXTI15_10_IRQn, 0, 1, LL_Gpio_Exti_Handler, &irqParam);
-    }
-#else
+
     if (cfg->initType.LineCommand) {
         g_pinsGroup[g_exitSetupCounts].setup = SET;
     } else {
@@ -173,7 +112,7 @@ uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, ui
         NVIC_EnableIRQ(EXTI0_IRQn + pin);
     }
     g_exitSetupCounts++;
-#endif
+
     if (ret != 0) {
         status = ret;
     }
