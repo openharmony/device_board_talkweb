@@ -225,7 +225,6 @@ static unsigned int GetLLGpioAlternateMatch(unsigned int alternate)
 
     return (unsigned int)HDF_LL_GPIO_ALTERNATE_MAP[alternate];
 }
-inline 
 
 static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
 {
@@ -245,7 +244,7 @@ static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
     unsigned int llPull = GetLLGpioPullMatch(attr->pull);
     unsigned int llAlternate = GetLLGpioAlternateMatch(attr->alternate);
     if (llClk == GPIO_ERR || llPort == GPIO_ERR || llPin == GPIO_ERR || llMode == GPIO_ERR ||
-        llSpeed == GPIO_ERR || llOutputType == GPIO_ERR || llPull == GPIO_ERR || llAlternate == GPIO_ERR ) {
+        llSpeed == GPIO_ERR || llOutputType == GPIO_ERR || llPull == GPIO_ERR || llAlternate == GPIO_ERR) {
         return false;
     }
 
@@ -290,7 +289,7 @@ bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct Devi
 
     for (int i = 0; i < gpio_num_max; i++) {
         sprintf_s(gpio_str, sizeof(gpio_str)-1, "gpio_num_%d", i + 1);
-        if (gpioDir->GetUint32Array(resourceNode, gpio_str, &gpioAttr, 
+        if (gpioDir->GetUint32Array(resourceNode, gpio_str, &gpioAttr,
             sizeof(gpioAttr)/sizeof(unsigned int), 0) != HDF_SUCCESS) {
             HDF_LOGE("i2c config %s fail\r\n", gpio_str);
             return false;

@@ -20,13 +20,18 @@
 
 osThreadId_t tcp_server_id = NULL;
 
+#define TCP_SERVER_PRIORITY         25
+#define TCP_SERVER_STACK_SIZE       (1024*4)
+#define TCP_SERVER_DELAY            200
+#define TCP_SERVER_RCV_DATA_SIZE    512
+
 #define SERVER_LISTEN_PORT 8080
 
 void tcp_server(void *argument)
 {
     (void *)argument;
     int sock, connected;
-    char recv_data[512] = {0};
+    char recv_data[TCP_SERVER_RCV_DATA_SIZE] = {0};
     struct sockaddr_in server_addr, client_addr;
     socklen_t sin_size;
     int recv_data_len;
@@ -64,14 +69,14 @@ void tcp_server(void *argument)
         while(1) {
             recv_data_len = recv(connected, recv_data, 511, 0);
 
-            if (recv_data_len <= 0) 
+            if (recv_data_len <= 0)
                 break;
             else
                 recv_data[recv_data_len] = '\0';
             printf("recv %s\n",recv_data);
             write(connected,recv_data,recv_data_len);
 
-            osDelay(200);	
+            osDelay(TCP_SERVER_DELAY);
         }
         if (connected >= 0) {
             closesocket(connected);
@@ -90,8 +95,7 @@ static void eth_enable_state_callBack(EthLinkState state)
     static int net_init_finish = 0;
     if (state == STATE_UPDATE_LINK_DOWN) {
         printf("ETH LINK STATE: DisConnected!\r\n");
-    }
-    else if (state == STATE_UPDATE_LINK_UP) { 
+    } else if (state == STATE_UPDATE_LINK_UP) {
         printf("ETH LINK STATE: Connected!\r\n");
         if (net_init_finish == 0) {
             osThreadAttr_t attr;
@@ -100,8 +104,8 @@ static void eth_enable_state_callBack(EthLinkState state)
             attr.cb_mem = NULL;
             attr.cb_size = 0U;
             attr.stack_mem = NULL;
-            attr.stack_size = 1024 * 4;
-            attr.priority = 25;
+            attr.stack_size = TCP_SERVER_STACK_SIZE;
+            attr.priority = TCP_SERVER_PRIORITY;
             tcp_server_id = osThreadNew((osThreadFunc_t)tcp_server, NULL, &attr);
             if (tcp_server_id == NULL) {
                 printf("Falied to create tcp_server thread!\n");

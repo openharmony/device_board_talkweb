@@ -26,7 +26,7 @@
 uint8_t txBuffer[] = "welcome to OpenHarmony\n";
 #define WIP_FLAG       0x01
 #define SPI_FLASH_IDx  0x4018
-#define Countof(a)      (sizeof(a) / sizeof(*(a)))
+#define Countof(a)      (sizeof(a)/sizeof(*(a)))
 #define bufferSize      (Countof(txBuffer) - 1)
 
 uint8_t rxBuffer[bufferSize] = {0};
@@ -34,7 +34,7 @@ uint8_t rxBuffer[bufferSize] = {0};
 
 static uint8_t BufferCmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength)
 {
-    while(BufferLength--) {
+    while (BufferLength--) {
         if (*pBuffer1 != *pBuffer2) {
             return 0;
         }
@@ -56,7 +56,6 @@ static uint16_t ReadDeviceId(DevHandle spiHandle)
     msg.len = sizeof(wbuff);
     msg.csChange = 1;
     msg.delayUs = 0;
-    //msg.speed = 115200;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
@@ -83,16 +82,14 @@ static uint16_t ReadFlashId(DevHandle spiHandle)
     if (ret != 0) {
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     } else {
-        flashId = msg1.rbuf[2]<<8 | msg1.rbuf[3];
+        flashId = (msg1.rbuf[2]<<8)|msg1.rbuf[3];
     }
-
     return flashId;
 }
 
 static void WaitForWriteEnd(DevHandle spiHandle)
 {
     uint8_t FLASH_Status = 0;
-
     /* Send "Read Status Register" instruction */
     uint8_t wbuf[1] = {0x05};
     uint8_t wbuf1[1] = {0xff};
@@ -110,32 +107,30 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     
     /* Loop as long as the memory is busy with a write cycle */
     do {
-      msg.wbuf = wbuf1;
-      msg.rbuf = rbuf;
-      msg.len = sizeof(wbuf1);
-      msg.csChange = 0;
-      msg.delayUs = 0;
+        msg.wbuf = wbuf1;
+        msg.rbuf = rbuf;
+        msg.len = sizeof(wbuf1);
+        msg.csChange = 0;
+        msg.delayUs = 0;
 
-      ret = SpiTransfer(spiHandle, &msg, 1);
-      if (ret != 0) {
+        ret = SpiTransfer(spiHandle, &msg, 1);
+        if (ret != 0) {
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
-      }
-      FLASH_Status = rbuf[0];
+        }
+        FLASH_Status = rbuf[0];
     }
     while ((FLASH_Status & WIP_FLAG) == 1); /* Write in progress */
-
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf1);
     msg.csChange = 1;
     msg.delayUs = 0;
-    
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
       HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     }
-
 }
+
 static void WriteEnable(DevHandle spiHandle)
 {
     uint8_t wbuf[1] = {0x06};
@@ -283,15 +278,12 @@ static uint16_t ReadFlashId(DevHandle spiHandle)
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
-
     rbuff[0] = 0x01;
     ret = SpiRead(spiHandle, rbuff, 4);
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
-
-    flashId = rbuff[2] << 8 | rbuff[3];
-
+    flashId = (rbuff[2] << 8)|rbuff[3];
     return flashId;
 }
 
@@ -319,7 +311,6 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
-
 }
 static void WriteEnable(DevHandle spiHandle)
 {
@@ -354,7 +345,6 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     if (wbuf1!= NULL) {
         OsalMemFree(wbuf1);
     }
-
 }
 
 static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
@@ -464,7 +454,6 @@ err:
 #endif
     SpiClose(spiHandle);
     return NULL;
-
 }
 
 void StartHdfSpiTest(void)
