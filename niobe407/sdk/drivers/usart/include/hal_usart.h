@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef _NIOBE407_LL_USART_H_
-#define _NIOBE407_LL_USART_H_
+#ifndef _HAL_USART_H_
+#define _HAL_USART_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +23,9 @@ extern "C" {
 #include "stm32f4xx_ll_usart.h"
 
 
-#if defined (USART1) || defined (USART2) || defined (USART3) || defined (USART6) || defined (UART4) || defined (UART5) || defined (UART7) || defined (UART8) || defined (UART9) || defined (UART10)
+#if defined (USART1) || defined (USART2) || defined (USART3) || defined (USART6) \
+    || defined (UART4) || defined (UART5) || defined (UART7) || defined (UART8) \
+    || defined (UART9) || defined (UART10)
 
 #if defined(USE_FULL_LL_DRIVER)
 uint32_t USART_Block_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size);
@@ -41,4 +43,4 @@ uint32_t USART_NoBlock_RxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t si
 }
 #endif
 
-#endif /* __NIOBE407_LL_LL_USART_H */
+#endif /* _HAL_USART_H_ */

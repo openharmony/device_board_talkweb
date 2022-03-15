@@ -24,7 +24,7 @@ root {
 	            spi0 :: deviceNode {
                     policy = 2;
                     priority = 80;
-                    moduleName = "STM_TW_SPI_MODULE_HDF";
+                    moduleName = "ST_SPI_MODULE_HDF";
                     serviceName = "HDF_PLATFORM_SPI_0";
                     deviceMatchAttr = "spi_w25q_config";
                     }
@@ -33,7 +33,7 @@ root {
 		    uart1 :: deviceNode {
                     policy = 2;
                     priority = 100;
-                    moduleName = "STM_TW_UART_MODULE_HDF";
+                    moduleName = "ST_UART_MODULE_HDF";
                     serviceName = "HDF_PLATFORM_UART_1";
                     deviceMatchAttr = "uart_config1";
 		    }

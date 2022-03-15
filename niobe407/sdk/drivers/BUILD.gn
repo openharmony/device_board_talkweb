@@ -23,5 +23,6 @@ module_group(module_name) {
       "exit",
       "spi",
       "usart",
+      "hdf_base_hal",
     ]
 }

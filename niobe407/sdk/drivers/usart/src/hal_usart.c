@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-
 #if defined(USE_FULL_LL_DRIVER)
 
 #include "stm32f4xx_ll_usart.h"
@@ -26,21 +25,21 @@
 
 uint32_t USART_Block_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size)
 {
-    while(size) {
-        while(!LL_USART_IsActiveFlag_TXE(UART));
+    while (size) {
+        while (!LL_USART_IsActiveFlag_TXE(UART));
         LL_USART_TransmitData8(UART, *p_data);
         size--;
         p_data++;
     }
-    while(LL_USART_IsActiveFlag_TC(UART)==RESET);
+    while (LL_USART_IsActiveFlag_TC(UART)==RESET);
     return size;
 }
 
 uint32_t USART_Block_RxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size, volatile uint32_t* exitFlag)
 {
     uint32_t readLen = size;
-    while(size && (*exitFlag != 1)) {
-        while(!LL_USART_IsActiveFlag_RXNE(UART)) {
+    while (size && (*exitFlag != 1)) {
+        while (!LL_USART_IsActiveFlag_RXNE(UART)) {
             if (*exitFlag) {
                 return readLen - size;
             }
@@ -58,7 +57,7 @@ uint32_t USART_Block_RxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size
 
 uint32_t USART_NoBlock_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size)
 {
-    while(size) {
+    while (size) {
         LL_USART_TransmitData8(UART, *p_data);
         size--;
         p_data++;
@@ -68,7 +67,7 @@ uint32_t USART_NoBlock_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t si
 }
 uint32_t USART_NoBlock_RxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size)
 {
-    while(size) {
+    while (size) {
         *p_data = LL_USART_ReceiveData8(UART);
         size--;
         p_data++;
