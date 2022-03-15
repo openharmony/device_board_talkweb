@@ -52,6 +52,9 @@ choice APPLICATION_CHOOSE_NIOBE407
     config NIOBE407_USE_203_HDF
         bool
         prompt "203_hdf_usart_read_write"
+    config NIOBE407_USE_204_HDF
+        bool
+        prompt "204_hdf_i2c" 
     config NIOBE407_USE_205_HDF
         bool
         prompt "205_hdf_watchdog"
@@ -97,6 +100,7 @@ config NIOBE407_APPLICATION_NAME
     default "201_hdf_gpio_key"               if NIOBE407_USE_201_HDF
     default "202_hdf_spi_flash"              if NIOBE407_USE_202_HDF
     default "203_hdf_usart"                  if NIOBE407_USE_203_HDF
+    default "204_hdf_i2c"                    if NIOBE407_USE_204_HDF
     default "205_hdf_watchdog"               if NIOBE407_USE_205_HDF
     default "206_hdf_pwm"                    if NIOBE407_USE_206_HDF
     default "301_network_tcpclient"          if NIOBE407_USE_301_NETWORK
