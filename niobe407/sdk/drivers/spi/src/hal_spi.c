@@ -15,7 +15,7 @@
 
 #if defined(USE_FULL_LL_DRIVER)
 
-#include "niobe407_ll_spi.h"
+#include "hal_spi.h"
 #include "stm32f4xx_ll_bus.h"
 #include "stm32f4xx_ll_rcc.h"
 

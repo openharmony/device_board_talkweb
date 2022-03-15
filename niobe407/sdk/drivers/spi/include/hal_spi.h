@@ -15,8 +15,8 @@
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef NIOBE407_LL_SPI_H
-#define NIOBE407_LL_SPI_H
+#ifndef HAL_SPI_H
+#define HAL_SPI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,6 +39,6 @@ uint8_t     LL_SPI_Transmit(SPI_TypeDef* SPIx ,uint8_t byte);
 }
 #endif
 
-#endif /* NIOBE407_LL_SPI_H */
+#endif /* HAL_SPI_H_SPI_H */
 
 
