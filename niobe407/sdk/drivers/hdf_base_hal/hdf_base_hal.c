@@ -289,7 +289,7 @@ bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct Devi
     }
 
     for (int i = 0; i < gpio_num_max; i++) {
-        sprintf_s(gpio_str, "gpio_num_%d", i + 1);
+        sprintf_s(gpio_str, sizeof(gpio_str)-1, "gpio_num_%d", i + 1);
         if (gpioDir->GetUint32Array(resourceNode, gpio_str, &gpioAttr, 
             sizeof(gpioAttr)/sizeof(unsigned int), 0) != HDF_SUCCESS) {
             HDF_LOGE("i2c config %s fail\r\n", gpio_str);
@@ -299,7 +299,7 @@ bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct Devi
             HDF_LOGE("MakeLLGpioInit fail\r\n");
             return false;
         }
-        memset_s(&gpioAttr, 0, sizeof(gpioAttr));
+        memset_s(&gpioAttr, sizeof(gpioAttr), 0, sizeof(gpioAttr));
     }
     return true;
 }

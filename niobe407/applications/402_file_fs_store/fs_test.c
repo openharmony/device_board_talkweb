@@ -75,7 +75,7 @@ static void read_test(const char *file, bool print_str)
     int bytes = 0;
     char buf[513];
     while (1) {
-        memset_s(buf, 0, sizeof(buf));
+        memset_s(buf, sizeof(buf), 0, sizeof(buf));
         int rc = _read(fd, buf, sizeof(buf) - 1);
         if (rc > 0) {
             bytes += rc;

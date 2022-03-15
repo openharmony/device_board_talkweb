@@ -149,7 +149,7 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
         HDF_LOGE("malloc failed\n");
         return;
     }
-    memset_s(rbuf1, 0, NumByteToWrite);
+    memset_s(rbuf1, NumByteToWrite, 0, NumByteToWrite);
     msg.wbuf = pBuffer;
     msg.rbuf = rbuf1;
     msg.len = NumByteToWrite;
@@ -246,7 +246,7 @@ void W25x_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead
         HDF_LOGE("malloc failed\n");
         return;
     }
-    memset_s(wbuf1, 0xff, NumByteToRead);
+    memset_s(wbuf1, NumByteToRead, 0xff, NumByteToRead);
     msg.wbuf = wbuf1;
     msg.rbuf = pBuffer;
     msg.len = NumByteToRead;

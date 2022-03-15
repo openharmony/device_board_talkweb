@@ -177,7 +177,7 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
         return;
     }
     
-    memset_s(rbuf1, 0, size);
+    memset_s(rbuf1, size, 0, size);
     msg.wbuf = buf;
     msg.rbuf = rbuf1;
     msg.len = size;
@@ -215,7 +215,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
         HDF_LOGE("OsalMemAlloc failed.\n");
         return;
     }
-    memset_s(wbuf1, 0xff, size);
+    memset_s(wbuf1, size, 0xff, size);
     msg.wbuf = wbuf1;
     msg.rbuf = buf;
     msg.len = size;
@@ -343,8 +343,8 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     int32_t ret = 0;
     wbuf1 = (uint8_t*)OsalMemAlloc(size + sizeof(wbuf));
 
-    strncpy_s(wbuf1, wbuf, sizeof(wbuf));
-    strncpy_s(wbuf1 + sizeof(wbuf), buf, size);
+    strncpy_s(wbuf1, size + sizeof(wbuf), wbuf, sizeof(wbuf));
+    strncpy_s(wbuf1 + sizeof(wbuf), size, buf, size);
     ret = SpiWrite(spiHandle, wbuf1, size + sizeof(wbuf));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
@@ -375,7 +375,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
         HDF_LOGE("SpiRead: failed, ret %d\n", ret);
     }
 
-    strncpy_s(buf, rbuf + 1, size);
+    strncpy_s(buf, size, rbuf + 1, size);
 
     if (rbuf!= NULL) {
         OsalMemFree(rbuf);

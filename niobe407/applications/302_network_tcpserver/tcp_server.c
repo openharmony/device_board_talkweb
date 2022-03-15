@@ -40,7 +40,7 @@ void tcp_server(void *argument)
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(SERVER_LISTEN_PORT);
-    memset_s(&(server_addr.sin_zero), 0, sizeof(server_addr.sin_zero));
+    memset_s(&(server_addr.sin_zero), sizeof(server_addr.sin_zero), 0, sizeof(server_addr.sin_zero));
 
     if (bind(sock, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1) {
         printf("Unable to bind\n");
