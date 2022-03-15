@@ -3,50 +3,46 @@ root {
     platform {
         pwm1_config {
             gpio_pwm1{
-                // 要配置的引脚个数，接下来的引脚名必须定义成gpio_num_1, gpio_num_2, gpio_num_3...
                 gpio_num_max = 1; 
                 // port, pin, mode, speed, outputType, pull, alternate
                 gpio_num_1 = [0, 3, 2, 3, 0, 2, 1]; // tim2 ch4 pa3                
             }
             
             pwmconfig : gpio_pwm1 {
-                match_attr = "config_pwm1"; // 本驱动默认使用pwm1模式 和上升计数模式
-                pwmTim = 1;  // 定时器ID tim2 0 :tim1, 1:tim2 ..... tim6 和 tim7不可用
-                pwmCh = 3;  // 对应chanel 4 0:ch1 1:ch2 2:ch3 3:ch4
-                prescaler = 4199; // 预分频器 例如tim2 时钟为84M, (84M/(4199+1)) = 20khz, 然后以20khz 为基准 ,tim2-tim7, tim12-tim14为84M，TIM1、TIM8~TIM11 为168M，tim6和tim7不能输出pwm
-                                  // tim1~tim5 tim8 有4个channel tim9,tim12有ch1, ch2,  tim10, tim11,tim13,tim14只有ch1 
+                match_attr = "config_pwm1"; // default use pwm1
+                pwmTim = 1; // timID tim2 0 :tim1, 1:tim2 ..... tim6 and tim7can't not use for pwm
+                pwmCh = 3; // tim chanel 4 0:ch1 1:ch2 2:ch3 3:ch4
+                prescaler = 4199; // prescaler for example tim2 clock is 84M, (84M/(4199+1)) = 20khz, 
+                                  // set 20khz to caculate stanard ,tim2-tim7, tim12-tim14is 84M TIM8~TIM11 is 168M
+                                  // tim1~tim5 tim8 have 4 channel tim9,tim12 only have ch1, ch2,  tim10, tim11,tim13,tim14 only ch1 
             }       
         }
         pwm2_config {
             gpio_pwm2{
-                // 要配置的引脚个数，接下来的引脚名必须定义成gpio_num_1, gpio_num_2, gpio_num_3...
                 gpio_num_max = 1; 
                 // port, pin, mode, speed, outputType, pull, alternate
                 gpio_num_1 = [0, 6, 2, 3, 0, 2, 2]; // tim3 ch1 pa6               
             }
             
             pwmconfig2 : gpio_pwm2 {
-                match_attr = "config_pwm2"; // 本驱动默认使用pwm1模式 和上升计数模式
-                pwmTim = 2;  // 定时器ID tim2 0 :tim1, 1:tim2 ..... tim6 和 tim7不可用
-                pwmCh = 0;  // 对应chanel 4 0:ch1 1:ch2 2:ch3 3:ch4
-                prescaler = 8399; // 预分频器 例如tim2 时钟为84M, (84M/(4199+1)) = 20khz, 然后以20khz 为基准,根据在pwmSetconfig 设置的period和duty,来计算频率 ,tim2-tim7, tim12-tim14为84M，TIM1、TIM8~TIM11 为168M，tim6和tim7不能输出pwm
-                                  // tim1~tim5 tim8 有4个channel tim9,tim12有ch1, ch2,  tim10, tim11,tim13,tim14只有ch1 这个值如果16位最大分频数位65535
+                match_attr = "config_pwm2";
+                pwmTim = 2;
+                pwmCh = 0;
+                prescaler = 8399;
             }   
         } 
         pwm3_config {
             gpio_pwm3{
-                // 要配置的引脚个数，接下来的引脚名必须定义成gpio_num_1, gpio_num_2, gpio_num_3...
                 gpio_num_max = 1; 
                 // port, pin, mode, speed, outputType, pull, alternate
                 gpio_num_1 = [8, 5, 2, 3, 0, 2, 3]; // tim8 ch1 pi5               
             }
             
             pwmconfig3 : gpio_pwm3 {
-                match_attr = "config_pwm7"; // 本驱动默认使用pwm1模式 和上升计数模式
-                pwmTim = 7;  // 定时器ID tim2 0 :tim1, 1:tim2 ..... tim6 和 tim7不可用
-                pwmCh = 0;  // 对应chanel 4 0:ch1 1:ch2 2:ch3 3:ch4
-                prescaler = 8399; // 预分频器 例如tim2 时钟为84M, (84M/(4199+1)) = 20khz, 然后以20khz 为基准,根据在pwmSetconfig 设置的period和duty,来计算频率 ,tim2-tim7, tim12-tim14为84M，TIM1、TIM8~TIM11 为168M，tim6和tim7不能输出pwm
-                                  // tim1~tim5 tim8 有4个channel tim9,tim12有ch1, ch2,  tim10, tim11,tim13,tim14只有ch1 这个值如果16位最大分频数位65535
+                match_attr = "config_pwm7";
+                pwmTim = 7;
+                pwmCh = 0;
+                prescaler = 8399;
             }   
         }
     }
