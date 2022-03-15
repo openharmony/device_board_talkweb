@@ -114,7 +114,7 @@ static void dir_test(const char *path)
         }
         struct stat st_buf = {0};
         char realpath[260];
-        snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
+        snprintf_s(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
         if (stat(realpath, &st_buf) != 0) {
             printf("can not access %s\n", realpath);
             closedir(dir);
@@ -172,7 +172,7 @@ static void read_test(const char *file, bool print_str)
     int bytes = 0;
     char buf[513];
     while (1) {
-        memset(buf, 0, sizeof(buf));
+        memset_s(buf, 0, sizeof(buf));
         int rc = _read(fd, buf, sizeof(buf) - 1);
         if (rc > 0)
             bytes += rc;

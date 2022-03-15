@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@
 #include_next "lwip/lwipopts.h"
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif /* __cplusplus */
 
 #undef LWIP_CHECKSUM_ON_COPY
@@ -107,16 +107,16 @@ extern "C"{
 #undef  LWIP_NETIF_LINK_CALLBACK
 #define LWIP_NETIF_LINK_CALLBACK 1
 
-#undef  LWIP_SOCKET_FCNTL_FUNC 
+#undef  LWIP_SOCKET_FCNTL_FUNC
 #define LWIP_SOCKET_FCNTL_FUNC   1
 
 #undef  CHECKSUM_BY_HARDWARE
-#define CHECKSUM_BY_HARDWARE 
+#define CHECKSUM_BY_HARDWARE
 
 #ifdef CHECKSUM_BY_HARDWARE
 #define CHECKSUM_GEN_IP          0
 #define CHECKSUM_GEN_UDP         0
-#define CHECKSUM_GEN_TCP         0 
+#define CHECKSUM_GEN_TCP         0
 #define CHECKSUM_CHECK_IP        0
 #define CHECKSUM_CHECK_UDP       0
 #define CHECKSUM_CHECK_TCP       0
@@ -166,14 +166,14 @@ extern "C"{
 
 #define MQTT_DEBUG                  LWIP_DBG_ON
 
-#undef SNTP_SET_SYSTEM_TIME 
+#undef SNTP_SET_SYSTEM_TIME
 #define SNTP_SET_SYSTEM_TIME(sec)   SntpSetTime(sec)
 
 #undef  SNTP_RECV_TIMEOUT
 #define SNTP_RECV_TIMEOUT           5000
 
 #undef  SNTP_UPDATE_DELAY
-#define SNTP_UPDATE_DELAY           15*60*1000
+#define SNTP_UPDATE_DELAY           (15*60*1000)
 
 #undef SNTP_SERVER_DNS
 #define SNTP_SERVER_DNS             1
@@ -182,7 +182,7 @@ extern "C"{
 #define LWIP_DHCP_MAX_NTP_SERVERS   10
 
 #undef MQTT_OUTPUT_RINGBUF_SIZE
-#define MQTT_OUTPUT_RINGBUF_SIZE    1024 
+#define MQTT_OUTPUT_RINGBUF_SIZE    1024
 
 #undef MQTT_VAR_HEADER_BUFFER_LEN
 #define MQTT_VAR_HEADER_BUFFER_LEN  1024

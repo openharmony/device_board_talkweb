@@ -34,9 +34,6 @@ choice APPLICATION_CHOOSE_NIOBE407
     config NIOBE407_USE_007_SYSTEM
         bool
         prompt "007_system_message"
-    config NIOBE407_USE_008_SYSTEM
-        bool
-        prompt "008_system_atomic"
     config NIOBE407_USE_101_PERIPHERAL
         bool
         prompt "101_peripheral_adc_temperature"
@@ -94,7 +91,6 @@ config NIOBE407_APPLICATION_NAME
     default "005_system_mutex"               if NIOBE407_USE_005_SYSTEM
     default "006_system_semp"                if NIOBE407_USE_006_SYSTEM
     default "007_system_message"             if NIOBE407_USE_007_SYSTEM
-    default "008_system_atomic"              if NIOBE407_USE_008_SYSTEM
     default "101_peripheral_adc_temperature" if NIOBE407_USE_101_PERIPHERAL
     default "102_peripheral_rng_number"      if NIOBE407_USE_102_PERIPHERAL
     default "103_peripheral_can_example"     if NIOBE407_USE_103_PERIPHERAL

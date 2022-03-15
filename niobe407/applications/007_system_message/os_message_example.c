@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,8 +31,7 @@ void ThreadMsgQueue1(void *arg)
 {
     (void)arg;
     g_msg_buf.buffer = "hello niobe407";
-    while (1)
-    {
+    while (1) {
         osMessageQueuePut(g_msg_queue, &g_msg_buf.buffer, 0U, 0U);
         osThreadYield();
         osDelay(100);
@@ -44,16 +43,13 @@ void ThreadMsgQueue2(void *arg)
     (void)arg;
     osStatus_t status;
 
-    while (1)
-    {
+    while (1) {
         //wait for message
         status = osMessageQueueGet(g_msg_queue, &g_msg_buf.buffer, NULL, 0U);
-        if (status == osOK)
-        {
+        if (status == osOK) {
             printf("ThreadMsgQueue2 Get msg: %s\n", g_msg_buf.buffer);
         }
-        else
-        {
+        else {
             osDelay(100);
         }
     }
@@ -62,8 +58,7 @@ void ThreadMsgQueue2(void *arg)
 static void MsgExample(void)
 {
     g_msg_queue = osMessageQueueNew(10, 50, NULL);
-    if (g_msg_queue == NULL)
-    {
+    if (g_msg_queue == NULL) {
         printf("create Message Queue failed!\n");
     }
 
@@ -77,14 +72,12 @@ static void MsgExample(void)
     attr.priority = 25;
 
     attr.name = "ThreadMsgQueue1";
-    if (osThreadNew(ThreadMsgQueue1, NULL, &attr) == NULL)
-    {
+    if (osThreadNew(ThreadMsgQueue1, NULL, &attr) == NULL) {
         printf("create ThreadMsgQueue1 failed!\n");
     }
 
     attr.name = "ThreadMsgQueue2";
-    if (osThreadNew(ThreadMsgQueue2, NULL, &attr) == NULL)
-    {
+    if (osThreadNew(ThreadMsgQueue2, NULL, &attr) == NULL) {
         printf("create ThreadMsgQueue2 failed!\n");
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,12 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
 #include "hdf_log.h"
 #include "spi_if.h"
-
-#include "ohos_run.h"
 #include "cmsis_os2.h"
-#include <stdio.h>
-
-#include <stdio.h>
 #include "samgr_lite.h"
+#include "ohos_run.h"
 
 #define HDF_SPI_STACK_SIZE 0x1000
 #define HDF_SPI_TASK_NAME "hdf_spi_test_task"
@@ -37,12 +34,10 @@ uint8_t rxBuffer[bufferSize] = {0};
 
 static uint8_t BufferCmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLength)
 {
-    while(BufferLength--)
-    {
-        if(*pBuffer1 != *pBuffer2) {
+    while(BufferLength--) {
+        if (*pBuffer1 != *pBuffer2) {
             return 0;
         }
-
         pBuffer1++;
         pBuffer2++;
     }
@@ -58,7 +53,7 @@ static uint16_t ReadDeviceId(DevHandle spiHandle)
     int32_t ret = 0;
     msg.wbuf = wbuff;
     msg.rbuf = rbuff;
-    msg.len = 5;
+    msg.len = sizeof(wbuff);
     msg.csChange = 1;
     msg.delayUs = 0;
     //msg.speed = 115200;
@@ -81,7 +76,7 @@ static uint16_t ReadFlashId(DevHandle spiHandle)
     struct SpiMsg msg1 = {0};
     msg1.wbuf = wbuff1;
     msg1.rbuf = rbuff1;
-    msg1.len = 4;
+    msg1.len = sizeof(wbuff1);
     msg1.csChange = 1;
     msg1.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg1, 1);
@@ -105,7 +100,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
@@ -114,11 +109,10 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     }
     
     /* Loop as long as the memory is busy with a write cycle */
-    do
-    {
+    do {
       msg.wbuf = wbuf1;
       msg.rbuf = rbuf;
-      msg.len = 1;
+      msg.len = sizeof(wbuf1);
       msg.csChange = 0;
       msg.delayUs = 0;
 
@@ -132,7 +126,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
 
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf1);
     msg.csChange = 1;
     msg.delayUs = 0;
     
@@ -149,7 +143,7 @@ static void WriteEnable(DevHandle spiHandle)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
@@ -169,7 +163,7 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 4;
+    msg.len = sizeof(wbuf);
     msg.csChange = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
@@ -178,12 +172,12 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     }
 
     rbuf1 = (uint8_t*)OsalMemAlloc(size);
-    if (rbuf1 == NULL){
+    if (rbuf1 == NULL) {
         HDF_LOGE("OsalMemAlloc failed.\n");
         return;
     }
     
-    memset(rbuf1, 0, size);
+    memset_s(rbuf1, 0, size);
     msg.wbuf = buf;
     msg.rbuf = rbuf1;
     msg.len = size;
@@ -208,7 +202,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 4;
+    msg.len = sizeof(wbuf);
     msg.csChange = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
@@ -217,11 +211,11 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
         return;
     }
     uint8_t *wbuf1 = (uint8_t*)OsalMemAlloc(size);
-    if (wbuf1 == NULL){
+    if (wbuf1 == NULL) {
         HDF_LOGE("OsalMemAlloc failed.\n");
         return;
     }
-    memset(wbuf1, 0xff, size);
+    memset_s(wbuf1, 0xff, size);
     msg.wbuf = wbuf1;
     msg.rbuf = buf;
     msg.len = size;
@@ -245,7 +239,7 @@ static void SectorErase(DevHandle spiHandle)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 4;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
@@ -285,7 +279,7 @@ static uint16_t ReadFlashId(DevHandle spiHandle)
     uint16_t flashId = 0;
     uint8_t wbuff[2] = {0x00, 0x9f};
     uint8_t rbuff[4] = {0};
-    ret =SpiWrite(spiHandle, wbuff, 2);
+    ret =SpiWrite(spiHandle, wbuff, sizeof(wbuff));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
@@ -307,12 +301,11 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     int32_t ret = 0;
     uint8_t wbuff[2] = {0x00, 0x05};
     uint8_t rbuff[2] = {0};
-    ret =SpiWrite(spiHandle, wbuff, 2);
+    ret =SpiWrite(spiHandle, wbuff, sizeof(wbuff));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
-    do
-    {
+    do {
         rbuff[0] = 0;
         ret = SpiRead(spiHandle, rbuff, 2);
         if (ret != 0) {
@@ -322,7 +315,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     } while ((FLASH_Status & WIP_FLAG) == 1); /* Write in progress */
 
     uint8_t wbuff1[1] = {0x01};
-    ret =SpiWrite(spiHandle, wbuff1, 1);
+    ret =SpiWrite(spiHandle, wbuff1, sizeof(wbuff1));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
@@ -333,7 +326,7 @@ static void WriteEnable(DevHandle spiHandle)
     uint8_t FLASH_Status = 0;
     int32_t ret = 0;
     uint8_t wbuff[2] = {0x01, 0x06};
-    ret =SpiWrite(spiHandle, wbuff, 2);
+    ret =SpiWrite(spiHandle, wbuff, sizeof(wbuff));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
@@ -348,11 +341,11 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     uint8_t rbuf[4] = {0};
     uint8_t *wbuf1 = NULL;
     int32_t ret = 0;
-    wbuf1 = (uint8_t*)OsalMemAlloc(size + 5);
+    wbuf1 = (uint8_t*)OsalMemAlloc(size + sizeof(wbuf));
 
-    strncpy(wbuf1, wbuf, 5);
-    strncpy(wbuf1 + 5, buf, size);
-    ret = SpiWrite(spiHandle, wbuf1, size + 5);
+    strncpy_s(wbuf1, wbuf, sizeof(wbuf));
+    strncpy_s(wbuf1 + sizeof(wbuf), buf, size);
+    ret = SpiWrite(spiHandle, wbuf1, size + sizeof(wbuf));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
@@ -372,7 +365,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
     int32_t ret = 0;
     rbuf = (uint8_t*)OsalMemAlloc(size + 1);
 
-    ret = SpiWrite(spiHandle, wbuf, 5);
+    ret = SpiWrite(spiHandle, wbuf, sizeof(wbuf));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
@@ -382,7 +375,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
         HDF_LOGE("SpiRead: failed, ret %d\n", ret);
     }
 
-    strncpy(buf, rbuf + 1, size);
+    strncpy_s(buf, rbuf + 1, size);
 
     if (rbuf!= NULL) {
         OsalMemFree(rbuf);
@@ -398,7 +391,7 @@ static void SectorErase(DevHandle spiHandle)
     uint8_t wbuf[5] = {0x01, 0x20, 0x00, 0x00, 0x00};
     uint8_t rbuf[5] = {0};
     int32_t ret = 0;
-    ret = SpiWrite(spiHandle, wbuf, 5);
+    ret = SpiWrite(spiHandle, wbuf, sizeof(wbuf));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
     }
@@ -453,8 +446,7 @@ static void* HdfSpiTestEntry(void* arg)
     flashId = ReadFlashId(spiHandle);
     HDF_LOGI("read flash id is 0x%02x\n", flashId);
 
-    if (flashId == SPI_FLASH_IDx)  /* #define  sFLASH_ID  0XEF4018 */
-    {
+    if (flashId == SPI_FLASH_IDx) {
         SectorErase(spiHandle);
         BufferWrite(spiHandle, txBuffer, bufferSize);
         HDF_LOGI("send buffer is %s\n", txBuffer);

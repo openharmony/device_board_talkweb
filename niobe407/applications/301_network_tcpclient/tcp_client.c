@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,33 +28,29 @@ void tcp_client(void *thread_param)
     char recv_data[512] = {0};
     int recv_data_len;
 
-    while (1)
-    {
+    while (1) {
         int sock = socket(AF_INET, SOCK_STREAM, 0);
-        if (sock < 0)
-        {
+        if (sock < 0) {
             printf("Socket error\n");
             osDelay(100);
             continue;
         }
 
-        memset(&(client_addr), 0, sizeof(client_addr));
+        memset_s(&(client_addr), 0, sizeof(client_addr));
 
         client_addr.sin_family = AF_INET;
         client_addr.sin_port = htons(SERVER_PORT);
         client_addr.sin_addr.s_addr = inet_addr(SERVER_IP);
 
         printf("try connect to server " SERVER_IP ":%d\n", SERVER_PORT);
-        if (connect(sock, (struct sockaddr *)&client_addr, sizeof(struct sockaddr)) == -1)
-        {
+        if (connect(sock, (struct sockaddr *)&client_addr, sizeof(struct sockaddr)) == -1) {
             closesocket(sock);
             osDelay(1000);
             continue;
         }
 
         printf("Connect to tcp server successful!\n");
-        while (1)
-        {
+        while (1) {
             recv_data_len = recv(sock, recv_data, 511, 0);
             if (recv_data_len <= 0)
                 break;
@@ -69,14 +65,12 @@ void tcp_client(void *thread_param)
 
 static void eth_enable_state_callBack(EthLinkState state)
 {
-    if (state == STATE_UPDATE_LINK_DOWN)
-    {
+    if (state == STATE_UPDATE_LINK_DOWN) {
         printf("ETH LINK STATE: DisConnected!\r\n");
         osThreadTerminate(tcp_client_id);
         tcp_client_id = NULL;
     }
-    else if (state == STATE_UPDATE_LINK_UP)
-    {
+    else if (state == STATE_UPDATE_LINK_UP) {
         printf("ETH LINK STATE: Connected!\r\n");
 
         osThreadAttr_t attr;
@@ -88,8 +82,7 @@ static void eth_enable_state_callBack(EthLinkState state)
         attr.stack_size = 1024 * 4;
         attr.priority = 25;
         tcp_client_id = osThreadNew((osThreadFunc_t)tcp_client, NULL, &attr);
-        if (tcp_client_id == NULL)
-        {
+        if (tcp_client_id == NULL) {
             printf("Falied to create tcp_client thread!\n");
         }
     }

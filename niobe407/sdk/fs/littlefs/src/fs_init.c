@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,8 +63,9 @@ static uint32_t FsGetResource(struct fs_cfg *fs)
         fs[i].lfs_cfg.block_size = block_size[i];
         fs[i].lfs_cfg.block_count = block_count[i];
 
-        HDF_LOGI("%s: fs[%d] mount_point=%s, partition=%u, block_size=%u, block_count=%u", __func__, i,
-                 fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context, fs[i].lfs_cfg.block_size, fs[i].lfs_cfg.block_count);
+        HDF_LOGI("%s: fs[%d] mount_point=%s, partition=%u, block_size=%u, block_count=%u",
+                 __func__, i, fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context, 
+                 fs[i].lfs_cfg.block_size, fs[i].lfs_cfg.block_count);
     }
     return HDF_SUCCESS;
 }
@@ -82,29 +83,34 @@ static uint32_t FsGetResource(struct fs_cfg *fs, const struct DeviceResourceNode
         return HDF_FAILURE;
     }
     for (int32_t i = 0; i < num; i++) {
-        if (resource->GetStringArrayElem(resourceNode, "mount_points", i, &fs[i].mount_point, NULL) != HDF_SUCCESS) {
+        if (resource->GetStringArrayElem(resourceNode, "mount_points", 
+            i, &fs[i].mount_point, NULL) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get mount_points", __func__);
             return HDF_FAILURE;
         }
-        if (resource->GetUint32ArrayElem(resourceNode, "partitions", i, (uint32_t *)&fs[i].lfs_cfg.context, 0) != HDF_SUCCESS) {
+        if (resource->GetUint32ArrayElem(resourceNode, "partitions", 
+            i, (uint32_t *)&fs[i].lfs_cfg.context, 0) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get partitions", __func__);
             return HDF_FAILURE;
         }
-        if (resource->GetUint32ArrayElem(resourceNode, "block_size", i, &fs[i].lfs_cfg.block_size, 0) != HDF_SUCCESS) {
+        if (resource->GetUint32ArrayElem(resourceNode, "block_size", 
+            i, &fs[i].lfs_cfg.block_size, 0) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get block_size", __func__);
             return HDF_FAILURE;
         }
-        if (resource->GetUint32ArrayElem(resourceNode, "block_count", i, &fs[i].lfs_cfg.block_count, 0) != HDF_SUCCESS) {
+        if (resource->GetUint32ArrayElem(resourceNode, "block_count",
+            i, &fs[i].lfs_cfg.block_count, 0) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get block_count", __func__);
             return HDF_FAILURE;
         }
-        HDF_LOGI("%s: fs[%d] mount_point=%s, partition=%u, block_size=%u, block_count=%u", __func__, i,
-                 fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context, fs[i].lfs_cfg.block_size, fs[i].lfs_cfg.block_count);
+        HDF_LOGI("%s: fs[%d] mount_point=%s, partition=%u, block_size=%u, block_count=%u",
+                 __func__, i,fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context, 
+                 fs[i].lfs_cfg.block_size, fs[i].lfs_cfg.block_count);
     }
     return HDF_SUCCESS;
 }
 #endif
-static int32_t FsDriverInit(struct HdfDeviceObject *object)
+static int32_t FsDriverCheck(struct HdfDeviceObject *object)
 {
     HDF_LOGI("Fs Driver Init\n");
     if (object == NULL) {
@@ -126,13 +132,21 @@ static int32_t FsDriverInit(struct HdfDeviceObject *object)
 
     if (W25x_InitSpiFlash(0, 0) != 0) {
         HDF_LOGI("InitSpiFlash failed\n");
+        return HDF_FAILURE;
     }
 
 #if (ERASE_FLASH_BULK == 1)
     W25x_BulkErase();
 #endif
-    DIR *dir = NULL;
+    return HDF_SUCCESS;
+}
 
+static int32_t FsDriverInit(struct HdfDeviceObject *object)
+{
+    if (HDF_SUCCESS != FsDriverCheck(object))
+        return HDF_FAILURE;
+
+    DIR *dir = NULL;
     for (int i = 0; i < sizeof(fs) / sizeof(fs[0]); i++) {
         if (fs[i].mount_point == NULL)
             continue;
@@ -141,7 +155,6 @@ static int32_t FsDriverInit(struct HdfDeviceObject *object)
         fs[i].lfs_cfg.prog = LittlefsProg;
         fs[i].lfs_cfg.erase = LittlefsErase;
         fs[i].lfs_cfg.sync = LittlefsSync;
-
         fs[i].lfs_cfg.read_size = READ_SIZE;
         fs[i].lfs_cfg.prog_size = PROG_SIZE;
         fs[i].lfs_cfg.cache_size = CACHE_SIZE;

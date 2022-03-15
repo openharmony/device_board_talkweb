@@ -153,7 +153,7 @@ struct sockaddr_in {
                 } 
 
                 /* 清空sockaddr_in结构体内存空间 */
-                memset(&(client_addr), 0, sizeof(client_addr)); 
+                memset_s(&(client_addr), 0, sizeof(client_addr)); 
 
                 /* 为sockaddr_in结构体成员赋值，用于以下的connect绑定 */
                 client_addr.sin_family = AF_INET;      

@@ -24,7 +24,7 @@
 
     struct DeviceResourceIface *dri = DeviceResourceGetIfaceInstance(HDF_CONFIG_SOURCE); 
 
-    if(NiobeHdfGpioInit(resourceNode, dri) == false){ //在这里调用GPIO初始化函数
+    if (NiobeHdfGpioInit(resourceNode, dri) == false){ //在这里调用GPIO初始化函数
         HDF_LOGE("i2c config NiobeHdfGpioInit fail\r\n");
         return HDF_FAILURE;        
     }

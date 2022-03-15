@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,8 +23,7 @@
 void thread_entry1(void)
 {
     int sum = 0;
-    while (1)
-    {
+    while (1) {
         printf("This is Niobe407 Thread1----%d\r\n", sum++);
         usleep(500000);
     }
@@ -33,8 +32,7 @@ void thread_entry1(void)
 void thread_entry2(void)
 {
     int sum = 0;
-    while (1)
-    {
+    while (1) {
         printf("This is Niobe407 Thread2----%d\r\n", sum++);
         usleep(500000);
     }
@@ -52,15 +50,13 @@ static void OS_Thread_example(void)
     attr.stack_size = 1024 * 4;
     attr.priority = 25;
 
-    if (osThreadNew((osThreadFunc_t)thread_entry1, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)thread_entry1, NULL, &attr) == NULL) {
         printf("Falied to create thread1!\n");
     }
 
     attr.name = "thread2";
 
-    if (osThreadNew((osThreadFunc_t)thread_entry2, NULL, &attr) == NULL)
-    {
+    if (osThreadNew((osThreadFunc_t)thread_entry2, NULL, &attr) == NULL) {
         printf("Falied to create thread2!\n");
     }
 }

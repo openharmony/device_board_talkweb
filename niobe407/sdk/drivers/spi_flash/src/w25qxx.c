@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -81,16 +81,15 @@ void W25x_SectorErase(uint32_t SectorAddr)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 4;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
-      HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
-      return;
+        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        return;
     }
     W25x_WaitForWriteEnd();
-
 }
 
 void W25x_BulkErase(void)
@@ -105,16 +104,15 @@ void W25x_BulkErase(void)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
-      HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
-      return;
+        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        return;
     }
     W25x_WaitForWriteEnd();
-
     return;
 }
 
@@ -133,7 +131,7 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 4;
+    msg.len = sizeof(wbuf);
     msg.csChange = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
@@ -141,8 +139,7 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     }
 
-    if(NumByteToWrite > W25x_PerWritePageSize)
-    {
+    if (NumByteToWrite > W25x_PerWritePageSize) {
          NumByteToWrite = W25x_PerWritePageSize;
          HDF_LOGE("Err: W25x_PageWrite too large!\n");
     }
@@ -152,7 +149,7 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
         HDF_LOGE("malloc failed\n");
         return;
     }
-    memset(rbuf1, 0, NumByteToWrite);
+    memset_s(rbuf1, 0, NumByteToWrite);
     msg.wbuf = pBuffer;
     msg.rbuf = rbuf1;
     msg.len = NumByteToWrite;
@@ -162,11 +159,8 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
     if (ret != 0) {
         HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     }
-
     W25x_WaitForWriteEnd();
- 
     OsalMemFree(rbuf1);
-
     return;
 }
 
@@ -218,8 +212,7 @@ void W25x_BufferWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWr
                 pBuffer += W25x_PageSize;
             }
 
-            if (NumOfSingle != 0)
-            {
+            if (NumOfSingle != 0) {
                 W25x_PageWrite(pBuffer, WriteAddr, NumOfSingle);
             }
         }
@@ -240,7 +233,7 @@ void W25x_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 4;
+    msg.len = sizeof(wbuf);
     msg.csChange = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
@@ -253,7 +246,7 @@ void W25x_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead
         HDF_LOGE("malloc failed\n");
         return;
     }
-    memset(wbuf1, 0xff, NumByteToRead);
+    memset_s(wbuf1, 0xff, NumByteToRead);
     msg.wbuf = wbuf1;
     msg.rbuf = pBuffer;
     msg.len = NumByteToRead;
@@ -279,7 +272,7 @@ uint32_t W25x_ReadID(void)
     struct SpiMsg msg1 = {0};
     msg1.wbuf = wbuff1;
     msg1.rbuf = rbuff1;
-    msg1.len = 4;
+    msg1.len = sizeof(wbuf);
     msg1.csChange = 1;
     msg1.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg1, 1);
@@ -305,7 +298,7 @@ uint32_t W25x_ReadDeviceID(void)
     int32_t ret = 0;
     msg.wbuf = wbuff;
     msg.rbuf = rbuff;
-    msg.len = 5;
+    msg.len = sizeof(wbuff);
     msg.csChange = 1;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
@@ -330,15 +323,13 @@ void W25x_StartReadSequence(uint32_t ReadAddr)
     int32_t ret = 0;
     msg.wbuf = wbuff;
     msg.rbuf = rbuff;
-    msg.len = 4;
+    msg.len = sizeof(wbuff);
     msg.csChange = 1;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
       HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
-    } 
-
-    return;
+    }
 }
 
 void W25x_WriteEnable(void)
@@ -353,7 +344,7 @@ void W25x_WriteEnable(void)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
@@ -380,7 +371,7 @@ void W25x_WaitForWriteEnd(void)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
@@ -389,25 +380,24 @@ void W25x_WaitForWriteEnd(void)
     }
 
     /* Loop as long as the memory is busy with a write cycle */
-    do
-    {
-    msg.wbuf = wbuf1;
-    msg.rbuf = rbuf;
-    msg.len = 1;
-    msg.csChange = 0;
-    msg.delayUs = 0;
+    do {
+        msg.wbuf = wbuf1;
+        msg.rbuf = rbuf;
+        msg.len = sizeof(wbuf1);
+        msg.csChange = 0;
+        msg.delayUs = 0;
 
-    ret = SpiTransfer(spiHandle, &msg, 1);
-    if (ret != 0) {
-        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
-    }
-    FLASH_Status = rbuf[0];
+        ret = SpiTransfer(spiHandle, &msg, 1);
+        if (ret != 0) {
+            HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        }
+        FLASH_Status = rbuf[0];
     }
     while ((FLASH_Status & WIP_Flag) == 1); /* Write in progress */
 
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf1);
     msg.csChange = 1;
     msg.delayUs = 0;
 
@@ -432,7 +422,7 @@ void W25x_PowerDown(void)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
@@ -455,7 +445,7 @@ void W25x_WAKEUP(void)
     struct SpiMsg msg = {0};
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
-    msg.len = 1;
+    msg.len = sizeof(wbuf);
     msg.csChange = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
