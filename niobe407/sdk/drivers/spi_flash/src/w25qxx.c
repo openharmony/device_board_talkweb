@@ -272,7 +272,7 @@ uint32_t W25x_ReadID(void)
     struct SpiMsg msg1 = {0};
     msg1.wbuf = wbuff1;
     msg1.rbuf = rbuff1;
-    msg1.len = sizeof(wbuf);
+    msg1.len = sizeof(wbuff1);
     msg1.csChange = 1;
     msg1.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg1, 1);
