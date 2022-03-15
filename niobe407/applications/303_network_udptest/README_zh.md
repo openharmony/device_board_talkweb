@@ -220,7 +220,7 @@ struct sockaddr {
                 {
                     if(udp_rcv_flag != 1)
                         udp_rcv_flag = 1;
-                    memcpy_s(recdata, p->payload, p->len);
+                    memcpy_s(recdata, p->len, p->payload, p->len);
                     recdata[p->len] = '\0';
                     printf("udp recv from[%d.%d.%d.%d:%d]: %s\n", *((uint8_t *)&addr->addr), *((uint8_t *)&addr->addr + 1),
                                     *((uint8_t *)&addr->addr + 2), *((uint8_t *)&addr->addr + 3), port, recdata);

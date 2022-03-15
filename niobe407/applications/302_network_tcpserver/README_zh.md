@@ -182,7 +182,7 @@ typedef struct {
             server_addr.sin_addr.s_addr = INADDR_ANY;
             server_addr.sin_port = htons(SERVER_LISTEN_PORT);
             /* 清空sockaddr_in结构体内存空间 */
-            memset_s(&(server_addr.sin_zero), 0, sizeof(server_addr.sin_zero));
+            memset_s(&(server_addr.sin_zero), sizeof(server_addr.sin_zero), 0, sizeof(server_addr.sin_zero));
 
             /* 服务器绑定ip地址与端口 */
             if (bind(sock, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)

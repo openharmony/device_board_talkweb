@@ -36,7 +36,7 @@ void tcp_client(void *thread_param)
             continue;
         }
 
-        memset_s(&(client_addr), 0, sizeof(client_addr));
+        memset_s(&(client_addr), sizeof(client_addr), 0, sizeof(client_addr));
 
         client_addr.sin_family = AF_INET;
         client_addr.sin_port = htons(SERVER_PORT);
