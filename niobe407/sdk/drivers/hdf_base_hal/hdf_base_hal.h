@@ -21,7 +21,10 @@
 #include "stm32f4xx_ll_gpio.h"
 #include "stm32f4xx_ll_rcc.h"
 
-enum PIN_ALTERNATE_MAP {
+#define GPIO_NUM_CONFIG_MAX 20
+#define GPIO_HCS_NUM 7
+
+typedef enum {
     ALTERNATE_SYSTEM = 0,
     ALTERNATE_TIM1_2 = 1,
     ALTERNATE_TIM3_4_5 = 2,
@@ -42,42 +45,94 @@ enum PIN_ALTERNATE_MAP {
     ALTERNATE_DCMI = 13,
     ALTERNATE_DEFAULT = 14,
     ALTERNATE_EVENTOUT = 15,
-};
+    ALTERNATE_MAX = 16,
+} PIN_ALTERNATE_MAP;
+
+typedef enum {
+    NIOBE_GPIO_PORT_A = 0,
+    NIOBE_GPIO_PORT_B,
+    NIOBE_GPIO_PORT_C,
+    NIOBE_GPIO_PORT_D,
+    NIOBE_GPIO_PORT_E,
+    NIOBE_GPIO_PORT_F,
+    NIOBE_GPIO_PORT_G,
+    NIOBE_GPIO_PORT_H,
+    NIOBE_GPIO_PORT_I,
+    NIOBE_GPIO_PORT_MAX,
+} GPIO_PORT_MAP;
+
+typedef enum {
+    NIOBE_GPIO_PIN_0 = 0, /* Pin 0 selected    */
+    NIOBE_GPIO_PIN_1,     /* Pin 1 selected    */
+    NIOBE_GPIO_PIN_2,     /* Pin 2 selected    */
+    NIOBE_GPIO_PIN_3,     /* Pin 3 selected    */
+    NIOBE_GPIO_PIN_4,     /* Pin 4 selected    */
+    NIOBE_GPIO_PIN_5,     /* Pin 5 selected    */
+    NIOBE_GPIO_PIN_6,     /* Pin 6 selected    */
+    NIOBE_GPIO_PIN_7,     /* Pin 7 selected    */
+    NIOBE_GPIO_PIN_8,     /* Pin 8 selected    */
+    NIOBE_GPIO_PIN_9,     /* Pin 9 selected    */
+    NIOBE_GPIO_PIN_10,    /* Pin 10 selected   */
+    NIOBE_GPIO_PIN_11,    /* Pin 11 selected   */
+    NIOBE_GPIO_PIN_12,    /* Pin 12 selected   */
+    NIOBE_GPIO_PIN_13,    /* Pin 13 selected   */
+    NIOBE_GPIO_PIN_14,    /* Pin 14 selected   */
+    NIOBE_GPIO_PIN_15,    /* Pin 15 selected   */
+    NIOBE_GPIO_PIN_MAX,   /* Pin Max */
+} GPIO_PIN_MAP;
+
+typedef enum {
+    NIOBE_GPIO_MODE_INPUT = 0,
+    NIOBE_GPIO_MODE_OUTPUT,
+    NIOBE_GPIO_MODE_ALTERNATE,
+    NIOBE_GPIO_MODE_ANALOG,
+    NIOBE_GPIO_MODE_MAX,
+} GPIO_MODE_MAP;
+
+typedef enum {
+    NIOBE_GPIO_SPEED_LOW = 0,
+    NIOBE_GPIO_SPEED_MID,
+    NIOBE_GPIO_SPEED_HIGH,
+    NIOBE_GPIO_SPEED_VERY_HIGH,
+    NIOBE_GPIO_SPEED_MAX,
+} GPIO_SPEED_MAP;
+
+typedef enum {
+    NIOBE_GPIO_OUTPUTTYPE_PUSHPULL = 0,
+    NIOBE_GPIO_OUTPUTTYPE_OPENDRAIN,
+    NIOBE_GPIO_OUTPUTTYPE_MAX,
+} GPIO_OUTPUTTYPE_MAP;
+
+typedef enum {
+    NIOBE_GPIO_PULL_NO = 0,
+    NIOBE_GPIO_PULL_UP,
+    NIOBE_GPIO_PULL_DOWN,
+    NIOBE_GPIO_PULL_MAX,
+} GPIO_PULL_MAP;
 
 typedef struct {
-    /*port num
-     GPIOA ~ GPIOH relative to 0~8
-    */
-    unsigned int port;
-    /*pin num
-     GPIO_PIN_0 ~ GPIO_PIN_15 relative to 0~15
-    */
-    unsigned int pin;
-    /*mode：
-    LL_GPIO_MODE_INPUT = 0
-    LL_GPIO_MODE_OUTPUT = 1
-    LL_GPIO_MODE_ALTERNATE = 2
-    LL_GPIO_MODE_ANALOG = 3 */
-    unsigned int mode;
-    /* speed:
-    LL_GPIO_SPEED_FREQ_LOW = 0
-    LL_GPIO_SPEED_FREQ_MEDIUM = 1
-    LL_GPIO_SPEED_FREQ_HIGH = 2
-    LL_GPIO_SPEED_FREQ_VERY_HIGH = 3*/
-    unsigned int speed;
-    /* output type:
-    LL_GPIO_OUTPUT_PUSHPULL = 0
-    LL_GPIO_OUTPUT_OPENDRAIN = 1*/
-    unsigned int outputType;
-    /* pull up or pull down:
-    LL_GPIO_PULL_NO = 0
-    LL_GPIO_PULL_UP = 1
-    LL_GPIO_PULL_DOWN = 2*/
-    unsigned int pull;
+    /* gpio group num */
+    GPIO_PORT_MAP port;
+
+    /* gpio pin num */
+    GPIO_PIN_MAP pin;
+
+    /* gpio mode */
+    GPIO_MODE_MAP mode;
+
+    /* gpio speed */
+    GPIO_SPEED_MAP speed;
+
+    /* gpio outout type */
+    GPIO_OUTPUTTYPE_MAP outputType;
+
+    /* pull up or pull down */
+    GPIO_PULL_MAP pull;
+
     /* multiplexing: Valid when mode = LL_GPIO_MODE_ALTERNATE */
-    enum PIN_ALTERNATE_MAP alternate;
-} NIOBE_HDF_GPIO_ATTR;
+    PIN_ALTERNATE_MAP alternate;
+} HDF_GPIO_ATTR;
 
 bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct DeviceResourceIface *dir);
-
-#endif
+bool NiobeInitGpioInit(const HDF_GPIO_ATTR* attr);
+#endif  

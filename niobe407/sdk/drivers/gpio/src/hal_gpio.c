@@ -15,7 +15,7 @@
 
 #if defined(USE_FULL_LL_DRIVER)
 
-#include "niobe407_ll_gpio.h"
+#include "hal_gpio.h"
 #include "stm32f4xx_ll_bus.h"
 
 #if defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK)

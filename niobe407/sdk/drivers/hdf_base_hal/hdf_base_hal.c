@@ -15,18 +15,8 @@
 #include "hdf_base_hal.h"
 
 #define GPIO_ERR 0XFFFFFFFF
-#define GPIO_NUM_CONFIG_MAX 20
-
 #define GPIO_REGISTER_TAG 0XA5
 #define GPIO_REMOVE_TAG 0X00
-
-#define NIOBE_GPIO_PORT_MAX 9
-#define NIOBE_GPIO_PIN_MAX 16
-#define NIOBE_GPIO_MODE_MAX 4
-#define NIOBE_GPIO_SPEED_MAX 4
-#define NIOBE_GPIO_OUTPUTTYPE_MAX 2
-#define NIOBE_GPIO_PULL_MAX 3
-#define NIOBE_GPIO_ALTERNATE_MAX 16
 
 static unsigned char g_GpioRegisterCache[NIOBE_GPIO_PORT_MAX][NIOBE_GPIO_PIN_MAX] = {0};
 
@@ -39,7 +29,8 @@ static const unsigned int HDF_LL_GPIO_PORT_MAP[NIOBE_GPIO_PORT_MAX] = {
     GPIOF,
     GPIOG,
     GPIOH,
-    GPIOI};
+    GPIOI
+};
 
 static const unsigned int HDF_LL_GPIO_PIN_MAP[NIOBE_GPIO_PIN_MAX] = {
     LL_GPIO_PIN_0,
@@ -57,7 +48,8 @@ static const unsigned int HDF_LL_GPIO_PIN_MAP[NIOBE_GPIO_PIN_MAX] = {
     LL_GPIO_PIN_12,
     LL_GPIO_PIN_13,
     LL_GPIO_PIN_14,
-    LL_GPIO_PIN_15};
+    LL_GPIO_PIN_15
+};
 
 static const unsigned int HDF_LL_GPIO_CLOCK_MAP[NIOBE_GPIO_PORT_MAX] = {
     LL_AHB1_GRP1_PERIPH_GPIOA,
@@ -68,30 +60,35 @@ static const unsigned int HDF_LL_GPIO_CLOCK_MAP[NIOBE_GPIO_PORT_MAX] = {
     LL_AHB1_GRP1_PERIPH_GPIOF,
     LL_AHB1_GRP1_PERIPH_GPIOG,
     LL_AHB1_GRP1_PERIPH_GPIOH,
-    LL_AHB1_GRP1_PERIPH_GPIOI};
+    LL_AHB1_GRP1_PERIPH_GPIOI
+};
 
 static const unsigned int HDF_LL_GPIO_MODE_MAP[NIOBE_GPIO_MODE_MAX] = {
     LL_GPIO_MODE_INPUT,
     LL_GPIO_MODE_OUTPUT,
     LL_GPIO_MODE_ALTERNATE,
-    LL_GPIO_MODE_ANALOG};
+    LL_GPIO_MODE_ANALOG
+};
 
 static const unsigned int HDF_LL_GPIO_SPEED_MAP[NIOBE_GPIO_SPEED_MAX] = {
     LL_GPIO_SPEED_FREQ_LOW,
     LL_GPIO_SPEED_FREQ_MEDIUM,
     LL_GPIO_SPEED_FREQ_HIGH,
-    LL_GPIO_SPEED_FREQ_VERY_HIGH};
+    LL_GPIO_SPEED_FREQ_VERY_HIGH
+};
 
 static const unsigned int HDF_LL_GPIO_OUTPUTTYPE_MAP[NIOBE_GPIO_OUTPUTTYPE_MAX] = {
     LL_GPIO_OUTPUT_PUSHPULL,
-    LL_GPIO_OUTPUT_OPENDRAIN};
+    LL_GPIO_OUTPUT_OPENDRAIN
+};
 
 static const unsigned int HDF_LL_GPIO_PULL_MAP[NIOBE_GPIO_PULL_MAX] = {
     LL_GPIO_PULL_NO,
     LL_GPIO_PULL_UP,
-    LL_GPIO_PULL_DOWN};
+    LL_GPIO_PULL_DOWN
+};
 
-static const unsigned int HDF_LL_GPIO_ALTERNATE_MAP[NIOBE_GPIO_ALTERNATE_MAX] = {
+static const unsigned int HDF_LL_GPIO_ALTERNATE_MAP[ALTERNATE_MAX] = {
     LL_GPIO_AF_0,
     LL_GPIO_AF_1,
     LL_GPIO_AF_2,
@@ -107,9 +104,10 @@ static const unsigned int HDF_LL_GPIO_ALTERNATE_MAP[NIOBE_GPIO_ALTERNATE_MAX] = 
     LL_GPIO_AF_12,
     LL_GPIO_AF_13,
     LL_GPIO_AF_14,
-    LL_GPIO_AF_15};
+    LL_GPIO_AF_15
+};
 
-static bool GpioUseRegister(unsigned int port, unsigned int pin)
+static bool GpioUseRegister(GPIO_PORT_MAP port, GPIO_PIN_MAP pin)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
         HDF_LOGE("NiobeGpioRegister param[port] match fail\r\n");
@@ -130,7 +128,7 @@ static bool GpioUseRegister(unsigned int port, unsigned int pin)
     return true;
 }
 
-static bool GpioUseRemove(unsigned int port, unsigned int pin)
+static bool GpioUseRemove(GPIO_PORT_MAP port, GPIO_PIN_MAP pin)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
         HDF_LOGE("GpioUseRemove param[port] match fail\r\n");
@@ -146,7 +144,7 @@ static bool GpioUseRemove(unsigned int port, unsigned int pin)
     return true;
 }
 
-static unsigned int GetLLGpioClkMatch(unsigned char port)
+static unsigned int GetLLGpioClkMatch(GPIO_PORT_MAP port)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
         HDF_LOGE("ERR: NiobeLLGpioClkMatch fail, port is match fail.\r\n");
@@ -156,7 +154,7 @@ static unsigned int GetLLGpioClkMatch(unsigned char port)
     return (unsigned int)HDF_LL_GPIO_CLOCK_MAP[port];
 }
 
-static unsigned int GetLLGpioPortMatch(unsigned char port)
+static unsigned int GetLLGpioPortMatch(GPIO_PORT_MAP port)
 {
     if (port >= NIOBE_GPIO_PORT_MAX) {
         HDF_LOGE("ERR: NiobeLLGpioPortMatch fail, port is match fail.\r\n");
@@ -166,7 +164,7 @@ static unsigned int GetLLGpioPortMatch(unsigned char port)
     return (unsigned int)HDF_LL_GPIO_PORT_MAP[port];
 }
 
-static unsigned int GetLLGpioPinMatch(unsigned char pin)
+static unsigned int GetLLGpioPinMatch(GPIO_PIN_MAP pin)
 {
     if (pin >= NIOBE_GPIO_PIN_MAX) {
         HDF_LOGE("ERR: NiobeLLGpioPinMatch fail, pin is match fail.\r\n");
@@ -176,7 +174,7 @@ static unsigned int GetLLGpioPinMatch(unsigned char pin)
     return (unsigned int)HDF_LL_GPIO_PIN_MAP[pin];
 }
 
-static unsigned int GetLLGpioModeMatch(unsigned int mode)
+static unsigned int GetLLGpioModeMatch(GPIO_MODE_MAP mode)
 {
     if (mode >= NIOBE_GPIO_MODE_MAX) {
         HDF_LOGE("ERR: GetLLGpioModeMatch fail, mode is match fail.\r\n");
@@ -186,7 +184,7 @@ static unsigned int GetLLGpioModeMatch(unsigned int mode)
     return (unsigned int)HDF_LL_GPIO_MODE_MAP[mode];
 }
 
-static unsigned int GetLLGpioSpeedMatch(unsigned int speed)
+static unsigned int GetLLGpioSpeedMatch(GPIO_SPEED_MAP speed)
 {
     if (speed >= NIOBE_GPIO_SPEED_MAX) {
         HDF_LOGE("ERR: GetLLGpioSpeedMatch fail, speed is match fail.\r\n");
@@ -196,7 +194,7 @@ static unsigned int GetLLGpioSpeedMatch(unsigned int speed)
     return (unsigned int)HDF_LL_GPIO_SPEED_MAP[speed];
 }
 
-static unsigned int GetLLGpioOutputTypeMatch(unsigned int outputType)
+static unsigned int GetLLGpioOutputTypeMatch(GPIO_OUTPUTTYPE_MAP outputType)
 {
     if (outputType >= NIOBE_GPIO_OUTPUTTYPE_MAX) {
         HDF_LOGE("ERR: GetLLGpioOutputTypeMatch fail, outputType is match fail.\r\n");
@@ -206,7 +204,7 @@ static unsigned int GetLLGpioOutputTypeMatch(unsigned int outputType)
     return (unsigned int)HDF_LL_GPIO_OUTPUTTYPE_MAP[outputType];
 }
 
-static unsigned int GetLLGpioPullMatch(unsigned int pull)
+static unsigned int GetLLGpioPullMatch(GPIO_PULL_MAP pull)
 {
     if (pull >= NIOBE_GPIO_PULL_MAX) {
         HDF_LOGE("ERR: GetLLGpioPullMatch fail, pull is match fail.\r\n");
@@ -216,18 +214,17 @@ static unsigned int GetLLGpioPullMatch(unsigned int pull)
     return (unsigned int)HDF_LL_GPIO_PULL_MAP[pull];
 }
 
-static unsigned int GetLLGpioAlternateMatch(unsigned int alternate)
+static unsigned int GetLLGpioAlternateMatch(PIN_ALTERNATE_MAP alternate)
 {
-    if (alternate >= NIOBE_GPIO_ALTERNATE_MAX) {
+    if (alternate >= ALTERNATE_MAX) {
         HDF_LOGE("ERR: GetLLGpioAlternateMatch fail, alternate is match fail.\r\n");
         return GPIO_ERR;
     }
 
     return (unsigned int)HDF_LL_GPIO_ALTERNATE_MAP[alternate];
 }
-inline 
 
-static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
+static bool MakeLLGpioInit(HDF_GPIO_ATTR *attr)
 {
     if (attr == NULL) {
         HDF_LOGE("ERR: MakeLLGpioMatch param is NULL\r\n");
@@ -264,6 +261,21 @@ static bool MakeLLGpioInit(NIOBE_HDF_GPIO_ATTR *attr)
     return true;
 }
 
+bool NiobeInitGpioInit(const HDF_GPIO_ATTR* attr)
+{
+    if (attr == NULL) {
+        HDF_LOGE("ERR: NiobeInitGpioInit param is NULL\r\n");
+        return false;
+    }
+
+    if (MakeLLGpioInit(attr) == false) {
+        HDF_LOGE("MakeLLGpioInit fail\r\n");
+        return false;
+    }
+
+    return true;
+}
+
 bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct DeviceResourceIface *dir)
 {
     if ((resourceNode == NULL) || (dir == NULL)) {
@@ -273,7 +285,7 @@ bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct Devi
 
     char gpio_str[32] = {0};
     int gpio_num_max = 0;
-    NIOBE_HDF_GPIO_ATTR gpioAttr = {0};
+    HDF_GPIO_ATTR gpioAttr = {0};
     struct DeviceResourceIface *gpioDir = dir;
     struct DeviceResourceNode *gpioNode = resourceNode;
 

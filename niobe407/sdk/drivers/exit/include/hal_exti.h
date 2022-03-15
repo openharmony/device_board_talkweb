@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef _NIOBE407_LL_EXTI_H_
-#define _NIOBE407_LL_EXTI_H_
+#ifndef _HAL_EXTI_H_
+#define _HAL_EXTI_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,12 +26,12 @@ extern "C" {
 
 #if defined (EXTI)
 
-typedef void (*TW_HAL_GPIO_PIN_EXIT_HANDLER)(uint16_t pin);
+typedef void (*HAL_GPIO_PIN_EXIT_HANDLER)(uint16_t pin);
 
 typedef struct
 {
     LL_EXTI_InitTypeDef initType;
-    TW_HAL_GPIO_PIN_EXIT_HANDLER Exithandler;
+    HAL_GPIO_PIN_EXIT_HANDLER Exithandler;
     uint32_t PinReg;
     GPIO_TypeDef* Gpiox;
 } LL_EXTI_InitConfig;
@@ -45,7 +45,7 @@ typedef struct {
     uint8_t trigger;
     GPIO_TypeDef* gpiox;
     uint32_t pinReg;
-    TW_HAL_GPIO_PIN_EXIT_HANDLER handler;
+    HAL_GPIO_PIN_EXIT_HANDLER handler;
 } Pin_ST;
 
 typedef struct {

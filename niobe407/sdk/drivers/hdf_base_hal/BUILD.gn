@@ -13,9 +13,13 @@
 import("//kernel/liteos_m/liteos.gni")
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    sources = [
-        "hdf_base_hal.c",
-    ] 
+    if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
+        sources = [
+          "hdf_base_hal.c",
+        ]
+    } else {
+        sources = []
+    }
 }
 
 config("public") {
