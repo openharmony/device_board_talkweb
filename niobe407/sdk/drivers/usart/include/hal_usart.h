@@ -22,18 +22,16 @@ extern "C" {
 
 #include "stm32f4xx_ll_usart.h"
 
-
 #if defined (USART1) || defined (USART2) || defined (USART3) || defined (USART6) \
-    || defined (UART4) || defined (UART5) || defined (UART7) || defined (UART8) \
-    || defined (UART9) || defined (UART10)
+    || defined (UART4) || defined (UART5)
 
 #if defined(USE_FULL_LL_DRIVER)
-uint32_t USART_Block_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size);
-uint32_t USART_Block_RxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size, volatile uint32_t* exitFlag);
 
+uint32_t USART_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size);
+uint32_t USART_RxData(uint8_t num, uint8_t *p_data, uint32_t size, BOOL isBlock);
 
-uint32_t USART_NoBlock_TxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size);
-uint32_t USART_NoBlock_RxData(USART_TypeDef * UART, uint8_t *p_data, uint32_t size);
+void UART_IRQ_INIT(USART_TypeDef * UART, uint8_t num, uint32_t irqNum, BOOL isBlock);
+void UART_IRQ_DEINIT(USART_TypeDef * UART, uint32_t irqNum);
 
 #endif /* USE_FULL_LL_DRIVER */
 
