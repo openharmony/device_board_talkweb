@@ -32,7 +32,7 @@ uint8_t tmp;
 static void* HdfUsartTestEntry(void* arg)
 {
     (void *)arg;
-    uint32_t port = 4;
+    uint32_t port = 5;
     DevHandle handle = UartOpen(port);
     if (handle == NULL) {
         HDF_LOGE("UartOpen %u: failed!\n", port);
@@ -71,11 +71,17 @@ static void* HdfUsartTestEntry(void* arg)
         HDF_LOGE("UartWrite: failed, ret %d\n", ret);
         goto _ERR;
     }
-    ret = UartRead(handle, rxbuf, len);
-    if (ret < 0) {
-        HDF_LOGE("UartRead: failed, ret %d\n", ret);
-        goto _ERR;
+    while(1) {
+        ret = UartRead(handle, rxbuf, len);
+        if (ret < 0) {
+            HDF_LOGE("UartRead: failed, ret %d\n", ret);
+            goto _ERR;
+        } else if (ret > 0){
+            HDF_LOGI("UartRead: content length is %d is :%s\n", ret, rxbuf);
+        }
+        osDelay(100);
     }
+
 _ERR:
     UartClose(handle);
     return NULL;

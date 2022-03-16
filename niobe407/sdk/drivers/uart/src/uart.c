@@ -61,25 +61,15 @@ INT32 UartPutc(INT32 ch, VOID *file)
 }
 #endif
 
-#ifdef LOSCFG_SHELL
-
 #define CN_RCV_RING_BUFLEN  128
-typedef struct {
-    int size;
-    int posW;
-    int posR;
-    int dataLen;
-    unsigned char *buf;
-} RingBuffer;
 static RingBuffer *g_debugRingBuf;
-
 /**
  * @brief: use this function to read data from ring buffer
  * @input: ringBuf, the ring buf to be read
  * @input: data, data to be read storaged
  * @return: 0 success while -1 failed
  */
-static int RingBufRead(RingBuffer *buf, unsigned char *data)
+int RingBufRead(RingBuffer *buf, unsigned char *data)
 {
     if (buf->dataLen == 0) {
         return -1;
@@ -97,7 +87,7 @@ static int RingBufRead(RingBuffer *buf, unsigned char *data)
  * @input: data, data to be written
  * @return: 0 success while -1 failed
  */
-static int RingBufWrite(RingBuffer *buf, unsigned char data)
+int RingBufWrite(RingBuffer *buf, unsigned char data)
 {
     if (buf->dataLen == buf->size) {
         return -1;
@@ -109,7 +99,7 @@ static int RingBufWrite(RingBuffer *buf, unsigned char data)
     }
 }
 
-static int RingBufWriteMore(RingBuffer *buf, unsigned char* data, uint32_t size)
+int RingBufWriteMore(RingBuffer *buf, unsigned char* data, uint32_t size)
 {
     for (uint32_t i = 0; i < size; i++) {
         if (RingBufWrite(buf, data[i]) !=0) {
@@ -191,7 +181,7 @@ void StartUartShell(void)
     stTask.pfnTaskEntry = (TSK_ENTRY_FUNC)HdfShellTaskEntry;
     stTask.uwStackSize = HDF_SHELL_STACK_SIZE;
     stTask.pcName = HDF_SHELL_TASK_NAME;
-    stTask.usTaskPrio = HDF_SHELL_TASK_PRIORITY; /* Os task priority is 3 */
+    stTask.usTaskPrio = HDF_SHELL_TASK_PRIORITY; /* Os task priority is 26 */
     uwRet = LOS_TaskCreate(&taskID, &stTask);
     if (uwRet != LOS_OK) {
         HDF_LOGE("Task1 create failed\n");
@@ -220,8 +210,7 @@ static void huart1_irq(void)
         unsigned char value;
         value = (uint8_t) (huart1.Instance->DR & 0x00FF);
         RingBufWrite(g_debugRingBuf, value);
-    }
-    else if (__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE) != RESET) {
+    } else if (__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE) != RESET) {
         __HAL_UART_CLEAR_IDLEFLAG(&huart1);
         (void)LOS_EventWrite(&g_shellInputEvent, 0x1);
     }
@@ -239,5 +228,4 @@ VOID ShellUartInit(VOID)
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
 }
-#endif
 #endif

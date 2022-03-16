@@ -20,6 +20,19 @@
 #include "los_compiler.h"
 #include <stdio.h>
 
+#define CN_RCV_RING_BUFLEN  128
+typedef struct {
+    int size;
+    int posW;
+    int posR;
+    int dataLen;
+    unsigned char *buf;
+} RingBuffer;
+
+int RingBufRead(RingBuffer *buf, unsigned char *data);
+int RingBufWrite(RingBuffer *buf, unsigned char data);
+int RingBufWriteMore(RingBuffer *buf, unsigned char* data, uint32_t size);
+RingBuffer* RingBufInit(int size);
 
 extern UART_HandleTypeDef huart1;
 extern EVENT_CB_S g_shellInputEvent;
