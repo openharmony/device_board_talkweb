@@ -25,18 +25,19 @@
     defined (UART4) || defined (UART5) || defined (USART6)
 
 #define UART_NUM_MAX 6
-#define UART_IRQ_NUM 5
-#define UART_NUM1 0
-#define UART_NUM2 1
-#define UART_NUM3 2
-#define UART_NUM4 3
-#define UART_NUM5 4
-#define UART_NUM6 5
+#define UART_IRQ_NUM 0
+#define UART_NUM1 1
+#define UART_NUM2 2
+#define UART_NUM3 3
+#define UART_NUM4 4
+#define UART_NUM5 5
+#define UART_NUM6 6
 
 static EVENT_CB_S g_uartInputEvent;
 static BOOL g_eventInited = FALSE;
 static RingBuffer *g_uartRingBuf[UART_NUM_MAX] = {NULL};
 #define RING_BUFFER_SIZE 128
+
 typedef void (*UART_FUNC_CB)(void);
 static void USART1_IRQ_Func(void)
 {
@@ -52,16 +53,15 @@ static void USART1_IRQ_Func(void)
 
 static void USART1_BLOCK_IRQ_Func(void)
 {
+    uint8_t value = 0;
     if (LL_USART_IsActiveFlag_RXNE(USART1)) {
-        uint8_t value;
         value = LL_USART_ReceiveData8(USART1);
         LL_USART_ClearFlag_RXNE(USART1);
-        RingBufWrite(g_uartRingBuf[UART_NUM1], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM1 - 1], value);
     }
 
-    LL_USART_EnableIT_IDLE(USART1);
     if(LL_USART_IsActiveFlag_IDLE(USART1)) {
-        LL_USART_DisableIT_IDLE(USART1);
+        LL_USART_ClearFlag_IDLE(USART1);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM1) != 0) {
             return;
         }
@@ -76,7 +76,7 @@ static void USART2_IRQ_Func(void)
         uint8_t value;
         value = LL_USART_ReceiveData8(USART2);
         LL_USART_ClearFlag_RXNE(USART2);
-        RingBufWrite(g_uartRingBuf[UART_NUM2], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM2 - 1], value);
     }
 
     return;
@@ -88,7 +88,7 @@ static void USART2_BLOCK_IRQ_Func(void)
         uint8_t value;
         value = LL_USART_ReceiveData8(USART2);
         LL_USART_ClearFlag_RXNE(USART2);
-        RingBufWrite(g_uartRingBuf[UART_NUM2], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM2 - 1], value);
     }
 
     LL_USART_EnableIT_IDLE(USART2);
@@ -120,7 +120,7 @@ static void USART3_BLOCK_IRQ_Func(void)
         uint8_t value;
         value = LL_USART_ReceiveData8(USART3);
         LL_USART_ClearFlag_RXNE(USART3);
-        RingBufWrite(g_uartRingBuf[UART_NUM3], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM3 - 1], value);
     }
 
     LL_USART_EnableIT_IDLE(USART3);
@@ -152,7 +152,7 @@ static void USART4_BLOCK_IRQ_Func(void)
         uint8_t value;
         value = LL_USART_ReceiveData8(UART4);
         LL_USART_ClearFlag_RXNE(UART4);
-        RingBufWrite(g_uartRingBuf[UART_NUM4], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM4 - 1], value);
     }
 
     LL_USART_EnableIT_IDLE(UART4);
@@ -184,7 +184,7 @@ static void USART5_BLOCK_IRQ_Func(void)
         uint8_t value;
         value = LL_USART_ReceiveData8(UART5);
         LL_USART_ClearFlag_RXNE(UART5);
-        RingBufWrite(g_uartRingBuf[UART_NUM5], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM5 - 1], value);
     }
 
     LL_USART_EnableIT_IDLE(UART5);
@@ -215,7 +215,7 @@ static void USART6_BLOCK_IRQ_Func(void)
         uint8_t value;
         value = LL_USART_ReceiveData8(USART6);
         LL_USART_ClearFlag_RXNE(USART6);
-        RingBufWrite(g_uartRingBuf[UART_NUM6], value);
+        RingBufWrite(g_uartRingBuf[UART_NUM6 - 1], value);
     }
 
     LL_USART_EnableIT_IDLE(USART6);
@@ -278,6 +278,7 @@ void UART_IRQ_INIT(USART_TypeDef * UART, uint8_t num, uint32_t irqNum, BOOL isBl
         }
 
         LL_USART_EnableIT_RXNE(UART);
+        LL_USART_EnableIT_IDLE(UART);
         ArchHwiCreate(irqNum, UART_IRQ_NUM, 1, g_funcBlockMap[num - 1], NULL);
     } else {
         LL_USART_EnableIT_RXNE(UART);
@@ -300,8 +301,9 @@ uint32_t USART_RxData(uint8_t num, uint8_t *p_data, uint32_t size, BOOL isBlock)
     uint32_t readLen = 0;
     unsigned char data;
     if (isBlock) {
-        (VOID)LOS_EventRead(&g_uartInputEvent, num - 1, LOS_WAITMODE_AND | LOS_WAITMODE_CLR, LOS_WAIT_FOREVER);
+        (VOID)LOS_EventRead(&g_uartInputEvent, num, LOS_WAITMODE_AND | LOS_WAITMODE_CLR, LOS_WAIT_FOREVER);
     }
+
     while (size--) {
         if (0 == RingBufRead(g_uartRingBuf[num - 1], &data)) {
             *p_data = data;
