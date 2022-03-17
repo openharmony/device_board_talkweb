@@ -16,6 +16,7 @@
 #ifndef _TARGET_CONFIG_H
 #define _TARGET_CONFIG_H
 
+#include "los_compiler.h"
 #include "stm32f4xx.h"
 /*=============================================================================
                                         System clock module configuration
@@ -36,15 +37,14 @@
 /*=============================================================================
                                        Task module configuration
 =============================================================================*/
-#define LOSCFG_BASE_CORE_TSK_LIMIT                          24
-#define LOSCFG_BASE_CORE_TSK_IDLE_STACK_SIZE                (0x500U)
+#define LOSCFG_BASE_CORE_TSK_LIMIT                          63
+#define LOSCFG_BASE_CORE_TSK_IDLE_STACK_SIZE                (0x1000U)
 #define LOSCFG_BASE_CORE_TSK_DEFAULT_STACK_SIZE             (0x1000U)
-#define LOSCFG_BASE_CORE_TSK_MIN_STACK_SIZE                 (0x130U)
+#define LOSCFG_BASE_CORE_TSK_MIN_STACK_SIZE                 (ALIGN(0x80, 4))
 #define LOSCFG_BASE_CORE_TIMESLICE                          1
-#define LOSCFG_BASE_CORE_TIMESLICE_TIMEOUT                  20000
+#define LOSCFG_BASE_CORE_TIMESLICE_TIMEOUT                  10
 #define LOSCFG_BASE_CORE_TSK_MONITOR                        1
-#define LOSCFG_BASE_CORE_CPUP                               1
-#define LOSCFG_BASE_CORE_EXC_TSK_SWITCH                     1
+#define LOSCFG_BASE_CORE_EXC_TSK_SWITCH                     0
 
 /*=============================================================================
                                        Semaphore module configuration
@@ -74,7 +74,7 @@ extern unsigned int __los_heap_addr_start__;
 extern unsigned int __los_heap_addr_end__;
 #define LOSCFG_SYS_EXTERNAL_HEAP                            1
 #define LOSCFG_SYS_HEAP_ADDR                                ((void *)&__los_heap_addr_start__)
-#define LOSCFG_SYS_HEAP_SIZE                                (((unsigned long)&__los_heap_addr_end__) - ((unsigned long)&__los_heap_addr_start__) + 1)
+#define LOSCFG_SYS_HEAP_SIZE                                (((unsigned long)&__los_heap_addr_end__) - ((unsigned long)&__los_heap_addr_start__))
 #define LOSCFG_MEM_MUL_POOL                                 1
 #define OS_SYS_MEM_NUM                                      20
 #define LOSCFG_MEM_FREE_BY_TASKID                           1

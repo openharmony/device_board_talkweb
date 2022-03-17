@@ -64,7 +64,7 @@ root {
             mount_points = ["/talkweb"];
             partitions = [0x800000];
             block_size = [4096];
-            block_count = [2048];
+            block_count = [256];
         }
     }
 }
