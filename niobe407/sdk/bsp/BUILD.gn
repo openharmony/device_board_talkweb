@@ -41,14 +41,23 @@ kernel_module(module_name) {
     deps = [":tw_sys_boot"]
 }
 
-use_copy_static_library = true
+use_copy_static_library = false
 lite_library("tw_sys_boot") {
     target_type = "static_library"
-    if (use_copy_static_library)
+    if(use_copy_static_library)
     {
       sources = []
       deps = [":copy_tw_sys_boot"]
-    }    
+    }
+    else
+    {
+      sources = [
+        "lib/tw_sys_boot_src/ohos_main.c",
+        "lib/tw_sys_boot_src/main.c",
+        "lib/tw_sys_boot_src/system_stm32f4xx.c",
+      ]
+    }
+    
 }
 
 build_ext_component("copy_tw_sys_boot") {
@@ -78,20 +87,22 @@ config("public") {
     
     ldflags += [
       "-Wl,--whole-archive",
-      "-lbootstrap",
-      "-lbroadcast",
-      "-lhctest",
+        "-lbootstrap",
+        "-lbroadcast",
+        "-lhctest",
+        "-lmodule_ActsUtilsFileTest",
+        "-lmodule_ActsKvStoreTest",
+        # "-lmodule_ActsSamgrTest",
       # "-lmodule_ActsParameterTest",
       # "-lmodule_ActsBootstrapTest",
       #   "-lmodule_ActsDfxFuncTest",
       #   "-lmodule_ActsHieventLiteTest",
-      "-lmodule_ActsSamgrTest",
+      #   "-lmodule_ActsSamgrTest",
       #   "-lmodule_ActsDsoftbusMgrTest",
       #   "-lmodule_ActsBundleMgrTest",
       #   "-lmodule_ActsAbilityMgrTest",
-      #   "-lmodule_ActsKvStoreTest",
-      #   "-lhuks_test_common",
-      #   "-lmodule_ActsHuksHalFunctionTest",
+        # "-lhuks_test_common",
+        # "-lmodule_ActsHuksHalFunctionTest",
       #   "-lmodule_ActsUpdaterFuncTest",
       "-Wl,--no-whole-archive",
     ]
