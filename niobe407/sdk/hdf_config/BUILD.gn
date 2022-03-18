@@ -15,18 +15,8 @@ import("//drivers/adapter/khdf/liteos_m/hdf.gni")
 
 module_name = "hdf_hcs"
 hdf_driver(module_name) {
-  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_GPIO) && defined(LOSCFG_NIOBE407_USE_201_HDF)) {
-    hcs_sources = [ "hdf_gpio.hcs" ] 
-  } else if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI) && defined(LOSCFG_NIOBE407_USE_202_HDF)){
-    hcs_sources = [ "hdf_spi.hcs" ] 
-  } else if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_UART) && defined(LOSCFG_NIOBE407_USE_203_HDF)) {
-    hcs_sources = [ "hdf_uart.hcs" ] 
-  } else if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_WATCHDOG) && defined(LOSCFG_NIOBE407_USE_205_HDF)){
-    hcs_sources = [ "hdf_watchdog.hcs" ]
-  } else if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_PWM) && defined(LOSCFG_NIOBE407_USE_206_HDF)) {
-    hcs_sources = [ "hdf_pwm.hcs" ]
-  } else if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_UART)) {
-    hcs_sources = [ "hdf_littlefs.hcs" ]
+  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
+    hcs_sources = [ "hdf.hcs" ] 
   }
   
   visibility += [
