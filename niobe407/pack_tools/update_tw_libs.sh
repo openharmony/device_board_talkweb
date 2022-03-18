@@ -19,15 +19,6 @@ root_path=${hb_env_str##* }
 hb_env_str=`hb env | grep "\[OHOS INFO\] board"`
 board_name=${hb_env_str##* }
 
-#更新系统启动库
-TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_sys_boot.a
-if [ -f "$TW_LIB_PATH" ]; then
-    cp $TW_LIB_PATH $root_path/device/board/talkweb/$board_name/sdk/bsp/lib/ -rf
-else
-    echo "Update twlib fail, because of $TW_LIB_PATH is not exist!!"
-    exit -1
-fi
-
 #更新有线网络lwip适配库
 TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_ethernet_static.a
 if [ -f "$TW_LIB_PATH" ]; then
