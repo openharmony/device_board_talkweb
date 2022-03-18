@@ -23,6 +23,9 @@ kernel_module(module_name) {
         "src/sys_service_config.c",
         "src/run_sys_before.c",
         "src/dprintf.c",
+        "src/main.c",
+        "src/ohos_main.c",
+        "src/system_stm32f4xx.c"
     ]
 
     include_dirs = [ 
@@ -37,32 +40,6 @@ kernel_module(module_name) {
         "//base/hiviewdfx/hilog_lite/frameworks/mini",
         "//base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite",
     ]
-    
-    deps = [":tw_sys_boot"]
-}
-
-use_copy_static_library = false
-lite_library("tw_sys_boot") {
-    target_type = "static_library"
-    if(use_copy_static_library)
-    {
-      sources = []
-      deps = [":copy_tw_sys_boot"]
-    }
-    else
-    {
-      sources = [
-        "lib/tw_sys_boot_src/ohos_main.c",
-        "lib/tw_sys_boot_src/main.c",
-        "lib/tw_sys_boot_src/system_stm32f4xx.c",
-      ]
-    }
-    
-}
-
-build_ext_component("copy_tw_sys_boot") {
-    exec_path = rebase_path(".", root_build_dir)
-    command = "cp lib/libtw_sys_boot.a ../../../../../../out/niobe407/niobe407/libs/libtw_sys_boot.a"
 }
 
 config("public") {
@@ -87,23 +64,26 @@ config("public") {
     
     ldflags += [
       "-Wl,--whole-archive",
-        "-lbootstrap",
-        "-lbroadcast",
-        "-lhctest",
-        "-lmodule_ActsUtilsFileTest",
-        "-lmodule_ActsKvStoreTest",
-        # "-lmodule_ActsSamgrTest",
-      # "-lmodule_ActsParameterTest",
+
+      "-lbootstrap",
+      "-lbroadcast",
+      "-lhctest",
+
+      #公共基础库
+      # "-lmodule_ActsUtilsFileTest",
+      # "-lmodule_ActsKvStoreTest",
+      
+      #DFX
+      # "-lmodule_ActsDfxFuncTest",
+      # "-lmodule_ActsHieventLiteTest",
+
+      #启动恢复
       # "-lmodule_ActsBootstrapTest",
-      #   "-lmodule_ActsDfxFuncTest",
-      #   "-lmodule_ActsHieventLiteTest",
-      #   "-lmodule_ActsSamgrTest",
-      #   "-lmodule_ActsDsoftbusMgrTest",
-      #   "-lmodule_ActsBundleMgrTest",
-      #   "-lmodule_ActsAbilityMgrTest",
-        # "-lhuks_test_common",
-        # "-lmodule_ActsHuksHalFunctionTest",
-      #   "-lmodule_ActsUpdaterFuncTest",
+      # "-lmodule_ActsParameterTest",
+
+      #分布式任务调度
+      "-lmodule_ActsSamgrTest",
+
       "-Wl,--no-whole-archive",
     ]
   }
