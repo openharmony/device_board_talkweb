@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Talkweb Co., Ltd.
+ * Copyright (c) 2022 Talkweb Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,14 +38,12 @@ __attribute__((weak)) void before_ohos_run(){
 
 static void talkweb_sys_service()
 {
-    /* 系统服务配置初始化 */
     sys_service_config();
 
-    /* 启动应用程序 */
     ohos_app_main();
 
     while(1) {
-        feed_dog();           //喂狗
+        feed_dog();
         LOS_TaskDelay(1000);
     }
 }
@@ -73,7 +71,7 @@ void OHOS_Boot(void)
 {
     UINT32 ret;
 
-    before_ohos_run();  //系统运行之前的程序入口函数
+    before_ohos_run();
 
     ret = LOS_KernelInit();
     if (ret == LOS_OK) {
