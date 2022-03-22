@@ -103,13 +103,13 @@ uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, ui
         NVIC_SetPriority(EXTI0_IRQn + pin, 0);
         NVIC_EnableIRQ(EXTI0_IRQn + pin);
     } else if (pin >= PIN_EXIT_FIVE && pin < PIN_EXIT_TEN) {
-        NVIC_SetVector(EXTI0_IRQn + pin, (uint32_t)LL_Gpio_Exti_Handler);
-        NVIC_SetPriority(EXTI0_IRQn + pin, 0);
-        NVIC_EnableIRQ(EXTI0_IRQn + pin);
+        NVIC_SetVector(EXTI9_5_IRQn, (uint32_t)LL_Gpio_Exti_Handler);
+        NVIC_SetPriority(EXTI9_5_IRQn, 0);
+        NVIC_EnableIRQ(EXTI9_5_IRQn);
     } else if (pin >= PIN_EXIT_TEN && pin < PIN_EXIT_SIXTEEN) {
-        NVIC_SetVector(EXTI0_IRQn + pin, (uint32_t)LL_Gpio_Exti_Handler);
-        NVIC_SetPriority(EXTI0_IRQn + pin, 0);
-        NVIC_EnableIRQ(EXTI0_IRQn + pin);
+        NVIC_SetVector(EXTI15_10_IRQn, (uint32_t)LL_Gpio_Exti_Handler);
+        NVIC_SetPriority(EXTI15_10_IRQn, 0);
+        NVIC_EnableIRQ(EXTI15_10_IRQn);
     }
     g_exitSetupCounts++;
 
