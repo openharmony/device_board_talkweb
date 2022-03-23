@@ -24,7 +24,7 @@ kernel_module(module_name) {
 }
 
 config("public") {
-  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
+  if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
     include_dirs = [
       "include",
       "//drivers/framework/include/platform",
