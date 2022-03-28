@@ -2,12 +2,11 @@
 root {
     platform {
         pwm1_config {
-            gpio_pwm1{
+            gpio_pwm1 {
                 gpio_num_max = 1; 
                 // port, pin, mode, speed, outputType, pull, alternate
                 gpio_num_1 = [0, 3, 2, 3, 0, 2, 1]; // tim2 ch4 pa3                
             }
-            
             pwmconfig : gpio_pwm1 {
                 match_attr = "config_pwm1"; // default use pwm1
                 pwmTim = 1; // timID tim2 0 :tim1, 1:tim2 ..... tim6 and tim7can't not use for pwm
@@ -18,12 +17,11 @@ root {
             }       
         }
         pwm2_config {
-            gpio_pwm2{
+            gpio_pwm2 {
                 gpio_num_max = 1; 
                 // port, pin, mode, speed, outputType, pull, alternate
                 gpio_num_1 = [0, 6, 2, 3, 0, 2, 2]; // tim3 ch1 pa6               
             }
-            
             pwmconfig2 : gpio_pwm2 {
                 match_attr = "config_pwm2";
                 pwmTim = 2;
@@ -32,12 +30,11 @@ root {
             }   
         } 
         pwm3_config {
-            gpio_pwm3{
+            gpio_pwm3 {
                 gpio_num_max = 1; 
                 // port, pin, mode, speed, outputType, pull, alternate
                 gpio_num_1 = [8, 5, 2, 3, 0, 2, 3]; // tim8 ch1 pi5               
             }
-            
             pwmconfig3 : gpio_pwm3 {
                 match_attr = "config_pwm7";
                 pwmTim = 7;

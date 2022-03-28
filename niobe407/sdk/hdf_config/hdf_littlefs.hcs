@@ -10,26 +10,26 @@ root {
                 gpio_num_3 = [1, 4, 2, 3, 0, 0, 5]; // miso pb4
                 gpio_num_4 = [0, 15, 1, 3, 0, 0 ,0]; // cs pa15
             }
-	    spi_config : spi_gpio{
-	        match_attr = "spi_w25q_config";
-		busNum = 0;
-		csNum = 0;
-		transDir = 0; // 0: TW_HAL_SPI_FULL_DUPLEX 1: TW_HAL_SPI_SIMPLEX_RX 2: TW_HAL_SPI_HALF_DUPLEX_RX 3: TW_HAL_SPI_HALF_DUPLEX_TX
-		transMode = 1; // 1: normal 0:dma
-		smMode = 1; //  0: slave 1: master
-		dataWidth = 0; // 0:8bit 1:16bit
-		clkMode = 0; // 0: cpol 0 cpha 0  1:CPOL = 1; CPHA = 0 2:CPOL = 0; CPHA = 1 3:CPOL = 1; CPHA = 1
-		nss = 0; // 0:NSS SOFT 1: NSS HARDWARE INPUT 2: NSS HARDWARE OUTPUT
-		baudRate = 1; // 0:div2 1:div4 2:div8 3:div16 4:div32 5:div64 6:div128 6:div256
-		bitOrder = 0; // 0: MSB first 1: LSB first
-		crcEnable = 0; // 0: crc disable 1: crc enable
-		crcPoly = 10; // Min_Data = 0x00 and Max_Data = 0xFFFF
-		spix = 0;   // 0: spi1  1: spi2  2:spi3
-		csPin = 15;
-		csGpiox = 0;
-		standard = 0; // 0:motorola 1: ti
-		dummyByte = 255;
-	    }
+            spi_config : spi_gpio{
+                match_attr = "spi_w25q_config";
+                busNum = 0;
+                csNum = 0;
+                transDir = 0; // 0: HAL_SPI_FULL_DUPLEX 1: HAL_SPI_SIMPLEX_RX 2: HAL_SPI_HALF_DUPLEX_RX 3: HAL_SPI_HALF_DUPLEX_TX
+                transMode = 1; // 1: normal 0:dma
+                smMode = 1; //  0: slave 1: master
+                dataWidth = 0; // 0:8bit 1:16bit
+                clkMode = 0; // 0: cpol 0 cpha 0  1:CPOL = 1; CPHA = 0 2:CPOL = 0; CPHA = 1 3:CPOL = 1; CPHA = 1
+                nss = 0; // 0:NSS SOFT 1: NSS HARDWARE INPUT 2: NSS HARDWARE OUTPUT
+                baudRate = 1; // 0:div2 1:div4 2:div8 3:div16 4:div32 5:div64 6:div128 6:div256
+                bitOrder = 0; // 0: MSB first 1: LSB first
+                crcEnable = 0; // 0: crc disable 1: crc enable
+                crcPoly = 10; // Min_Data = 0x00 and Max_Data = 0xFFFF
+                spix = 0;   // 0: spi1  1: spi2  2:spi3
+                csPin = 15;
+                csGpiox = 0;
+                standard = 0; // 0:motorola 1: ti
+                dummyByte = 255;
+            }
         }
 
         uart1 {
@@ -39,26 +39,28 @@ root {
                 gpio_num_1 = [1, 6, 2, 3, 0, 1, 7]; // tx pb6
                 gpio_num_2 = [1, 7, 2, 3, 0, 1, 7]; // rx pb7
             }
-	    uart_config1 : uart_gpio {
-	        match_attr = "uart_config1";
-	        num = 1; // 1 :usart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6
-	        baudRate = 115200; // baudrate
-	        dataWidth =  0; // 0:8bit 1:9bit
-	        stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
-	        parity = 0; // 0: none 1: event 2:odd
-	        transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
-	        flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
-	        overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
-	        idleIrq = 1; // 0: disable idle irq  1: enable idle irq
-	        transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA
-	        maxBufSize = 1024;
-	        uartType = 0; // 0 : 232 1: 485
-	        uartDePin = 0; // usart 485 pin
-	        uartDeGroup = 0; // usart 485 control line
+            
+            uart_config1 : uart_gpio {
+                match_attr = "uart_config1";
+                num = 1; // 1 :usart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6
+                baudRate = 115200; // baudrate
+                dataWidth =  0; // 0:8bit 1:9bit
+                stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
+                parity = 0; // 0: none 1: event 2:odd
+                transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
+                flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
+                overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
+                idleIrq = 1; // 0: disable idle irq  1: enable idle irq
+                transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA
+                maxBufSize = 1024;
+                uartType = 0; // 0 : 232 1: 485
+                uartDePin = 0; // usart 485 pin
+                uartDeGroup = 0; // usart 485 control line
             }
         }
     }
-	misc {
+    
+    misc {
         littlefs_config {
             match_attr = "littlefs_config";
             mount_points = ["/talkweb"];

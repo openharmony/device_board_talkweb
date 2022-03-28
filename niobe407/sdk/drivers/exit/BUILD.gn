@@ -16,10 +16,10 @@ import("//kernel/liteos_m/liteos.gni")
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
     sources = [
-      "src/hal_exti.c",
+        "src/hal_exti.c",
     ]
 }
 
 config("public") {
-  include_dirs = [ "include" ]
+    include_dirs = [ "include" ]
 }

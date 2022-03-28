@@ -12,39 +12,39 @@
 # limitations under the License.
 
 if (ohos_kernel_type == "liteos_m") {
-  import("//build/lite/config/component/lite_component.gni")
-  import("//build/lite/config/subsystem/lite_subsystem.gni")
-  import("//kernel/liteos_m/liteos.gni")
-  module_name = get_path_info(rebase_path("."), "name")
-  module_group(module_name) {
-    modules = [ 
-      "sdk",
-      "applications",
-    ]
-  }
+    import("//build/lite/config/component/lite_component.gni")
+    import("//build/lite/config/subsystem/lite_subsystem.gni")
+    import("//kernel/liteos_m/liteos.gni")
+    module_name = get_path_info(rebase_path("."), "name")
+    module_group(module_name) {
+        modules = [ 
+            "sdk",
+            "applications",
+        ]
+    }
 
-  group("process_after_build") {
-      deps = [
-        ":pack_all_in_one",
-        ":update_tw_libs",
-      ]
-  }
+    group("process_after_build") {
+        deps = [
+            ":pack_all_in_one",
+            ":update_tw_libs",
+        ]
+    }
 
-  build_ext_component("pack_all_in_one") {
-      exec_path = rebase_path(".", root_build_dir)
-      command = "sh pack_tools/pack_all_in_one.sh"
-      deps = [
-        "//build/lite:ohos",
-        "//kernel/liteos_m:build_kernel_image",
-      ]
-  }
+    build_ext_component("pack_all_in_one") {
+        exec_path = rebase_path(".", root_build_dir)
+        command = "sh pack_tools/pack_all_in_one.sh"
+        deps = [
+            "//build/lite:ohos",
+            "//kernel/liteos_m:build_kernel_image",
+        ]
+    }
 
-  build_ext_component("update_tw_libs") {
-      exec_path = rebase_path(".", root_build_dir)
-      command = "sh pack_tools/update_tw_libs.sh"
-      deps = [ 
-        "//build/lite:ohos",
-        "//kernel/liteos_m:build_kernel_image"
-     ]
-  }
+    build_ext_component("update_tw_libs") {
+        exec_path = rebase_path(".", root_build_dir)
+        command = "sh pack_tools/update_tw_libs.sh"
+        deps = [ 
+            "//build/lite:ohos",
+            "//kernel/liteos_m:build_kernel_image"
+        ]
+    }
 }

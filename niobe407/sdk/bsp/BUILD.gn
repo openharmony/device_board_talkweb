@@ -43,54 +43,51 @@ kernel_module(module_name) {
 }
 
 config("public") {
-  include_dirs = [
-    ".",
-    "include",
-    "//device/soc/st/stm32f4xx/sdk/Core/Inc",
-    "//device/soc/st/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
-    "//device/soc/st/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
-    "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
-    "//drivers/framework/core/common/include/manager",
-  ]
-  
-  ldflags = [
-    "-Wl,-T" + rebase_path("ld/STM32F407IGTx_FLASH.ld"),
-    "-Wl,-u_printf_float",
-  ]
-
-  if (build_xts)
-  {
-    lib_dirs = [ "$root_out_dir/libs" ]
-    
-    ldflags += [
-      "-Wl,--whole-archive",
-
-      "-lbootstrap",
-      "-lbroadcast",
-      "-lhctest",
-
-      #公共基础库
-      # "-lmodule_ActsUtilsFileTest",
-      # "-lmodule_ActsKvStoreTest",
-      
-      #DFX
-      # "-lmodule_ActsDfxFuncTest",
-      # "-lmodule_ActsHieventLiteTest",
-
-      #启动恢复
-      # "-lmodule_ActsBootstrapTest",
-      # "-lmodule_ActsParameterTest",
-
-      #分布式任务调度
-      "-lmodule_ActsSamgrTest",
-
-      "-Wl,--no-whole-archive",
+    include_dirs = [
+        ".",
+        "include",
+        "//device/soc/st/stm32f4xx/sdk/Core/Inc",
+        "//device/soc/st/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
+        "//device/soc/st/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+        "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
+        "//drivers/framework/core/common/include/manager",
     ]
-  }
+  
+    ldflags = [
+        "-Wl,-T" + rebase_path("ld/STM32F407IGTx_FLASH.ld"),
+        "-Wl,-u_printf_float",
+    ]
 
-  libs = [
-    "c",
-    "m",
-    "nosys",
-  ]
+    if (build_xts) {
+        lib_dirs = [ "$root_out_dir/libs" ]
+        
+        ldflags += [
+            "-Wl,--whole-archive",
+            "-lbootstrap",
+            "-lbroadcast",
+            "-lhctest",
+
+            #公共基础库
+            # "-lmodule_ActsUtilsFileTest",
+            # "-lmodule_ActsKvStoreTest",
+            
+            #DFX
+            # "-lmodule_ActsDfxFuncTest",
+            # "-lmodule_ActsHieventLiteTest",
+
+            #启动恢复
+            # "-lmodule_ActsBootstrapTest",
+            # "-lmodule_ActsParameterTest",
+
+            #分布式任务调度
+            "-lmodule_ActsSamgrTest",
+            "-Wl,--no-whole-archive",
+        ]
+    }
+
+    libs = [
+        "c",
+        "m",
+        "nosys",
+    ]
 }

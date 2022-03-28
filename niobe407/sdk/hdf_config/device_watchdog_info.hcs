@@ -1,35 +1,35 @@
 root {
-  module = "talkweb,stm32f407";
-  device_info {
-    match_attr = "hdf_manager";
-    template host {
-      hostName = "";
-      priority = 100;
-      template device {
-          template deviceNode {
-              policy = 0;
-              priority = 100;
-              preload = 0;
-              permission = 0664;
-              moduleName = "";
-              serviceName = "";
-              deviceMatchAttr = "";
-          }
-      }
+    module = "talkweb,stm32f407";
+    device_info {
+        match_attr = "hdf_manager";
+        template host {
+            hostName = "";
+            priority = 100;
+            template device {
+                template deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "";
+                    serviceName = "";
+                    deviceMatchAttr = "";
+                }
+            }
+        }
+        platform :: host {
+            hostName = "platform_host";
+            priority = 50;
+            device_watchdog :: device {
+                watchdog0 :: deviceNode {
+                    policy = 1;             
+                    priority = 20;          
+                    permission = 0644; 
+                    moduleName = "ST_WATCHDOG_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_WATCHDOG_0";
+                    deviceMatchAttr = "st_watchdog";
+                }
+            }
+        }
     }
-    platform :: host {
-      hostName = "platform_host";
-      priority = 50;
-      device_watchdog :: device {
-          watchdog0 :: deviceNode {
-              policy = 1;             // policy字段是驱动服务发布的策略,如果需要面向用户态，则为2
-              priority = 20;          // 驱动启动优先级
-              permission = 0644;      // 驱动创建设备节点权限
-              moduleName = "ST_WATCHDOG_MODULE_HDF";
-              serviceName = "HDF_PLATFORM_WATCHDOG_0";
-              deviceMatchAttr = "st_watchdog";
-          }
-      }
-    }
-  }
 }

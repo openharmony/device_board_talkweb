@@ -27,7 +27,7 @@ root {
                     moduleName = "ST_SPI_MODULE_HDF";
                     serviceName = "HDF_PLATFORM_SPI_0";
                     deviceMatchAttr = "spi_w25q_config";
-                    }
+                }
             }
             device_uart2 :: device {
 		    uart1 :: deviceNode {
@@ -36,7 +36,7 @@ root {
                     moduleName = "ST_UART_MODULE_HDF";
                     serviceName = "HDF_PLATFORM_UART_1";
                     deviceMatchAttr = "uart_config1";
-		    }
+		        }
             }
         }
         misc :: host {

@@ -10,12 +10,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import("//kernel/liteos_m/liteos.gni")
+
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
     if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
         sources = [
-          "hdf_base_hal.c",
+            "src/hdf_base_hal.c",
         ]
     } else {
         sources = []
@@ -23,10 +25,10 @@ kernel_module(module_name) {
 }
 
 config("public") {
-  include_dirs = [ 
-    "." ,
-    "//drivers/framework/include/utils",
-    "//drivers/adapter/khdf/liteos_m/osal/include",
-    "//drivers/framework/include/utils/",
-  ]
+    include_dirs = [ 
+        "include",
+        "//drivers/framework/include/utils",
+        "//drivers/adapter/khdf/liteos_m/osal/include",
+        "//drivers/framework/include/utils/",
+    ]
 }

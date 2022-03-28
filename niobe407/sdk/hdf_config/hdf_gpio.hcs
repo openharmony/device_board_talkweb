@@ -6,7 +6,7 @@ root {
             pin = [0, 1, 2, 3]; // pin index when register to hdf framework
             realPin = [5, 6, 0, 1]; // pin number in stm32 led2 pe5, led3 pe6,
             group = [4, 4, 4, 4]; // group of gpio 0:GPIOA 1:GPIOB 2:GPIOC 3:GPIOD 4:GPIOE 5: GPIOF 6:GPIOG 7:GPIOH 8:GPIOI
-	    mode = [1, 1, 0, 0]; // 0: input 1: output 2:alternate 3:analog  
+            mode = [1, 1, 0, 0]; // 0: input 1: output 2:alternate 3:analog  
             speed = [0, 0, 0, 0]; // 0: low 1: middle 2:high 3:very_high
             pull = [0, 0, 0, 0]; // 0: nopull 1:up 2:down
             pinNum = 4;
