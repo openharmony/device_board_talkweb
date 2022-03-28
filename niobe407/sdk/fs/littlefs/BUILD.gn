@@ -15,24 +15,24 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-  if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
-    sources = [
-      "src/fs_init.c",
-      "src/littlefs.c",
-    ]
-  }
+    if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
+        sources = [
+            "src/fs_init.c",
+            "src/littlefs.c",
+        ]
+    }
 }
 
 config("public") {
-  if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
-    include_dirs = [
-      "include",
-      "//drivers/framework/include/platform",
-      "//drivers/framework/include/utils",
-      "//drivers/adapter/khdf/liteos_m/osal/include",
-      "//drivers/framework/include/osal",
-      "//drivers/framework/include/core",
-      "//drivers/framework/core/common/include/host"
-    ]
-  }
+    if (defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI)) {
+        include_dirs = [
+            "include",
+            "//drivers/framework/include/platform",
+            "//drivers/framework/include/utils",
+            "//drivers/adapter/khdf/liteos_m/osal/include",
+            "//drivers/framework/include/osal",
+            "//drivers/framework/include/core",
+            "//drivers/framework/core/common/include/host"
+        ]
+    }
 }

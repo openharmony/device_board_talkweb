@@ -16,11 +16,11 @@ import("//kernel/liteos_m/liteos.gni")
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
     sources = [
-      "src/watch_dog.c",
-      "src/hal_watchdog.c",
+        "src/watch_dog.c",
+        "src/hal_watchdog.c",
     ]
 }
 
 config("public") {
-  include_dirs = [ "include" ]
+    include_dirs = [ "include" ]
 }

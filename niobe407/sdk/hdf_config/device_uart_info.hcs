@@ -20,22 +20,22 @@ root {
         platform :: host {
             hostName = "platform_host";
             device_uart :: device {
-		uart4 :: deviceNode {
+                uart4 :: deviceNode {
                     policy = 2;
                     priority = 100;
                     moduleName = "ST_UART_MODULE_HDF";
                     serviceName = "HDF_PLATFORM_UART_4";
                     deviceMatchAttr = "uart_config4";
-		}
+                }
             }
             device_uart1 :: device {
-		uart5 :: deviceNode {
+                uart5 :: deviceNode {
                     policy = 2;
                     priority = 100;
                     moduleName = "ST_UART_MODULE_HDF";
                     serviceName = "HDF_PLATFORM_UART_5";
                     deviceMatchAttr = "uart_config5";
-		}
+                }
             }
         }
     }

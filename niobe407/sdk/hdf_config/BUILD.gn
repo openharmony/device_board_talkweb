@@ -15,12 +15,12 @@ import("//drivers/adapter/khdf/liteos_m/hdf.gni")
 
 module_name = "hdf_hcs"
 hdf_driver(module_name) {
-  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
-    hcs_sources = [ "hdf.hcs" ] 
-  }
+    if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
+        hcs_sources = [ "hdf.hcs" ] 
+    }
   
-  visibility += [
-    "$device_path",
-    ".",
-  ]
+    visibility += [
+        "$device_path",
+        ".",
+    ]
 }

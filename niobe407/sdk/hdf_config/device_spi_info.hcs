@@ -20,13 +20,13 @@ root {
         platform :: host {
             hostName = "platform_host";
             device_spi :: device {
-	    spi0 :: deviceNode {
-                    policy = 2;
-                    priority = 100;
-                    moduleName = "ST_SPI_MODULE_HDF";
-                    serviceName = "HDF_PLATFORM_SPI_0";
-                    deviceMatchAttr = "spi_w25q_config";
-	        }
+                spi0 :: deviceNode {
+                        policy = 2;
+                        priority = 100;
+                        moduleName = "ST_SPI_MODULE_HDF";
+                        serviceName = "HDF_PLATFORM_SPI_0";
+                        deviceMatchAttr = "spi_w25q_config";
+                }
             }
         }
     }

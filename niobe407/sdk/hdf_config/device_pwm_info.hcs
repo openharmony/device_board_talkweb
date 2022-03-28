@@ -22,26 +22,26 @@ root {
             priority = 50;
             device_pwm1 :: device {
                 pwm1 :: deviceNode { // pwm config
-		    policy = 2;
-		    priority = 100;
-		    serviceName = "HDF_PLATFORM_PWM_1";
-		    deviceMatchAttr = "config_pwm1";
+                    policy = 2;
+                    priority = 100;
+                    serviceName = "HDF_PLATFORM_PWM_1";
+                    deviceMatchAttr = "config_pwm1";
                 }
             }
             device_pwm2 :: device {
                 pwm2 :: deviceNode { // pwm config
-		    policy = 2;
-		    priority = 100;
-		    serviceName = "HDF_PLATFORM_PWM_2";
-		    deviceMatchAttr = "config_pwm2";
+                    policy = 2;
+                    priority = 100;
+                    serviceName = "HDF_PLATFORM_PWM_2";
+                    deviceMatchAttr = "config_pwm2";
                 }
             }
-           device_pwm7 :: device {
+            device_pwm7 :: device {
                 pwm7 :: deviceNode { // pwm config
-		    policy = 2;
-		    priority = 100;
-		    serviceName = "HDF_PLATFORM_PWM_7";
-		    deviceMatchAttr = "config_pwm7";
+                    policy = 2;
+                    priority = 100;
+                    serviceName = "HDF_PLATFORM_PWM_7";
+                    deviceMatchAttr = "config_pwm7";
                 }
             }
         }

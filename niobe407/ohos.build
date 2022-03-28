@@ -1,10 +1,10 @@
 {
-  "subsystem":"device_niobe407",
-  "parts": {
-    "device_niobe407": {
-      "module_list": [
-        "//device/board/talkweb/niobe407:process_after_build"
-      ]
+    "subsystem":"device_niobe407",
+    "parts": {
+        "device_niobe407": {
+            "module_list": [
+                "//device/board/talkweb/niobe407:process_after_build"
+            ]
+        }
     }
-  }
 }
