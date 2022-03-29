@@ -72,15 +72,16 @@ config("public") {
             # "-lmodule_ActsKvStoreTest",
             
             #DFX
-            # "-lmodule_ActsDfxFuncTest",
-            # "-lmodule_ActsHieventLiteTest",
+            "-lmodule_ActsDfxFuncTest",
+            "-lmodule_ActsHieventLiteTest",
 
             #启动恢复
             # "-lmodule_ActsBootstrapTest",
             # "-lmodule_ActsParameterTest",
 
             #分布式任务调度
-            "-lmodule_ActsSamgrTest",
+            # "-lmodule_ActsSamgrTest",
+            
             "-Wl,--no-whole-archive",
         ]
     }
