@@ -26,7 +26,6 @@ if (ohos_kernel_type == "liteos_m") {
     group("process_after_build") {
         deps = [
             ":pack_all_in_one",
-            ":update_tw_libs",
         ]
     }
 
@@ -36,15 +35,6 @@ if (ohos_kernel_type == "liteos_m") {
         deps = [
             "//build/lite:ohos",
             "//kernel/liteos_m:build_kernel_image",
-        ]
-    }
-
-    build_ext_component("update_tw_libs") {
-        exec_path = rebase_path(".", root_build_dir)
-        command = "sh pack_tools/update_tw_libs.sh"
-        deps = [ 
-            "//build/lite:ohos",
-            "//kernel/liteos_m:build_kernel_image"
         ]
     }
 }
