@@ -24,27 +24,3 @@ TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_ethernet_static.a
 if [ -f "$TW_LIB_PATH" ]; then
     cp $TW_LIB_PATH $root_path/device/board/talkweb/$board_name/sdk/lwip_adapter/lib/ -rf
 fi
-
-#更新deviceauth组件库
-TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_device_auth_static.a
-if [ -f "$TW_LIB_PATH" ]; then
-    cp $TW_LIB_PATH $root_path/device/board/talkweb/components/deviceauth/lib/ -rf
-fi
-
-#更新sntpmanager组件库
-TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_sntp_static.a
-if [ -f "$TW_LIB_PATH" ]; then
-    cp $TW_LIB_PATH $root_path/device/board/talkweb/components/sntpmanager/lib/ -rf
-fi
-
-#更新twlinksdk组件库
-TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_linksdk_static.a
-if [ -f "$TW_LIB_PATH" ]; then
-    cp $TW_LIB_PATH $root_path/device/board/talkweb/components/twlinksdk/lib/ -rf
-fi
-
-#更新twota组件库
-TW_LIB_PATH=$root_path/out/$board_name/$board_name/libs/libtw_ota_static.a
-if [ -f "$TW_LIB_PATH" ]; then
-    cp $TW_LIB_PATH $root_path/device/board/talkweb/components/twota/lib/ -rf
-fi
