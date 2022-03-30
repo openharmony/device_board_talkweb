@@ -15,13 +15,11 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 module_group(module_name) {
-    modules = [ 
-        "bsp",
-        "drivers",
-        "fs",
-        "lwip_adapter",
-        "hdf_config",
-        "bootloader",
-        "tools"
-    ]
+    modules = []
+    deps = [ ":build_bootloader_bin" ]
+}
+
+build_ext_component("build_bootloader_bin") {
+    exec_path = rebase_path(".", root_build_dir)
+    command = "make"
 }

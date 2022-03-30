@@ -44,7 +44,7 @@ int main(void)
 
 static void SystemClockConfig(void)
 {
-    RCC_OscInitTypeDef RCCOscInitStruct = {0};
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
     __HAL_RCC_PWR_CLK_ENABLE();
