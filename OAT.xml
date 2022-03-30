@@ -28,6 +28,7 @@
                 <policyitem type="copyright" name="Huawei Technologies Co., Ltd. All rights reserved." path=".*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by Huawei"/>
                 <policyitem type="license" name="EndUserLicenseAgreement" path=".*"  desc="License Header Invalid"/>
                 <policyitem type="license" name="BSD-3-Clause" path=".*"  desc="License Header Invalid"/>
+                <policyitem type="license" name="BSDStyleLicense" path="niobe407/sdk/bootloader/.*"  desc="bootloader file License Header Invalid"/>
             </policy>
         </policylist>
         <filefilterlist>
@@ -38,6 +39,9 @@
             <filefilter name="defaultPolicyFilter" desc="Filters for copyright header policies">
                 <filteritem type="filepath" name="niobe407/sdk/bsp/src/system_stm32f4xx.c" desc="InvalidLicense"/>       
                 <filteritem type="filepath" name="niobe407/sdk/bsp/include/stm32f4xx_hal_conf.h" desc="InvalidLicense"/>
+                <filteritem type="filepath" name="niobe407/sdk/bootloader/inc/stm32f4xx_hal_conf.h" desc="InvalidLicense"/>
+                <filteritem type="filepath" name="niobe407/sdk/bootloader/inc/stm32f4xx_it.h" desc="InvalidLicense"/>
+                <filteritem type="filepath" name="niobe407/sdk/bootloader/src/stm32f4xx_it.c" desc="InvalidLicense"/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
                 <filteritem type="filepath" name="EULA" desc="EULA"/>

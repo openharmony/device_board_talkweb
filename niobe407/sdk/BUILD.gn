@@ -22,5 +22,6 @@ module_group(module_name) {
         "lwip_adapter",
         "hdf_config",
         "bootloader",
+        "tools"
     ]
 }

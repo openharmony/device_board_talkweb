@@ -11,18 +11,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MERGE_BIN_PATH=../../../../../../../out/niobe407/niobe407/bin
-MERGE_BIN=$(MERGE_BIN_PATH)/merge_bin
-CC=gcc
-INCLUDE :=-I ./
-LIBS :=-L../lib
-OBJ=$(patsubst %.c,%.o,$(wildcard *.c))
+import("//kernel/liteos_m/liteos.gni")
 
-$(MERGE_BIN):$(OBJ)
-	mkdir -p $(MERGE_BIN_PATH)
-	$(CC) -o $@ $^ $(LIBS)
-	rm *.o -rf
-%.o:%.c
-	$(CC) -c $^ -o  $@ 	$(INCLUDE)
-clean:
-	rm $(OBJ) -rf
+module_name = get_path_info(rebase_path("."), "name")
+module_group(module_name) {
+    modules = []
+    deps = [ ":build_merge_bin" ]
+}
+
+build_ext_component("build_merge_bin") {
+    exec_path = rebase_path("./merge_bin", root_build_dir)
+    command = "make"
+}
