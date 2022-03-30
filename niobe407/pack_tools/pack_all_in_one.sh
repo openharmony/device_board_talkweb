@@ -21,7 +21,7 @@ board_name=${hb_env_str##* }
 
 
 MERGE_TOOL_PATH=$root_path/device/board/talkweb/$board_name/sdk/tools/merge_bin/merge_bin
-BOOT_LOADER_PATH=$root_path/device/board/talkweb/$board_name/sdk/bootloader/tw_boot.bin
+BOOT_LOADER_PATH=$root_path/out/$board_name/$board_name/bin/tw_boot.bin
 APP_PATH=$root_path/out/$board_name/$board_name/OHOS_Image.bin
 OUTPUT_ALLINONE_PATH=$root_path/out/$board_name/$board_name/OHOS_Image_ALLINONE.bin
 

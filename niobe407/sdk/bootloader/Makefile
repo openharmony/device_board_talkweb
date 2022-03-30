@@ -165,7 +165,8 @@ $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@
-	cp $(BUILD_DIR)/$(TARGET).bin tw_boot.bin -rf
+	mkdir -p ../../../../../../out/niobe407/niobe407/bin
+	cp $(BUILD_DIR)/$(TARGET).bin ../../../../../../out/niobe407/niobe407/bin/tw_boot.bin -rf
 	rm -rf 	$(BUILD_DIR)
 	
 $(BUILD_DIR):
