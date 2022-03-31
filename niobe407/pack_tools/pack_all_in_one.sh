@@ -22,7 +22,7 @@ board_name=${hb_env_str##* }
 BOOT_LOADER_PATH=$root_path/out/$board_name/$board_name/bin/tw_boot.bin
 MERGE_TOOL_PATH=$root_path/out/$board_name/$board_name/bin/merge_bin
 APP_PATH=$root_path/out/$board_name/$board_name/OHOS_Image.bin
-OUTPUT_ALLINONE_PATH=$root_path/out/$board_name/$board_name/OHOS_Image_ALLINONE.bin
+OUTPUT_ALLINONE_PATH=$root_path/out/$board_name/$board_name/OHOS_Image_allinone.bin
 
 #合并bootloader程序
 $MERGE_TOOL_PATH $BOOT_LOADER_PATH $APP_PATH $OUTPUT_ALLINONE_PATH
