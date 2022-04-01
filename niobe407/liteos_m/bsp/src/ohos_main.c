@@ -12,39 +12,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <stdio.h>
 #include "los_task.h"
 #include "los_compiler.h"
 #include "cmsis_os2.h"
-#include <stdio.h>
 #include "samgr_lite.h"
 #include "ohos_init.h"
 #include "ohos_types.h"
 #include "watch_dog.h"
 
-extern void OHOS_SystemInit(void); // this is the service loader function for OHOS
-
 #define TALKWEB_SERVICE_STACKSIZE       (4096)
-#define TALKWEB_SERVICE_TASK_PRIOR      25
+#define TALKWEB_SERVICE_TASK_PRIOR      26
 #define TALKWEB_SERVICE_TASK_NAME       "talkweb_sys_service"
+#define TALKWEB_SERVICE_TASK_DELAY      1000
 
-__attribute__((weak)) void ohos_app_main(){
+__attribute__((weak)) void ohos_app_main(void)
+{
     printf("No application run, Maybe you should config your application in BUILD.gn!\n");
     return;
 }
 
-__attribute__((weak)) void before_ohos_run(){
+__attribute__((weak)) void before_ohos_run(void)
+{
     return;
 }
 
-static void talkweb_sys_service()
+static void talkweb_sys_service(void)
 {
     sys_service_config();
 
     ohos_app_main();
 
-    while(1) {
+    while (1) {
         feed_dog();
-        LOS_TaskDelay(1000);
+        LOS_TaskDelay(TALKWEB_SERVICE_TASK_DELAY);
     }
 }
 
@@ -63,7 +64,7 @@ static void OHOS_Main(void)
     }
 }
 
-/***
+/**
  * @brief This is the ohos entry, and you could call this in your main funciton after the
  *        necessary hardware has been initialized.
  */
