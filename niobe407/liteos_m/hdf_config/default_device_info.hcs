@@ -1,0 +1,65 @@
+root {
+    module = "talkweb,stm32f407";
+    device_info {
+        match_attr = "hdf_manager";
+        template host {
+            hostName = "";
+            priority = 100;
+            template device {
+                template deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "";
+                    serviceName = "";
+                    deviceMatchAttr = "";
+                }
+            }
+        }
+        platform :: host {
+            hostName = "platform_host";
+            priority = 50;
+            device_gpio :: device {
+                gpio0 :: deviceNode {
+                    policy = 0;
+                    priority = 60;
+                    moduleName = "ST_GPIO_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_GPIO";
+                    deviceMatchAttr = "gpio_config";
+                }
+            }
+            device_spi :: device {
+                spi0 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_SPI_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_SPI_0";
+                    deviceMatchAttr = "spi_w25q_config";
+                }
+            }
+            device_uart1 :: device {
+		        uart1 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_UART_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_UART_1";
+                    deviceMatchAttr = "uart_config1";
+		        }
+            }
+        }
+        misc :: host {
+            hostName = "misc_host";
+            priority = 100;
+            fs :: device {
+                littlefs :: deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    moduleName = "HDF_FS_LITTLEFS";
+                    deviceMatchAttr = "littlefs_config";
+                }
+            }
+        }
+    }
+}
+

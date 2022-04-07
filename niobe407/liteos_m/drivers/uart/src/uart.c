@@ -154,15 +154,15 @@ static INT32 InitDebugShellUart(uint32_t port)
 static void HdfShellTaskEntry(void)
 {
     while(1) {
+        int ret = 0;
         memset_s(rbuf, MAX_BUF_SIZE, 0, MAX_BUF_SIZE);
-        int32_t ret = UartRead(handle, rbuf, MAX_BUF_SIZE);
-        if (ret < 0) {
+        int32_t readLen = UartRead(handle, rbuf, MAX_BUF_SIZE);
+        if (readLen < 0) {
             return;
         } else {
-            RingBufWriteMore(g_debugRingBuf, rbuf, ret);
-            ret = LOS_EventWrite(&g_shellInputEvent, 0x1);
-            if (ret != 0) {
-                return;
+            for (int i = 0; i < readLen; i++) {
+                (void)RingBufWrite(g_debugRingBuf, rbuf[i]);
+                (void)LOS_EventWrite(&g_shellInputEvent, 0x1);
             }
         }
     }
