@@ -1,1 +1,142 @@
-#include "hdf_littlefs.hcs"
+#include "device_info.hcs"
+root {
+    platform {
+        gpio_config {
+            match_attr = "gpio_config"; // 0-3 gpio test, 4-6 pwm test , 7-10 spi flash 11-12 uart4 13-15 uart5 16-17 uart1 debug com 18-19 i2c test
+            pin = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; // pin index when register to hdf framework
+            realPin = [5, 6, 0, 1, 3, 6, 5, 5, 5, 4, 15, 10, 11, 12, 2, 12, 6, 7, 7, 8]; // pin number in stm32 led2 pe5, led3 pe6,
+            group = [4, 4, 4, 4, 0, 0, 8, 0, 1, 1, 0, 2, 2, 2, 3, 6, 1, 1, 7, 7]; // group of gpio 0:GPIOA 1:GPIOB 2:GPIOC 3:GPIOD 4:GPIOE 5: GPIOF 6:GPIOG 7:GPIOH 8:GPIOI
+            mode = [1, 1, 0, 0, 2, 2, 2, 2, 2, 2 ,1, 2, 2, 2, 2, 1, 2, 2, 2, 2]; // 0: input 1: output 2:alternate 3:analog  
+            speed = [0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]; // 0: low 1: middle 2:high 3:very_high
+            pull = [0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 0, 0]; // 0: nopull 1:up 2:down
+            pinNum = 20;
+            output = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]; // 0:pushpull 1:opendrain
+            alternate = [0, 0, 0, 0, 1, 2, 3, 5, 5, 5, 0, 8, 8, 8, 8, 0, 7, 7, 4, 4];
+        }
+
+        pwm_config {
+			pwm1_config {
+	            match_attr = "config_pwm1"; // default use pwm1
+	            pwmTim = 1; // timID tim2 0 :tim1, 1:tim2 ..... tim6 and tim7can't not use for pwm
+	            pwmCh = 3; // tim chanel 4 0:ch1 1:ch2 2:ch3 3:ch4
+	            prescaler = 4199; // prescaler for example tim2 clock is 84M, (84M/(4199+1)) = 20khz, 
+	                              // set 20khz to caculate stanard ,tim2-tim7, tim12-tim14is 84M TIM8~TIM11 is 168M
+	                              // tim1~tim5 tim8 have 4 channel tim9,tim12 only have ch1, ch2,  tim10, tim11,tim13,tim14 only ch1 
+	        }       
+	        pwm2_config {
+	            match_attr = "config_pwm2";
+	            pwmTim = 2;
+	            pwmCh = 0;
+	            prescaler = 8399;   
+	        } 
+	        pwm3_config {
+	            match_attr = "config_pwm7";
+	            pwmTim = 7;
+	            pwmCh = 0;
+	            prescaler = 8399; 
+	        }           
+        }
+        spi_config {
+			spi_config1 {
+	            match_attr = "spi_w25q_config";
+	            busNum = 0;
+	            csNum = 0;
+	            transDir = 0; // 0: TW_HAL_SPI_FULL_DUPLEX 1: TW_HAL_SPI_SIMPLEX_RX 2: TW_HAL_SPI_HALF_DUPLEX_RX 3: TW_HAL_SPI_HALF_DUPLEX_TX
+	            transMode = 1; // 1: normal 0:dma
+	            smMode = 1; // 0: slave 1: master
+	            dataWidth = 0; // 0:8bit 1:16bit
+	            clkMode = 0; // 0: cpol 0 cpha 0  1:CPOL = 1; CPHA = 0 2:CPOL = 0; CPHA = 1 3:CPOL = 1; CPHA = 1
+	            nss = 0; // 0:NSS SOFT 1: NSS HARDWARE INPUT 2: NSS HARDWARE OUTPUT
+	            baudRate = 1; // 0:div2 1:div4 2:div8 3:div16 4:div32 5:div64 6:div128 6:div256
+	            bitOrder = 0; // 0: MSB first 1: LSB first
+	            crcEnable = 0; // 0: crc disable 1: crc enable
+	            crcPoly = 10; // Min_Data = 0x00 and Max_Data = 0xFFFF
+	            spix = 0;   // 0: spi1  1: spi2  2:spi3
+	            csPin = 15;
+	            csGpiox = 0;
+	            standard = 0; // 0:motorola 1: ti
+	            dummyByte = 255;
+       	    }
+        }
+        uart_config {
+            uart1_config {
+                match_attr = "uart_config1";
+                num = 1; // 1 :usart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6
+                baudRate = 115200; // baudrate
+                dataWidth =  0; // 0:8bit 1:9bit
+                stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
+                parity = 0; // 0: none 1: event 2:odd
+                transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
+                flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
+                overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
+                transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA
+                uartType = 0; // 0 : 232 1: 485
+                uartDePin = 0; // usart 485 pin
+                uartDeGroup = 0; // usart 485 control line
+            }
+			uart4_config {
+                match_attr = "uart_config4";
+                num = 4; // 1 :uart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6
+                baudRate = 115200; // baudrate
+                dataWidth =  0; // 0:8bit 1:9bit
+                stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
+                parity = 0; // 0: none 1: event 2:odd
+                transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
+                flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
+                overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
+                transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA
+                uartType = 0; // 0 : 232 1: 485
+                uartDePin = 0;  // usart 485 pin
+                uartDeGroup = 0; // usart 485 control line
+            }
+            uart5_config {
+                match_attr = "uart_config5";
+                num = 5; // 1 :uart1 2: USART2 3:USART3 4:UART4 5:UART5 6:USART6
+                baudRate = 115200; // baudrate
+                dataWidth =  0; // 0:8bit 1:9bit
+                stopBit = 1; // 0:0.5stop bits  1:1 stop bit 2:1.5 stop bits 2:2 stop bits
+                parity = 0; // 0: none 1: event 2:odd
+                transDir = 3; // 0: dir none  1: rx  2: tx 3:tx and rx
+                flowCtrl = 0; // 0: no flowcontrl  1: flowContorl RTS  2: flowControl CTS 3: flowControl RTS AND CTS
+                overSimpling = 0; // 0: overSimpling 16bits  1: overSimpling 8bits
+                transMode = 0; // 0:block 1:noblock 2:TX DMA RX NORMAL  3:TX NORMAL  RX DMA 4: USART_TRANS_TX_RX_DMA
+                uartType = 1; // 0 : 232 1: 485
+                uartDePin = 12; // usart 485 pin
+                uartDeGroup = 6; // usart 485 control line
+            }
+        }
+        i2c_config {
+            i2c3_config {
+                match_attr = "i2c3_config";
+                port = 3;
+                devMode = 0; //0 = master, 1= slave
+                devAddr = 0; 
+                speed = 100000;
+            }        
+        }
+        watchdog_config {
+	        template watchdog_controller {
+	            id = 0;
+	            regBase = 0x12050000;
+	            regStep = 0x1000;
+	            timeout = 1000; // watchdog interval(ms)
+	            match_attr = "";
+	        }
+	        st_watchdog :: watchdog_controller {
+	            match_attr = "st_watchdog";
+	            timeout = 500;
+	        }
+        }
+    }
+    misc {
+        fs_config {
+	        littlefs_config {
+	            match_attr = "littlefs_config";
+	            mount_points = ["/talkweb"];
+	            partitions = [0x800000];
+	            block_size = [4096];
+	            block_count = [256];
+	        }
+        }
+    }
+}

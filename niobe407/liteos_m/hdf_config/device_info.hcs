@@ -1,0 +1,137 @@
+root {
+    module = "talkweb,stm32f407";
+    device_info {
+        match_attr = "hdf_manager";
+        template host {
+            hostName = "";
+            priority = 100;
+            template device {
+                template deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    preload = 0;
+                    permission = 0664;
+                    moduleName = "";
+                    serviceName = "";
+                    deviceMatchAttr = "";
+                }
+            }
+        }
+        platform :: host {
+            hostName = "platform_host";
+            priority = 50;
+            device_gpio :: device {
+                gpio0 :: deviceNode {
+                    policy = 0;
+                    priority = 60;
+                    moduleName = "ST_GPIO_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_GPIO";
+                    deviceMatchAttr = "gpio_config";
+                }
+            }
+            device_pwm1 :: device {
+                pwm1 :: deviceNode { // pwm config
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_HDF_PLATFORM_PWM";
+                    serviceName = "HDF_PLATFORM_PWM_1";
+                    deviceMatchAttr = "config_pwm1";
+                }
+            }
+            device_pwm2 :: device {
+                pwm2 :: deviceNode { // pwm config
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_HDF_PLATFORM_PWM";
+                    serviceName = "HDF_PLATFORM_PWM_2";
+                    deviceMatchAttr = "config_pwm2";
+                }
+            }
+            device_pwm7 :: device {
+                pwm7 :: deviceNode { // pwm config
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_HDF_PLATFORM_PWM";
+                    serviceName = "HDF_PLATFORM_PWM_7";
+                    deviceMatchAttr = "config_pwm7";
+                }
+            }
+            device_spi :: device {
+                spi0 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_SPI_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_SPI_0";
+                    deviceMatchAttr = "spi_w25q_config";
+                }
+            }
+            device_uart1 :: device {
+		        uart1 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_UART_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_UART_1";
+                    deviceMatchAttr = "uart_config1";
+		        }
+            }
+            device_uart4 :: device {
+                uart4 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_UART_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_UART_4";
+                    deviceMatchAttr = "uart_config4";
+                }
+            }
+            device_uart5 :: device {
+                uart5 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "ST_UART_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_UART_5";
+                    deviceMatchAttr = "uart_config5";
+                }
+            }
+            device_i2c :: device {
+                i2c_manager :: deviceNode {
+                    policy = 2;
+                    priority = 50;
+                    moduleName = "HDF_PLATFORM_I2C_MANAGER";
+                    serviceName = "HDF_PLATFORM_I2C_MANAGER";
+                } 
+
+                i2c3 :: deviceNode {      
+                    policy = 0;             
+                    priority = 100;        
+                    preload = 0;           
+                    permission = 0664;     
+                    moduleName = "HDF_I2C";
+                    serviceName = "HDF_PLATFORM_I2C_3";   
+                    deviceMatchAttr = "i2c3_config";
+                }                
+            }
+            device_watchdog :: device {
+                watchdog0 :: deviceNode {
+                    policy = 1;             
+                    priority = 20;          
+                    permission = 0644; 
+                    moduleName = "ST_WATCHDOG_MODULE_HDF";
+                    serviceName = "HDF_PLATFORM_WATCHDOG_0";
+                    deviceMatchAttr = "st_watchdog";
+                }
+            }
+        }
+        misc :: host {
+            hostName = "misc_host";
+            priority = 100;
+            fs :: device {
+                littlefs :: deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    moduleName = "HDF_FS_LITTLEFS";
+                    deviceMatchAttr = "littlefs_config";
+                }
+            }
+        }
+    }
+}
