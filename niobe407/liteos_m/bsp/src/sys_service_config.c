@@ -19,10 +19,12 @@
 #include "hiview_def.h"
 #include "hiview_output_log.h"
 
+#define BUFLEN 2
+
 bool HilogProc_Impl(const HiLogContent *hilogContent, uint32_t len)
 {
     char tempOutStr[LOG_FMT_MAX_LEN];
-    tempOutStr[0] = 0,tempOutStr[1] = 0;
+    tempOutStr[0] = 0, tempOutStr[1] = 0;
     if (LogContentFmt(tempOutStr, sizeof(tempOutStr), hilogContent) > 0) {
         printf(tempOutStr);
     }
@@ -31,14 +33,18 @@ bool HilogProc_Impl(const HiLogContent *hilogContent, uint32_t len)
 
 int HiLogWriteInternal(const char *buffer, size_t bufLen)
 {
-    if (!buffer)
+    if (!buffer) {
         return -1;
-    if (bufLen < 2)
+    }
+
+    if (bufLen < BUFLEN) {
         return 0;
+    }
+        
     if (buffer[bufLen - 2] != '\n') {
         *((char *)buffer + bufLen - 1) = '\n';
     }
-    printf("%s\n",buffer);
+    printf("%s\n", buffer);
     return 0;
 }
 

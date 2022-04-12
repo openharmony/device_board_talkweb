@@ -29,32 +29,34 @@ static void dputs(char const *s, int (*pFputc)(int n, FILE *cookie), void *cooki
     }
     LOS_IntRestore(intSave);
 }
+
 int hal_trace_printf(uint32_t attr, const char *fmt, ...)
 {
     char buf[1024] = { 0 };
     va_list ap;
     va_start(ap, fmt);
     int len = vsnprintf_s(buf, sizeof(buf), 1024 - 1, fmt, ap);
-    va_end(ap);
     if (len > 0) {
         dputs(buf, UartPutc, 0);
     } else {
         dputs("printf error!\n", UartPutc, 0);
     }
+    va_end(ap);
     return len;
 
 }
+
 int printf(char const  *fmt, ...)
 {
     char buf[1024] = { 0 };
     va_list ap;
     va_start(ap, fmt);
     int len = vsnprintf_s(buf, sizeof(buf), 1024 - 1, fmt, ap);
-    va_end(ap);
     if (len > 0) {
         dputs(buf, UartPutc, 0);
     } else {
         dputs("printf error!\n", UartPutc, 0);
     }
+    va_end(ap);
     return len;
 }

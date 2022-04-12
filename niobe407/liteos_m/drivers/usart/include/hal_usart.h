@@ -16,11 +16,11 @@
 #ifndef _HAL_USART_H_
 #define _HAL_USART_H_
 
+#include "stm32f4xx_ll_usart.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "stm32f4xx_ll_usart.h"
 
 #if defined (USART1) || defined (USART2) || defined (USART3) || defined (USART6) \
     || defined (UART4) || defined (UART5)

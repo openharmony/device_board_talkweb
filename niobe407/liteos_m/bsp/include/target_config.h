@@ -74,7 +74,7 @@ extern unsigned int __los_heap_addr_start__;
 extern unsigned int __los_heap_addr_end__;
 #define LOSCFG_SYS_EXTERNAL_HEAP                            1
 #define LOSCFG_SYS_HEAP_ADDR                                ((void *)&__los_heap_addr_start__)
-#define LOSCFG_SYS_HEAP_SIZE                                (((unsigned long)&__los_heap_addr_end__) - ((unsigned long)&__los_heap_addr_start__))
+#define LOSCFG_SYS_HEAP_SIZE (((unsigned long)&__los_heap_addr_end__) - ((unsigned long)&__los_heap_addr_start__))
 #define LOSCFG_MEM_MUL_POOL                                 1
 #define OS_SYS_MEM_NUM                                      20
 #define LOSCFG_MEM_FREE_BY_TASKID                           1
