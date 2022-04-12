@@ -43,6 +43,7 @@ static uint8_t BufferCmp(uint8_t* pBuffer1, uint8_t* pBuffer2, uint16_t BufferLe
     }
     return 1;
 }
+
 #if (USE_TRANSFER_API == 1)
 static uint16_t ReadDeviceId(DevHandle spiHandle)
 {
@@ -334,8 +335,14 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     int32_t ret = 0;
     wbuf1 = (uint8_t*)OsalMemAlloc(size + sizeof(wbuf));
 
-    strncpy_s(wbuf1, size + sizeof(wbuf), wbuf, sizeof(wbuf));
-    strncpy_s(wbuf1 + sizeof(wbuf), size, buf, size);
+    ret = strncpy_s(wbuf1, size + sizeof(wbuf), wbuf, sizeof(wbuf));
+    if (ret < 0) {
+        HDF_LOGE("strncpy wbuf failed, ret %d\n", ret);
+    }
+    ret = strncpy_s(wbuf1 + sizeof(wbuf), size, buf, size);
+    if (ret < 0) {
+        HDF_LOGE("strncpy buf failed, ret %d\n", ret);
+    }
     ret = SpiWrite(spiHandle, wbuf1, size + sizeof(wbuf));
     if (ret != 0) {
         HDF_LOGE("SpiWrite: failed, ret %d\n", ret);
