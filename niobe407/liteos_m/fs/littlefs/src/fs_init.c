@@ -64,7 +64,7 @@ static uint32_t FsGetResource(struct fs_cfg *fs)
         fs[i].lfs_cfg.block_count = block_count[i];
 
         HDF_LOGI("%s: fs[%d] mount_point=%s, partition=%u, block_size=%u, block_count=%u",
-                 __func__, i, fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context, 
+                 __func__, i, fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context,
                  fs[i].lfs_cfg.block_size, fs[i].lfs_cfg.block_count);
     }
     return HDF_SUCCESS;
@@ -83,17 +83,17 @@ static uint32_t FsGetResource(struct fs_cfg *fs, const struct DeviceResourceNode
         return HDF_FAILURE;
     }
     for (int32_t i = 0; i < num; i++) {
-        if (resource->GetStringArrayElem(resourceNode, "mount_points", 
+        if (resource->GetStringArrayElem(resourceNode, "mount_points",
             i, &fs[i].mount_point, NULL) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get mount_points", __func__);
             return HDF_FAILURE;
         }
-        if (resource->GetUint32ArrayElem(resourceNode, "partitions", 
+        if (resource->GetUint32ArrayElem(resourceNode, "partitions",
             i, (uint32_t *)&fs[i].lfs_cfg.context, 0) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get partitions", __func__);
             return HDF_FAILURE;
         }
-        if (resource->GetUint32ArrayElem(resourceNode, "block_size", 
+        if (resource->GetUint32ArrayElem(resourceNode, "block_size",
             i, &fs[i].lfs_cfg.block_size, 0) != HDF_SUCCESS) {
             HDF_LOGE("%s: failed to get block_size", __func__);
             return HDF_FAILURE;
@@ -104,7 +104,7 @@ static uint32_t FsGetResource(struct fs_cfg *fs, const struct DeviceResourceNode
             return HDF_FAILURE;
         }
         HDF_LOGI("%s: fs[%d] mount_point=%s, partition=%u, block_size=%u, block_count=%u",
-                 __func__, i,fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context, 
+                 __func__, i,fs[i].mount_point, (uint32_t)fs[i].lfs_cfg.context,
                  fs[i].lfs_cfg.block_size, fs[i].lfs_cfg.block_count);
     }
     return HDF_SUCCESS;

@@ -27,7 +27,7 @@
 #include "netif/etharp.h"
 
 err_t ethernetif_init(struct netif *netif);
-void ethernetif_input( void const * argument);
+void ethernetif_input(void const * argument);
 struct pbuf * low_level_input(struct netif *netif);
 void USER_IRQHandler(void);
 void getmac(uint8_t* pMacBuf);

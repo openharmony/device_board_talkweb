@@ -172,7 +172,7 @@ static void *HdfI2cTestEntry(void *arg)
         HDF_LOGE("%s: Open I2c:%u fail!\r\n", __func__, busId);
         exitThread();
         return;
-    } 
+    }
 
     osDelay(100);
     unsigned char uuidBuf[8] = {0x11, 0x22, 0x33, 0x44, 0xaa, 0xbb, 0xcc, 0xdd};
@@ -207,7 +207,7 @@ void StartHdfI2cTest(void)
     stTask.pfnTaskEntry = (TSK_ENTRY_FUNC)HdfI2cTestEntry;
     stTask.uwStackSize = 0X1000;
     stTask.pcName = "HdfI2cTestEntry";
-    stTask.usTaskPrio = 2; 
+    stTask.usTaskPrio = 2;
     uwRet = LOS_TaskCreate(&taskID, &stTask);
     if (uwRet != LOS_OK) {
         printf("Task1 create failed\n");

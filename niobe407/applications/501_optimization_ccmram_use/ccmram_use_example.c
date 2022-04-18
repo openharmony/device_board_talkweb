@@ -24,8 +24,8 @@ __attribute__((section(".ccmram"))) unsigned int test_buff [TEST_BUFF_LEN] = {0}
 
 __attribute__((section(".ccmram_func"))) void test_ccmram(void)
 {
-    for(int i=0; i<TEST_BUFF_LEN; i++) {
-        test_buff[i] = i;   
+    for (int i = 0; i<TEST_BUFF_LEN; i++) {
+        test_buff[i] = i;
     }
     
     if (test_buff[0] == 0 && test_buff[4095] == 4095)

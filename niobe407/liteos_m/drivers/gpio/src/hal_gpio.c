@@ -18,12 +18,13 @@
 #include "hal_gpio.h"
 #include "stm32f4xx_ll_bus.h"
 
-#if defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK)
+#if defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || \
+    defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK)
 
 GPIO_TypeDef* LL_GET_GPIOX(STM32_GPIO_GROUP group)
 {
     GPIO_TypeDef *GroupAddr = NULL;
-    switch(group) {
+    switch (group) {
         case STM32_GPIO_GROUP_A:
             GroupAddr = ((GPIO_TypeDef *)GPIOA);
             break;
@@ -61,6 +62,7 @@ uint32_t LL_GET_HAL_PIN(STM32_GPIO_PIN pin)
     return (LL_GPIO_PIN_0 << pin);
 }
 
-#endif /* defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK) */
+#endif /* defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || \
+    defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK) */
 
 #endif /* USE_FULL_LL_DRIVER */

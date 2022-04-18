@@ -32,7 +32,7 @@ void iperf_test(void *arg)
     lwiperf_start_tcp_server(&gEthLinkInfo.ipaddr, LOCAL_PORT, NULL, NULL);
     printf("lwiperf tcp_server is running...\n");
     iperf_run_flag = 1;
-    while(iperf_run_flag) {
+    while (iperf_run_flag) {
         osDelay(1000);
     }
 }
@@ -43,10 +43,9 @@ static void eth_enable_state_callBack(EthLinkState state)
     if (state == STATE_UPDATE_LINK_DOWN) {
         iperf_run_flag = 0;
         osThreadTerminate(iperf_test_id);
-		iperf_test_id = NULL;
+        iperf_test_id = NULL;
         printf("ETH LINK STATE: DisConnected!\r\n");
-    }
-    else if (state == STATE_UPDATE_LINK_UP) { 
+    } else if (state == STATE_UPDATE_LINK_UP) {
         printf("ETH LINK STATE: Connected!\r\n");
         if (net_init_finish == 0) {
             osThreadAttr_t attr;

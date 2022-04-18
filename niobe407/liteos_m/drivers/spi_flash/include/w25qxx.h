@@ -20,7 +20,7 @@
 #include "hdf_log.h"
 #include "spi_if.h"
 
-#define  W25x_ID                         0X4018     //W25Q128  16MB 
+#define W25x_ID                         0X4018     // W25Q128  16MB 
 
 uint8_t W25x_InitSpiFlash(uint32_t busNum, uint32_t csNum);
 uint8_t W25x_DeInitSpiFlash(void);

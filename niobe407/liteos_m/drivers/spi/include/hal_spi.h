@@ -29,7 +29,7 @@ extern "C" {
 
 #if defined(USE_FULL_LL_DRIVER)
 
-uint8_t     LL_SPI_Transmit(SPI_TypeDef* SPIx ,uint8_t byte);
+uint8_t LL_SPI_Transmit(SPI_TypeDef* SPIx ,uint8_t byte);
 
 #endif /* USE_FULL_LL_DRIVER */
 
@@ -40,5 +40,3 @@ uint8_t     LL_SPI_Transmit(SPI_TypeDef* SPIx ,uint8_t byte);
 #endif
 
 #endif /* HAL_SPI_H_SPI_H */
-
-

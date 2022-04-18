@@ -41,7 +41,7 @@ void MX_ADCx_Init(void)
     HAL_ADC_Init(&hadcx);
     sConfig.Channel = ADC_CHANNEL;
     sConfig.Rank = 1;
-    sConfig.SamplingTime = ADC_SAMPLETIME_56CYCLES;  
+    sConfig.SamplingTime = ADC_SAMPLETIME_56CYCLES;
     HAL_ADC_ConfigChannel(&hadcx, &sConfig);
 }
 
@@ -53,7 +53,7 @@ void ADCx_DMA_IRQx_Handler(void)
 void MX_DMA_Init(void)
 {
     DMAx_RCC_CLK_ENABLE();
-    LOS_HwiCreate(OS_SYS_VECTOR_CNT+ADCx_DMA_IRQx, 0, 1,(HWI_PROC_FUNC)ADCx_DMA_IRQx_Handler, 0);
+    LOS_HwiCreate(OS_SYS_VECTOR_CNT+ADCx_DMA_IRQx, 0, 1, (HWI_PROC_FUNC)ADCx_DMA_IRQx_Handler, 0);
 }
 
 void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
@@ -71,7 +71,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
         hdma_adcx.Init.Priority = DMA_PRIORITY_HIGH;
         hdma_adcx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
         HAL_DMA_Init(&hdma_adcx);
-        __HAL_LINKDMA(hadc,DMA_Handle,hdma_adcx);
+        __HAL_LINKDMA(hadc, DMA_Handle, hdma_adcx);
     }
 }
 
@@ -81,20 +81,20 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
         ADCx_RCC_CLK_DISABLE();
         HAL_DMA_DeInit(hadc->DMA_Handle);
     }
-} 
+}
 
 void Temperature_ADC_Init()
 {
     MX_DMA_Init();
     MX_ADCx_Init();
-    HAL_ADC_Start_DMA(&hadcx,(uint32_t *)&ADC_ConvertedValue,sizeof(ADC_ConvertedValue));  
+    HAL_ADC_Start_DMA(&hadcx, (uint32_t *)&ADC_ConvertedValue, sizeof(ADC_ConvertedValue));
 }
 
 double Temperature_Get()
 {
     double ADC_ConvertedValueLocal;
-    __IO double Current_Temperature; 
-    ADC_ConvertedValueLocal =(double)(ADC_ConvertedValue&0xFFF)*3.3/4096; 
+    __IO double Current_Temperature;
+    ADC_ConvertedValueLocal =(double)(ADC_ConvertedValue&0xFFF)*3.3/4096;
     Current_Temperature = (ADC_ConvertedValueLocal-0.76)/0.0025+25;
-    return Current_Temperature;					 
+    return Current_Temperature;
 }

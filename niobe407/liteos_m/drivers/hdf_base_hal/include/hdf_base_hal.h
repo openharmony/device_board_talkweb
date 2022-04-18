@@ -135,4 +135,4 @@ typedef struct {
 
 bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct DeviceResourceIface *dir);
 bool NiobeInitGpioInit(const HDF_GPIO_ATTR* attr);
-#endif  
+#endif

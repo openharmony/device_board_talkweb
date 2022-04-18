@@ -19,22 +19,22 @@ RNG_HandleTypeDef hrng;
 
 void RngInit(void)
 {
-  hrng.Instance = RNG;
-  if (HAL_RNG_Init(&hrng) != HAL_OK) {
+    hrng.Instance = RNG;
+    if (HAL_RNG_Init(&hrng) != HAL_OK) {
     printf("Rng modle init fail!\n");
-  }
+    }
 }
 
 void HAL_RNG_MspInit(RNG_HandleTypeDef* hrng)
 {
-  if (hrng->Instance==RNG) {
+    if (hrng->Instance==RNG) {
     __HAL_RCC_RNG_CLK_ENABLE();
-  }
+    }
 }
 
 void HAL_RNG_MspDeInit(RNG_HandleTypeDef* hrng)
 {
-  if (hrng->Instance==RNG) {
+    if (hrng->Instance==RNG) {
     __HAL_RCC_RNG_CLK_DISABLE();
-  }
+    }
 }

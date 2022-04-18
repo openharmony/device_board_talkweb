@@ -17,7 +17,7 @@
 #define __CAN_INIT_H__
 
 #ifdef __cplusplus
-extern "C"{
+extern "C " {
 #endif /* __cplusplus */
 
 extern CAN_HandleTypeDef hcan1;

@@ -43,17 +43,17 @@
  *        (when HSI is used as system clock source, directly or through the PLL).
  */
 #if !defined(HSI_VALUE)
-#define HSI_VALUE ((uint32_t)16000000U) /*!< Value of the Internal oscillator in Hz*/
+#define HSI_VALUE ((uint32_t)16000000U) /* !< Value of the Internal oscillator in Hz */
 #endif                                  /* HSI_VALUE */
 
 /**
  * @brief Internal Low Speed oscillator (LSI) value.
  */
 #if !defined(LSI_VALUE)
-#define LSI_VALUE 32000U /*!< LSI Typical Value in Hz*/
-#endif /* LSI_VALUE */   /*!< Value of the Internal Low Speed oscillator in Hz \
-                          The real value may vary depending on the variations  \
-                          in voltage and temperature.*/
+#define LSI_VALUE 32000U /* !< LSI Typical Value in Hz */
+#endif /* LSI_VALUE */   /* !< Value of the Internal Low Speed oscillator in Hz \
+                            The real value may vary depending on the variations \
+                            in voltage and temperature. */
 /**
  * @brief External Low Speed oscillator (LSE) value.
  */
@@ -71,7 +71,7 @@
  *        frequency, this source is inserted directly through I2S_CKIN pad.
  */
 #if !defined(EXTERNAL_CLOCK_VALUE)
-#define EXTERNAL_CLOCK_VALUE 12288000U /*!< Value of the External audio frequency in Hz*/
+#define EXTERNAL_CLOCK_VALUE 12288000U /* !< Value of the External audio frequency in Hz */
 #endif                                 /* EXTERNAL_CLOCK_VALUE */
 
 /* Tip: To avoid modifying this file each time you need to use different HSE,
@@ -155,9 +155,9 @@
 
 /* Section 2: PHY configuration section */
 
-/* DP83848_PHY_ADDRESS Address*/
+/* DP83848_PHY_ADDRESS Address */
 #define DP83848_PHY_ADDRESS 0x01U
-/* PHY Reset delay these values are based on a 1 ms Systick interrupt*/
+/* PHY Reset delay these values are based on a 1 ms Systick interrupt */
 #define PHY_RESET_DELAY 0x000000FFU
 /* PHY Configuration delay */
 #define PHY_CONFIG_DELAY 0x00000FFFU
@@ -411,4 +411,4 @@ void assert_failed(uint8_t *file, uint32_t line);
 #define assert_param(expr) ((void)0U)
 #endif /* USE_FULL_ASSERT */
 
-#endif 
+#endif

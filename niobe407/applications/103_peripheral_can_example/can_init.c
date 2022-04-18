@@ -22,21 +22,21 @@ CAN_HandleTypeDef hcan1;
 
 void MX_CAN1_Init(void)
 {
-  hcan1.Instance = CAN1;
-  hcan1.Init.Prescaler = 12;
-  hcan1.Init.Mode = CAN_MODE_NORMAL;
-  hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan1.Init.TimeSeg1 = CAN_BS1_6TQ;
-  hcan1.Init.TimeSeg2 = CAN_BS2_7TQ;
-  hcan1.Init.TimeTriggeredMode = DISABLE;
-  hcan1.Init.AutoBusOff = DISABLE;
-  hcan1.Init.AutoWakeUp = DISABLE;
-  hcan1.Init.AutoRetransmission = DISABLE;
-  hcan1.Init.ReceiveFifoLocked = DISABLE;
-  hcan1.Init.TransmitFifoPriority = DISABLE;
-  if (HAL_CAN_Init(&hcan1) != HAL_OK) {
+    hcan1.Instance = CAN1;
+    hcan1.Init.Prescaler = 12;
+    hcan1.Init.Mode = CAN_MODE_NORMAL;
+    hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
+    hcan1.Init.TimeSeg1 = CAN_BS1_6TQ;
+    hcan1.Init.TimeSeg2 = CAN_BS2_7TQ;
+    hcan1.Init.TimeTriggeredMode = DISABLE;
+    hcan1.Init.AutoBusOff = DISABLE;
+    hcan1.Init.AutoWakeUp = DISABLE;
+    hcan1.Init.AutoRetransmission = DISABLE;
+    hcan1.Init.ReceiveFifoLocked = DISABLE;
+    hcan1.Init.TransmitFifoPriority = DISABLE;
+    if (HAL_CAN_Init(&hcan1) != HAL_OK) {
     Error_Handler();
-  }
+    }
 }
 
 
@@ -54,8 +54,8 @@ static void can_receive_irq(void)
 */
 void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if (hcan->Instance==CAN1) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    if (hcan->Instance==CAN1) {
     /* Peripheral clock enable */
     __HAL_RCC_CAN1_CLK_ENABLE();
 
@@ -80,7 +80,7 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     LOS_HwiCreate(CAN1_RX0_IRQn, 0, 0, (HWI_PROC_FUNC)can_receive_irq, 0);
-  }
+    }
 }
 
 /**
@@ -91,7 +91,7 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
 */
 void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
 {
-  if (hcan->Instance==CAN1) {
+    if (hcan->Instance==CAN1) {
     /* Peripheral clock disable */
     __HAL_RCC_CAN1_CLK_DISABLE();
     /**CAN1 GPIO Configuration
@@ -100,5 +100,5 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
     */
     HAL_GPIO_DeInit(GPIOI, GPIO_PIN_9);
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_9);
-  }
+    }
 }

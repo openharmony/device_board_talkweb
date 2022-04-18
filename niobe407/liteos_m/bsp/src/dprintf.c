@@ -43,7 +43,6 @@ int hal_trace_printf(uint32_t attr, const char *fmt, ...)
     }
     va_end(ap);
     return len;
-
 }
 
 int printf(char const  *fmt, ...)
