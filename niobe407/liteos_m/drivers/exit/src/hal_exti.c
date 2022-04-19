@@ -98,7 +98,7 @@ uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, ui
     g_pinsGroup[g_exitSetupCounts].trigger = cfg->initType.Trigger;
     g_pinsGroup[g_exitSetupCounts].pinReg = cfg->PinReg;
     g_pinsGroup[g_exitSetupCounts].gpiox = cfg->Gpiox;
-    if ( pin < PIN_EXIT_FIVE ) {
+    if (pin < PIN_EXIT_FIVE) {
         NVIC_SetVector(EXTI0_IRQn + pin, (uint32_t)LL_Gpio_Exti_Handler);
         NVIC_SetPriority(EXTI0_IRQn + pin, 0);
         NVIC_EnableIRQ(EXTI0_IRQn + pin);

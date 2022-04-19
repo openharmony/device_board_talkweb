@@ -128,7 +128,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
-      HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     }
 }
 
@@ -251,7 +251,7 @@ static uint16_t ReadDeviceId(DevHandle spiHandle)
     struct SpiMsg msg;
     uint16_t deviceId = 0;
     uint8_t rbuff1[2] = { 0 };
-    uint8_t wbuff1[5] = {0x00, 0xAB, 0xff,0xff, 0xff};
+    uint8_t wbuff1[5] = {0x00, 0xAB, 0xff, 0xff, 0xff};
     int32_t ret = 0;
 
     ret =SpiWrite(spiHandle, wbuff1, 5);
@@ -421,7 +421,8 @@ static void* HdfSpiTestEntry(void* arg)
         HDF_LOGE("SpiGetCfg: failed, ret %d\n", ret);
         goto err;
     }
-    HDF_LOGI("speed:%d, bitper:%d, mode:%d, transMode:%d\n", cfg.maxSpeedHz, cfg.bitsPerWord, cfg.mode, cfg.transferMode);
+    HDF_LOGI("speed:%d, bitper:%d, mode:%d, transMode:%d\n", cfg.maxSpeedHz, cfg.bitsPerWord, cfg.mode, \
+        cfg.transferMode);
     cfg.maxSpeedHz = 1;
     cfg.bitsPerWord = 8;
     cfg.mode = 0;

@@ -28,8 +28,7 @@ extern "C" {
 
 typedef void (*HAL_GPIO_PIN_EXIT_HANDLER)(uint16_t pin);
 
-typedef struct
-{
+typedef struct {
     LL_EXTI_InitTypeDef initType;
     HAL_GPIO_PIN_EXIT_HANDLER Exithandler;
     uint32_t PinReg;
@@ -63,6 +62,3 @@ uint32_t LL_SETUP_EXTI(LL_EXTI_InitConfig* cfg, uint16_t pin, uint16_t local, ui
 #endif
 
 #endif /* _NIOBE407_LL_EXTI_H_ */
-
-
-

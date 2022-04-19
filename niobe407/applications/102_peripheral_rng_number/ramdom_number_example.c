@@ -27,9 +27,9 @@ void thread_entry(void)
     RngInit();
     while (1) {
         if (HAL_OK == HAL_RNG_GenerateRandomNumber(&hrng, &rng_num))
-           printf("Generate 32bit Random number is %u\r\n", rng_num);		
+            printf("Generate 32bit Random number is %u\r\n", rng_num);		
         else
-           printf("Generate Random Number fail!\r\n");	
+            printf("Generate Random Number fail!\r\n");	
         osDelay(1000);
     }
 }

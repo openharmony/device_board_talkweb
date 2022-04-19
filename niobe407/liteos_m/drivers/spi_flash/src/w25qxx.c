@@ -140,8 +140,8 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
     }
 
     if (NumByteToWrite > W25x_PerWritePageSize) {
-         NumByteToWrite = W25x_PerWritePageSize;
-         HDF_LOGE("Err: W25x_PageWrite too large!\n");
+            NumByteToWrite = W25x_PerWritePageSize;
+            HDF_LOGE("Err: W25x_PageWrite too large!\n");
     }
 
     rbuf1 = (uint8_t*)OsalMemAlloc(NumByteToWrite);
@@ -277,9 +277,9 @@ uint32_t W25x_ReadID(void)
     msg1.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg1, 1);
     if (ret != 0) {
-      HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     } else {
-      flashId = msg1.rbuf[2]<<8 | msg1.rbuf[3];
+        flashId = msg1.rbuf[2]<<8 | msg1.rbuf[3];
     }
 
     return flashId;
@@ -303,9 +303,9 @@ uint32_t W25x_ReadDeviceID(void)
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
-      HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     } else {
-      deviceId = rbuff[4];
+        deviceId = rbuff[4];
     }
 
     return deviceId;
@@ -328,7 +328,7 @@ void W25x_StartReadSequence(uint32_t ReadAddr)
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
-      HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
+        HDF_LOGE("SpiTransfer: failed, ret %d\n", ret);
     }
 }
 
@@ -410,7 +410,7 @@ void W25x_WaitForWriteEnd(void)
 }
 
 
-void W25x_PowerDown(void)   
+void W25x_PowerDown(void)
 {
     if (spiHandle == NULL) {
         HDF_LOGE("spi flash haven't been inited\n");

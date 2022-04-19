@@ -60,7 +60,7 @@ static void USART1_BLOCK_IRQ_Func(void)
         RingBufWrite(g_uartRingBuf[UART_NUM1 - 1], value);
     }
 
-    if(LL_USART_IsActiveFlag_IDLE(USART1)) {
+    if (LL_USART_IsActiveFlag_IDLE(USART1)) {
         LL_USART_ClearFlag_IDLE(USART1);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM1) != 0) {
             return;
@@ -92,7 +92,7 @@ static void USART2_BLOCK_IRQ_Func(void)
     }
 
     LL_USART_EnableIT_IDLE(USART2);
-    if(LL_USART_IsActiveFlag_IDLE(USART2)) {
+    if (LL_USART_IsActiveFlag_IDLE(USART2)) {
         LL_USART_DisableIT_IDLE(USART2);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM2) != 0) {
             return;
@@ -124,7 +124,7 @@ static void USART3_BLOCK_IRQ_Func(void)
     }
 
     LL_USART_EnableIT_IDLE(USART3);
-    if(LL_USART_IsActiveFlag_IDLE(USART3)) {
+    if (LL_USART_IsActiveFlag_IDLE(USART3)) {
         LL_USART_DisableIT_IDLE(USART3);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM3) != 0) {
             return;
@@ -156,7 +156,7 @@ static void USART4_BLOCK_IRQ_Func(void)
     }
 
     LL_USART_EnableIT_IDLE(UART4);
-    if(LL_USART_IsActiveFlag_IDLE(UART4)) {
+    if (LL_USART_IsActiveFlag_IDLE(UART4)) {
         LL_USART_DisableIT_IDLE(UART4);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM4) != 0) {
             return;
@@ -188,7 +188,7 @@ static void USART5_BLOCK_IRQ_Func(void)
     }
 
     LL_USART_EnableIT_IDLE(UART5);
-    if(LL_USART_IsActiveFlag_IDLE(UART5)) {
+    if (LL_USART_IsActiveFlag_IDLE(UART5)) {
         LL_USART_DisableIT_IDLE(UART5);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM5) != 0) {
             return;
@@ -219,7 +219,7 @@ static void USART6_BLOCK_IRQ_Func(void)
     }
 
     LL_USART_EnableIT_IDLE(USART6);
-    if(LL_USART_IsActiveFlag_IDLE(USART6)) {
+    if (LL_USART_IsActiveFlag_IDLE(USART6)) {
         LL_USART_DisableIT_IDLE(USART6);
         if (LOS_EventWrite(&g_uartInputEvent, UART_NUM6) != 0) {
             return;
@@ -290,10 +290,10 @@ void UART_IRQ_INIT(USART_TypeDef * UART, uint8_t num, uint32_t irqNum, BOOL isBl
 
 void UART_IRQ_DEINIT(USART_TypeDef * UART, uint32_t irqNum)
 {
-     LL_USART_DisableIT_RXNE(UART);
-     ArchHwiDelete(irqNum, NULL);
+    LL_USART_DisableIT_RXNE(UART);
+    ArchHwiDelete(irqNum, NULL);
 
-     return;
+    return;
 }
 
 uint32_t USART_RxData(uint8_t num, uint8_t *p_data, uint32_t size, BOOL isBlock)
@@ -305,7 +305,7 @@ uint32_t USART_RxData(uint8_t num, uint8_t *p_data, uint32_t size, BOOL isBlock)
     }
 
     while (size--) {
-        if (0 == RingBufRead(g_uartRingBuf[num - 1], &data)) {
+        if (RingBufRead(g_uartRingBuf[num - 1], &data) == 0) {
             *p_data = data;
             readLen++;
             p_data++;
@@ -315,7 +315,6 @@ uint32_t USART_RxData(uint8_t num, uint8_t *p_data, uint32_t size, BOOL isBlock)
     }
 
     return readLen;
-
 }
 #endif /* USART1 || USART2 || USART3 || USART6 || UART4 || UART5 */
 

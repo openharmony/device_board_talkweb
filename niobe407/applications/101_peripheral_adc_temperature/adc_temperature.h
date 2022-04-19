@@ -17,7 +17,7 @@
 #define __ADC_TEMPERATURE_H__
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif /* __cplusplus */
 
 #include "stm32f4xx_hal.h"
@@ -33,7 +33,7 @@ extern "C"{
 #define DMAx__Stream_x                   DMA2_Stream0
 #define DMAx__CHANNEL_x                  DMA_CHANNEL_0
 
-#define ADC_CHANNEL                      ADC_CHANNEL_TEMPSENSOR    
+#define ADC_CHANNEL                      ADC_CHANNEL_TEMPSENSOR
 
 extern void Temperature_ADC_Init();
 

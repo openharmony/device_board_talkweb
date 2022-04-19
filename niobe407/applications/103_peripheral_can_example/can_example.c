@@ -31,8 +31,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     uint8_t aRxData[8] = {0};
     if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, aRxData) == HAL_OK) {
         uint32_t canid = (RxHeader.IDE == CAN_ID_STD)?RxHeader.StdId:RxHeader.ExtId;
-        printf("\nRecv CANID:0x%08X Data:",canid);
-        for(uint8_t i=0; i<8; i++)
+        printf("\nRecv CANID:0x%08X Data:", canid);
+        for (uint8_t i = 0; i<8; i++)
             printf("%02X ", aRxData[i]);
         printf("\n");
     }
@@ -40,13 +40,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 void thread_entry(void)
 {
-
     uint8_t TxData[8] = {0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11};
-    uint32_t TxMailbox; 
-    uint32_t send_can_id = 0x1234; 
+    uint32_t TxMailbox;
+    uint32_t send_can_id = 0x1234;
 
     TxHeader.RTR = CAN_RTR_DATA;
-    TxHeader.IDE = CAN_ID_EXT;     
+    TxHeader.IDE = CAN_ID_EXT; 
     TxHeader.ExtId = send_can_id;
     TxHeader.TransmitGlobalTime = DISABLE;
     TxHeader.DLC = 8;
@@ -64,7 +63,7 @@ void thread_entry(void)
 
     HAL_CAN_ConfigFilter(&hcan1, &Filter);
 
-    while(HAL_OK != HAL_CAN_Start(&hcan1)) {
+    while (HAL_OK != HAL_CAN_Start(&hcan1)) {
         printf("HAL_CAN_Start fail! try again!\n");
         osDelay(100);
     }
@@ -75,11 +74,13 @@ void thread_entry(void)
     while (1) {
         uint32_t ret = HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
         if (ret == HAL_OK) {
-            printf("send can data [0x%04X : %02X %02X %02X %02X %02X %02X %02X %02X] success! Tx_Mail:%u\n",
-                send_can_id, TxData[0],TxData[1],TxData[2],TxData[3],TxData[4],TxData[5],TxData[6],TxData[7], TxMailbox);
+            printf("send can data [0x%04X : %02X %02X %02X %02X %02X %02X %02X %02X] success! Tx_Mail:%u\n", \
+                send_can_id, TxData[0], TxData[1], TxData[2], TxData[3], TxData[4], TxData[5], TxData[6], \
+                TxData[7], TxMailbox);
         }
         else {
-            printf("send can data fail,ret = %s\n", (ret==HAL_ERROR)?"HAL_ERROR":((ret==HAL_BUSY)?"HAL_BUSY":"HAL_TIMEOUT"));
+            printf("send can data fail,ret = %s\n", \
+                (ret==HAL_ERROR)?"HAL_ERROR":((ret==HAL_BUSY)?"HAL_BUSY":"HAL_TIMEOUT"));
         }
         osDelay(1000);
     }

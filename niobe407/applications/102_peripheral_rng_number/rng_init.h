@@ -18,7 +18,7 @@
 #define __RNG_INIT_H__
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif /* __cplusplus */
 
 extern RNG_HandleTypeDef hrng;

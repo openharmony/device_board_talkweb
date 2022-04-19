@@ -25,7 +25,7 @@ void thread_entry(void)
 {
     while (1) {
         double Current_Temperature = Temperature_Get();
-        printf("The IC current temperature is %.2f\r\n",Current_Temperature);		
+        printf("The IC current temperature is %.2f\r\n", Current_Temperature);
         osDelay(1000);
     }
 }

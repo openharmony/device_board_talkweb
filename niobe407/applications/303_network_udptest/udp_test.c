@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (c) 2022 Talkweb Co., Ltd.
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ static unsigned char udp_rcv_flag = 0;
 void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port)
 {
     (void *)arg;
-    if (p != NULL) {	
+    if (p != NULL) {
         char *recdata = (char *)malloc(p->len*sizeof(char)+1);
         if (recdata != NULL) {
             if (udp_rcv_flag != 1) {
@@ -37,7 +37,7 @@ void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const
             memcpy_s(recdata, p->len, p->payload, p->len);
             recdata[p->len] = '\0';
             printf("udp recv from[%d.%d.%d.%d:%d]: %s\n", *((uint8_t *)&addr->addr), *((uint8_t *)&addr->addr + 1),
-            *((uint8_t *)&addr->addr + 2), *((uint8_t *)&addr->addr + 3), port, recdata);
+                *((uint8_t *)&addr->addr + 2), *((uint8_t *)&addr->addr + 3), port, recdata);
             free(recdata);
             udp_send(upcb, p);
         }
@@ -69,13 +69,12 @@ void udp_test(void *arg)
         if (err == ERR_OK) {
             udp_recv(g_upcb, udp_receive_callback, NULL);
             printf("udp client connected\r\n");
-        }
-        else {
+        } else {
             udp_remove(g_upcb);
             printf("can not connect udp pcb.\r\n");
         }
     }
-    while(!udp_rcv_flag) {
+    while (!udp_rcv_flag) {
         printf("wait recv udp data...\n");
         osDelay(1000);
     }
@@ -86,8 +85,7 @@ static void eth_enable_state_callBack(EthLinkState state)
     static int net_init_finish = 0;
     if (state == STATE_UPDATE_LINK_DOWN) {
         printf("ETH LINK STATE: DisConnected!\r\n");
-    }
-    else if (state == STATE_UPDATE_LINK_UP) { 
+    } else if (state == STATE_UPDATE_LINK_UP) {
         printf("ETH LINK STATE: Connected!\r\n");
         if (net_init_finish == 0) {
             osThreadAttr_t attr;

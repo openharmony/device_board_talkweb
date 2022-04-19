@@ -57,24 +57,23 @@ void tcp_server(void *argument)
         goto __exit;
     }
 
-    while(1) {
+    while (1) {
         sin_size = sizeof(struct sockaddr_in);
         connected = accept(sock, (struct sockaddr *)&client_addr, &sin_size);
 
         printf("new client connected from (%s, %d)\n",
-        inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+            inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
         
         int flag = 1;
         setsockopt(connected, IPPROTO_TCP, TCP_NODELAY, (void *)&flag, sizeof(int));
-        while(1) {
+        while (1) {
             recv_data_len = recv(connected, recv_data, 511, 0);
-
             if (recv_data_len <= 0)
                 break;
             else
                 recv_data[recv_data_len] = '\0';
-            printf("recv %s\n",recv_data);
-            write(connected,recv_data,recv_data_len);
+            printf("recv %s\n", recv_data);
+            write(connected, recv_data, recv_data_len);
 
             osDelay(TCP_SERVER_DELAY);
         }

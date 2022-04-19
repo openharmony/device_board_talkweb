@@ -134,7 +134,7 @@ RingBuffer* RingBufInit(int size)
 uint8_t UartGetc(void)
 {
     unsigned char data;
-    if (0 == RingBufRead(g_debugRingBuf, &data)) {
+    if (RingBufRead(g_debugRingBuf, &data) == 0) {
         return (int) data;
     } else {
         return 0;
@@ -153,7 +153,7 @@ static INT32 InitDebugShellUart(uint32_t port)
 }
 static void HdfShellTaskEntry(void)
 {
-    while(1) {
+    while (1) {
         int ret = 0;
         memset_s(rbuf, MAX_BUF_SIZE, 0, MAX_BUF_SIZE);
         int32_t readLen = UartRead(handle, rbuf, MAX_BUF_SIZE);
@@ -210,7 +210,7 @@ static void huart1_irq(void)
         unsigned char value;
         value = (uint8_t) (huart1.Instance->DR & 0x00FF);
         RingBufWrite(g_debugRingBuf, value);
-    } else if (__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE) != RESET) {
+    } else if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE) != RESET) {
         __HAL_UART_CLEAR_IDLEFLAG(&huart1);
         (void)LOS_EventWrite(&g_shellInputEvent, 0x1);
     }

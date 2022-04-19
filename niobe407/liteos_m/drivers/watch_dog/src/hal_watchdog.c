@@ -33,17 +33,14 @@
 
 VOID WdtEnable(VOID)
 {
-
 }
 
 VOID WdtDisable(VOID)
 {
-
 }
 
 VOID WdtFeed(VOID)
 {
-
 }
 
 void IoTWatchDogEnable(void)

@@ -21,9 +21,9 @@
 
 #if defined (SPI1) || defined (SPI2) || defined (SPI3) || defined (SPI4) || defined (SPI5) || defined(SPI6)
 
-uint8_t LL_SPI_Transmit(SPI_TypeDef* SPIx ,uint8_t byte)
+uint8_t LL_SPI_Transmit(SPI_TypeDef* SPIx, uint8_t byte)
 {
-    uint8_t read,send = byte;
+    uint8_t read, send = byte;
     while (LL_SPI_IsActiveFlag_TXE(SPIx) == 0);
     LL_SPI_TransmitData8(SPIx, send);
     while (LL_SPI_IsActiveFlag_RXNE(SPIx) == 0);

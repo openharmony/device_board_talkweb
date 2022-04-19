@@ -24,35 +24,32 @@ osMutexId_t mutex_id;
 
 void firstThread(void)
 {
-	osDelay(100U);
-	while(1)
-	{
-		osMutexAcquire(mutex_id, osWaitForever);
-    	printf("firstThread is Acquire.\r\n");
-    	osDelay(1000U);
-		osMutexRelease(mutex_id);
-	}
+    osDelay(100U);
+    while (1) {
+        osMutexAcquire(mutex_id, osWaitForever);
+        printf("firstThread is Acquire.\r\n");
+        osDelay(1000U);
+        osMutexRelease(mutex_id);
+    }
 }
 
 void twoThread(void)
 {
-	osDelay(1000U);
-	while(1) 
-	{
-		printf("twoThread is Acquire.\r\n");
-    	osDelay(1000U);
-	}
+    osDelay(1000U);
+    while (1) {
+        printf("twoThread is Acquire.\r\n");
+        osDelay(1000U);
+    }
 }
 
 void threeThread(void)
 {
-    while(1)
-	{
-		osMutexAcquire(mutex_id, osWaitForever);
-    	printf("threeThread is Acquire.\r\n");
-    	osDelay(3000U);
-		osMutexRelease(mutex_id);
-	}
+    while (1) {
+        osMutexAcquire(mutex_id, osWaitForever);
+        printf("threeThread is Acquire.\r\n");
+        osDelay(3000U);
+        osMutexRelease(mutex_id);
+    }
 }
 
 void os_mutex_example(void)
@@ -68,24 +65,24 @@ void os_mutex_example(void)
     attr.name = "firstThread";
     attr.priority = 26;
     if (osThreadNew((osThreadFunc_t)firstThread, NULL, &attr) == NULL) {
-    	printf("create firstThread failed!\n");
+        printf("create firstThread failed!\n");
     }
 
-	attr.name = "twoThread";
+    attr.name = "twoThread";
     attr.priority = 25;
     if (osThreadNew((osThreadFunc_t)twoThread, NULL, &attr) == NULL) {
-      	printf("create twoThread failed!\n");
+        printf("create twoThread failed!\n");
     }
 
     attr.name = "threeThread";
     attr.priority = 24;
     if (osThreadNew((osThreadFunc_t)threeThread, NULL, &attr) == NULL) {
-      	printf("create threeThread failed!\n");
+        printf("create threeThread failed!\n");
     }
 
-	mutex_id = osMutexNew(NULL);
+    mutex_id = osMutexNew(NULL);
     if (mutex_id == NULL) {
-      	printf("create Mutex failed!\n");
+        printf("create Mutex failed!\n");
     }
 }
 

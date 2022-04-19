@@ -24,22 +24,20 @@ osSemaphoreId_t sem1;
 
 void Thread_Semp1(void)
 {
-	while(1)
-	{
-		osSemaphoreRelease(sem1);
-		printf("Thread_Semp1 Release  Semap \n");
-		osDelay(200U);
-	}
+    while (1) {
+        osSemaphoreRelease(sem1);
+        printf("Thread_Semp1 Release  Semap \n");
+        osDelay(200U);
+    }
 }
 
 void Thread_Semp2(void)
 {
-	while(1)
-	{
-		osSemaphoreAcquire(sem1, osWaitForever);
-		printf("Thread_Semp2 get Semap \n");
-		osDelay(100U);
-	}
+    while (1) {
+        osSemaphoreAcquire(sem1, osWaitForever);
+        printf("Thread_Semp2 get Semap \n");
+        osDelay(100U);
+        }
 }
 
 void semp_example(void)

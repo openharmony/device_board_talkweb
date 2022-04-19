@@ -296,7 +296,7 @@ bool NiobeHdfGpioInit(const struct DeviceResourceNode *resourceNode, struct Devi
 
     if (gpio_num_max > GPIO_NUM_CONFIG_MAX) {
         HDF_LOGE("i2c config gpio_num_max is too much, gpio_num = %d, NUM_CONFIG_MAX = %d\r\n",
-        gpio_num_max, GPIO_NUM_CONFIG_MAX);
+            gpio_num_max, GPIO_NUM_CONFIG_MAX);
         return false;
     }
 

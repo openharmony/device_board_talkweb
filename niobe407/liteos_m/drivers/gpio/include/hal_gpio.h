@@ -70,7 +70,8 @@ uint32_t LL_GET_HAL_PIN(STM32_GPIO_PIN pin);
 
 #endif /* USE_FULL_LL_DRIVER */
 
-#endif /* defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK) */
+#endif /* defined (GPIOA) || defined (GPIOB) || defined (GPIOC) || defined (GPIOD) || defined (GPIOE) || \
+    defined (GPIOF) || defined (GPIOG) || defined (GPIOH) || defined (GPIOI) || defined (GPIOJ) || defined (GPIOK) */
 
 #ifdef __cplusplus
 }

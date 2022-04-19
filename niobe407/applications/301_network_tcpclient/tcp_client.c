@@ -69,8 +69,7 @@ static void eth_enable_state_callBack(EthLinkState state)
         printf("ETH LINK STATE: DisConnected!\r\n");
         osThreadTerminate(tcp_client_id);
         tcp_client_id = NULL;
-    }
-    else if (state == STATE_UPDATE_LINK_UP) {
+    } else if (state == STATE_UPDATE_LINK_UP) {
         printf("ETH LINK STATE: Connected!\r\n");
 
         osThreadAttr_t attr;

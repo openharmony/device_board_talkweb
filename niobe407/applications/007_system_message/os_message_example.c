@@ -19,8 +19,7 @@
 #include "ohos_run.h"
 #include "cmsis_os2.h"
 
-typedef struct
-{
+typedef struct {
     char *buffer;
 } MSG_BUF;
 
@@ -44,12 +43,11 @@ void ThreadMsgQueue2(void *arg)
     osStatus_t status;
 
     while (1) {
-        //wait for message
+        // wait for message
         status = osMessageQueueGet(g_msg_queue, &g_msg_buf.buffer, NULL, 0U);
         if (status == osOK) {
             printf("ThreadMsgQueue2 Get msg: %s\n", g_msg_buf.buffer);
-        }
-        else {
+        } else {
             osDelay(100);
         }
     }
