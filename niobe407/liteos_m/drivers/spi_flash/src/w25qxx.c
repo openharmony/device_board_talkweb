@@ -82,7 +82,7 @@ void W25x_SectorErase(uint32_t SectorAddr)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -105,7 +105,7 @@ void W25x_BulkErase(void)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -132,7 +132,7 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 0;
+    msg.keepCs = 1;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -153,7 +153,7 @@ void W25x_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrit
     msg.wbuf = pBuffer;
     msg.rbuf = rbuf1;
     msg.len = NumByteToWrite;
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -234,7 +234,7 @@ void W25x_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 0;
+    msg.keepCs = 1;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -250,7 +250,7 @@ void W25x_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead
     msg.wbuf = wbuf1;
     msg.rbuf = pBuffer;
     msg.len = NumByteToRead;
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -273,7 +273,7 @@ uint32_t W25x_ReadID(void)
     msg1.wbuf = wbuff1;
     msg1.rbuf = rbuff1;
     msg1.len = sizeof(wbuff1);
-    msg1.csChange = 1;
+    msg1.keepCs = 0;
     msg1.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg1, 1);
     if (ret != 0) {
@@ -299,7 +299,7 @@ uint32_t W25x_ReadDeviceID(void)
     msg.wbuf = wbuff;
     msg.rbuf = rbuff;
     msg.len = sizeof(wbuff);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -324,7 +324,7 @@ void W25x_StartReadSequence(uint32_t ReadAddr)
     msg.wbuf = wbuff;
     msg.rbuf = rbuff;
     msg.len = sizeof(wbuff);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -345,7 +345,7 @@ void W25x_WriteEnable(void)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -372,7 +372,7 @@ void W25x_WaitForWriteEnd(void)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 0;
+    msg.keepCs = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -384,7 +384,7 @@ void W25x_WaitForWriteEnd(void)
         msg.wbuf = wbuf1;
         msg.rbuf = rbuf;
         msg.len = sizeof(wbuf1);
-        msg.csChange = 0;
+        msg.keepCs = 1;
         msg.delayUs = 0;
 
         ret = SpiTransfer(spiHandle, &msg, 1);
@@ -398,7 +398,7 @@ void W25x_WaitForWriteEnd(void)
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf1);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
 
     ret = SpiTransfer(spiHandle, &msg, 1);
@@ -423,7 +423,7 @@ void W25x_PowerDown(void)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -446,7 +446,7 @@ void W25x_WAKEUP(void)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {

@@ -55,7 +55,7 @@ static uint16_t ReadDeviceId(DevHandle spiHandle)
     msg.wbuf = wbuff;
     msg.rbuf = rbuff;
     msg.len = sizeof(wbuff);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -77,7 +77,7 @@ static uint16_t ReadFlashId(DevHandle spiHandle)
     msg1.wbuf = wbuff1;
     msg1.rbuf = rbuff1;
     msg1.len = sizeof(wbuff1);
-    msg1.csChange = 1;
+    msg1.keepCs = 0;
     msg1.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg1, 1);
     if (ret != 0) {
@@ -99,7 +99,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 0;
+    msg.keepCs = 1;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -111,7 +111,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
         msg.wbuf = wbuf1;
         msg.rbuf = rbuf;
         msg.len = sizeof(wbuf1);
-        msg.csChange = 0;
+        msg.keepCs = 1;
         msg.delayUs = 0;
 
         ret = SpiTransfer(spiHandle, &msg, 1);
@@ -124,7 +124,7 @@ static void WaitForWriteEnd(DevHandle spiHandle)
     msg.wbuf = wbuf1;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf1);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -140,7 +140,7 @@ static void WriteEnable(DevHandle spiHandle)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -160,7 +160,7 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 0;
+    msg.keepCs = 1;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -177,7 +177,7 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     msg.wbuf = buf;
     msg.rbuf = rbuf1;
     msg.len = size;
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -199,7 +199,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 0;
+    msg.keepCs = 1;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -215,7 +215,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
     msg.wbuf = wbuf1;
     msg.rbuf = buf;
     msg.len = size;
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -236,7 +236,7 @@ static void SectorErase(DevHandle spiHandle)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = sizeof(wbuf);
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     int32_t ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
