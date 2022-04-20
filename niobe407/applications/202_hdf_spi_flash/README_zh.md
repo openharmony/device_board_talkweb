@@ -195,7 +195,7 @@ static uint16_t ReadDeviceId(DevHandle spiHandle)
     msg.wbuf = wbuff;  /* 写入的数据 */
     msg.rbuf = rbuff;   /* 读取的数据 */
     msg.len = 5;        /* 读取写入数据的长度为4 */
-    msg.csChange = 1;   /* 进行下一次传输前关闭片选 */
+    msg.keepCs = 0;   /* 进行下一次传输前关闭片选 */
     msg.delayUs = 0;    /* 进行下一次传输前不进行延时 */
     //msg.speed = 115200; /* 本次传输的速度 */
     /* 进行一次自定义传输，传输的msg个数为1 */
@@ -221,7 +221,7 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = 4;
-    msg.csChange = 0; // 写指令发送后不关闭片选
+    msg.keepCs = 1; // 写指令发送后不关闭片选
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1); 
     if (ret != 0) {
@@ -233,7 +233,7 @@ static void BufferWrite(DevHandle spiHandle, const uint8_t* buf, uint32_t size)
     msg.wbuf = buf;
     msg.rbuf = rbuf1;
     msg.len = size;
-    msg.csChange = 1; // 写完内容后关闭片选
+    msg.keepCs = 0; // 写完内容后关闭片选
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1); //传输真正书写的内容
     if (ret != 0) {
@@ -257,7 +257,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
     msg.wbuf = wbuf;
     msg.rbuf = rbuf;
     msg.len = 4;
-    msg.csChange = 0; // 写使能不关闭片选
+    msg.keepCs = 1; // 写使能不关闭片选
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1);
     if (ret != 0) {
@@ -270,7 +270,7 @@ static void BufferRead(DevHandle spiHandle, uint8_t* buf, uint32_t size)
     msg.wbuf = wbuf1;
     msg.rbuf = buf;
     msg.len = size;
-    msg.csChange = 1;
+    msg.keepCs = 0;
     msg.delayUs = 0;
     ret = SpiTransfer(spiHandle, &msg, 1); // 读取spi flash中存储的值
     if (ret != 0) {
