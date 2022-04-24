@@ -22,6 +22,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#ifndef LWIP_SOCKET_SELECT_FUNC
+#define LWIP_SOCKET_SELECT_FUNC
+#endif
+
 #undef LWIP_CHECKSUM_ON_COPY
 #define LWIP_CHECKSUM_ON_COPY    0
 
