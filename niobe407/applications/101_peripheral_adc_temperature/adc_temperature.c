@@ -14,8 +14,8 @@
  */
 
 #include "adc_temperature.h"
-#include "los_interrupt.h"
 #include "los_arch_interrupt.h"
+#include "los_interrupt.h"
 
 ADC_HandleTypeDef hadcx;
 DMA_HandleTypeDef hdma_adcx;
@@ -25,7 +25,7 @@ static uint16_t ADC_ConvertedValue;
 void MX_ADCx_Init(void)
 {
     ADC_ChannelConfTypeDef sConfig;
-    hadcx.Instance = ADCx;
+    hadcx.Instance = ADC1;
     hadcx.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
     hadcx.Init.Resolution = ADC_RESOLUTION_12B;
     hadcx.Init.ScanConvMode = DISABLE;
@@ -39,7 +39,7 @@ void MX_ADCx_Init(void)
     hadcx.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 
     HAL_ADC_Init(&hadcx);
-    sConfig.Channel = ADC_CHANNEL;
+    sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
     sConfig.Rank = 1;
     sConfig.SamplingTime = ADC_SAMPLETIME_56CYCLES;
     HAL_ADC_ConfigChannel(&hadcx, &sConfig);
@@ -52,16 +52,16 @@ void ADCx_DMA_IRQx_Handler(void)
 
 void MX_DMA_Init(void)
 {
-    DMAx_RCC_CLK_ENABLE();
-    LOS_HwiCreate(OS_SYS_VECTOR_CNT+ADCx_DMA_IRQx, 0, 1, (HWI_PROC_FUNC)ADCx_DMA_IRQx_Handler, 0);
+    __HAL_RCC_DMA2_CLK_ENABLE();
+    LOS_HwiCreate(OS_SYS_VECTOR_CNT + DMA2_Stream0_IRQn, 0, 1, (HWI_PROC_FUNC)ADCx_DMA_IRQx_Handler, 0);
 }
 
-void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
+void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
 {
-    if (hadc->Instance==ADCx) {
-        ADCx_RCC_CLK_ENABLE();
-        hdma_adcx.Instance = DMAx__Stream_x;
-        hdma_adcx.Init.Channel = DMAx__CHANNEL_x;
+    if (hadc->Instance == ADC1) {
+        __HAL_RCC_ADC1_CLK_ENABLE();
+        hdma_adcx.Instance = DMA2_Stream0;
+        hdma_adcx.Init.Channel = DMA_CHANNEL_0;
         hdma_adcx.Init.Direction = DMA_PERIPH_TO_MEMORY;
         hdma_adcx.Init.PeriphInc = DMA_PINC_DISABLE;
         hdma_adcx.Init.MemInc = DMA_MINC_ENABLE;
@@ -75,10 +75,10 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     }
 }
 
-void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
+void HAL_ADC_MspDeInit(ADC_HandleTypeDef *hadc)
 {
-    if (hadc->Instance==ADCx) {
-        ADCx_RCC_CLK_DISABLE();
+    if (hadc->Instance == ADC1) {
+        __HAL_RCC_ADC1_CLK_DISABLE();
         HAL_DMA_DeInit(hadc->DMA_Handle);
     }
 }
@@ -94,7 +94,7 @@ double Temperature_Get()
 {
     double ADC_ConvertedValueLocal;
     __IO double Current_Temperature;
-    ADC_ConvertedValueLocal =(double)(ADC_ConvertedValue&0xFFF)*3.3/4096;
-    Current_Temperature = (ADC_ConvertedValueLocal-0.76)/0.0025+25;
+    ADC_ConvertedValueLocal = (double)(ADC_ConvertedValue & 0xFFF) * 3.3 / 4096;
+    Current_Temperature = (ADC_ConvertedValueLocal - 0.76) / 0.0025 + 25;
     return Current_Temperature;
 }

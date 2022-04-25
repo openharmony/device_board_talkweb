@@ -1,31 +1,33 @@
 /*
-* Copyright (c) 2022 Talkweb Co., Ltd.
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
+ * Copyright (c) 2022 Talkweb Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include <stdio.h>
-#include "cmsis_os2.h"
 #include "app_ethernet.h"
+#include "cmsis_os2.h"
 #include "ohos_run.h"
 
-osThreadId_t tcp_server_id = NULL;
 
-#define TCP_SERVER_PRIORITY         25
-#define TCP_SERVER_STACK_SIZE       (1024*4)
-#define TCP_SERVER_DELAY            200
-#define TCP_SERVER_RCV_DATA_SIZE    512
+#define TCP_SERVER_PRIORITY 25
+#define TCP_SERVER_STACK_SIZE 4096
+#define TCP_SERVER_DELAY 200
+#define TCP_SERVER_RCV_DATA_SIZE 512
 
 #define SERVER_LISTEN_PORT 8080
+#define TCP_BACKLOG 5
+#define RECV_BUFFER_MAX 511
+
+osThreadId_t tcp_server_id = NULL;
 
 void tcp_server(void *argument)
 {
@@ -52,7 +54,7 @@ void tcp_server(void *argument)
         goto __exit;
     }
 
-    if (listen(sock, 5) == -1) {
+    if (listen(sock, TCP_BACKLOG) == -1) {
         printf("Listen error\n");
         goto __exit;
     }
@@ -62,16 +64,18 @@ void tcp_server(void *argument)
         connected = accept(sock, (struct sockaddr *)&client_addr, &sin_size);
 
         printf("new client connected from (%s, %d)\n",
-            inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-        
+               inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+
         int flag = 1;
         setsockopt(connected, IPPROTO_TCP, TCP_NODELAY, (void *)&flag, sizeof(int));
         while (1) {
-            recv_data_len = recv(connected, recv_data, 511, 0);
-            if (recv_data_len <= 0)
+            recv_data_len = recv(connected, recv_data, RECV_BUFFER_MAX, 0);
+            if (recv_data_len <= 0) {
                 break;
-            else
+            } else {
                 recv_data[recv_data_len] = '\0';
+            }
+
             printf("recv %s\n", recv_data);
             write(connected, recv_data, recv_data_len);
 
