@@ -21,6 +21,8 @@
 #include "cmsis_os2.h"
 
 #define FLAGS_MSK1 0x00000001U
+#define TASK_DELAY 1000
+#define STACK_SIZE 4096
 
 osEventFlagsId_t g_event_flags_id; // event flags id
 
@@ -33,7 +35,7 @@ void OS_Thread_EventSender(void *argument)
         flags = osEventFlagsSet(g_event_flags_id, FLAGS_MSK1);
         printf("Send Flags is %d\n", flags);
         osThreadYield();
-        osDelay(1000);
+        osDelay(TASK_DELAY);
     }
 }
 
@@ -63,8 +65,8 @@ void OS_Event_example(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024 * 4;
-    attr.priority = 25;
+    attr.stack_size = STACK_SIZE;
+    attr.priority = osPriorityNormal;
 
     attr.name = "Thread_EventSender";
     if (osThreadNew(OS_Thread_EventSender, NULL, &attr) == NULL) {

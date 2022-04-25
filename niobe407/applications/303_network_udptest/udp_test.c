@@ -1,35 +1,40 @@
 /*
-* Copyright (c) 2022 Talkweb Co., Ltd.
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (c) 2022 Talkweb Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include <stdio.h>
-#include "cmsis_os2.h"
 #include "app_ethernet.h"
+#include "cmsis_os2.h"
 #include "ohos_run.h"
+
+#define LOCAL_PORT 1234
+#define DESTINATION_PORT 5678
+#define DESTINATION_IP "192.168.8.119"
+
+#define TASK_DELAY 1000
+#define STACK_SIZE 4096
+#define IP_ADDR_3 2
+#define IP_ADDR_4 3
 
 osThreadId_t udp_test_id = NULL;
 static struct udp_pcb *g_upcb = NULL;
 static unsigned char udp_rcv_flag = 0;
 
-#define LOCAL_PORT        1234
-#define DESTINATION_PORT  5678
-#define DESTINATION_IP    "192.168.8.119"
-
 void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port)
 {
     (void *)arg;
     if (p != NULL) {
-        char *recdata = (char *)malloc(p->len*sizeof(char)+1);
+        char *recdata = (char *)malloc(p->len * sizeof(char) + 1);
         if (recdata != NULL) {
             if (udp_rcv_flag != 1) {
                 udp_rcv_flag = 1;
@@ -37,7 +42,7 @@ void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const
             memcpy_s(recdata, p->len, p->payload, p->len);
             recdata[p->len] = '\0';
             printf("udp recv from[%d.%d.%d.%d:%d]: %s\n", *((uint8_t *)&addr->addr), *((uint8_t *)&addr->addr + 1),
-                *((uint8_t *)&addr->addr + 2), *((uint8_t *)&addr->addr + 3), port, recdata);
+                   *((uint8_t *)&addr->addr + IP_ADDR_3), *((uint8_t *)&addr->addr + IP_ADDR_4), port, recdata);
             free(recdata);
             udp_send(upcb, p);
         }
@@ -94,7 +99,7 @@ static void eth_enable_state_callBack(EthLinkState state)
             attr.cb_mem = NULL;
             attr.cb_size = 0U;
             attr.stack_mem = NULL;
-            attr.stack_size = 1024 * 4;
+            attr.stack_size = STACK_SIZE;
             attr.priority = 25;
             udp_test_id = osThreadNew((osThreadFunc_t)udp_test, NULL, &attr);
             if (udp_test_id == NULL) {

@@ -12,12 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <dirent.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <sys/mount.h>
+#include <sys/stat.h>
 #include "los_config.h"
 #include "los_memory.h"
 #include "los_task.h"
@@ -26,7 +25,7 @@
 static void dir_test(const char *path)
 {
     DIR *dir;
-    int ret ;
+    int ret = 0;
     struct dirent *dp;
     if ((dir = opendir(path)) == NULL) {
         printf("opendir %s failed \n", path);
@@ -38,7 +37,12 @@ static void dir_test(const char *path)
         }
         struct stat st_buf = {0};
         char realpath[260];
-        snprintf_s(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
+        ret = snprintf_s(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
+        if (ret == -1) {
+            printf("snprintf_s error\n");
+            closedir(dir);
+            return;
+        }
         if (stat(realpath, &st_buf) != 0) {
             printf("can not access %s\n", realpath);
             closedir(dir);

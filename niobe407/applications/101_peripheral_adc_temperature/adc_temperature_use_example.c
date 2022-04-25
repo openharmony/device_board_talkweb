@@ -16,17 +16,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
-#include "ohos_run.h"
-#include "cmsis_os2.h"
 #include "adc_temperature.h"
+#include "cmsis_os2.h"
+#include "ohos_run.h"
+
+#define TASK_DELAY 1000
+#define STACK_SIZE 4096
 
 void thread_entry(void)
 {
     while (1) {
         double Current_Temperature = Temperature_Get();
         printf("The IC current temperature is %.2f\r\n", Current_Temperature);
-        osDelay(1000);
+        osDelay(TASK_DELAY);
     }
 }
 
@@ -34,13 +36,13 @@ static void adc_temperature_example(void)
 {
     osThreadAttr_t attr;
 
-    attr.name = "thread1";
+    attr.name = "thread";
     attr.attr_bits = 0U;
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 1024 * 4;
-    attr.priority = 25;
+    attr.stack_size = STACK_SIZE;
+    attr.priority = osPriorityNormal;
 
     Temperature_ADC_Init();
 

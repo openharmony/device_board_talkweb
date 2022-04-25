@@ -16,30 +16,12 @@
 #ifndef __ADC_TEMPERATURE_H__
 #define __ADC_TEMPERATURE_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_adc.h"
 #include "stm32f4xx_hal_adc_ex.h"
 
-#define ADCx_RCC_CLK_ENABLE()            __HAL_RCC_ADC1_CLK_ENABLE()
-#define ADCx_RCC_CLK_DISABLE()           __HAL_RCC_ADC1_CLK_DISABLE()
-#define DMAx_RCC_CLK_ENABLE()            __HAL_RCC_DMA2_CLK_ENABLE()
-#define ADCx                             ADC1
-#define ADCx_DMA_IRQx                    DMA2_Stream0_IRQn
+void Temperature_ADC_Init(void);
 
-#define DMAx__Stream_x                   DMA2_Stream0
-#define DMAx__CHANNEL_x                  DMA_CHANNEL_0
+double Temperature_Get(void);
 
-#define ADC_CHANNEL                      ADC_CHANNEL_TEMPSENSOR
-
-extern void Temperature_ADC_Init();
-
-extern double Temperature_Get();
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 #endif /* __ADC_TEMPERATURE_H__ */
