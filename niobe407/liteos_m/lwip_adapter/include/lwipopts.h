@@ -22,6 +22,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#undef LWIP_DECLARE_MEMORY_ALIGNED
+#define LWIP_DECLARE_MEMORY_ALIGNED(variable_name, size) \
+__attribute__((section(".ccmram"))) u8_t variable_name[LWIP_MEM_ALIGN_BUFFER(size)]
+
 #ifndef LWIP_SOCKET_SELECT_FUNC
 #define LWIP_SOCKET_SELECT_FUNC
 #endif
