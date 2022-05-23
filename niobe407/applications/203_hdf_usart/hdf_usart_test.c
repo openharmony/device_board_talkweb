@@ -100,7 +100,7 @@ void StartHdfUsartTest(void)
     attr.priority = HDF_USART_TASK_PRIORITY;
 
     if (osThreadNew((osThreadFunc_t)HdfUsartTestEntry, NULL, &attr) == NULL) {
-        printf("Falied to create thread1!\n");
+        printf("Failed to create thread1!\n");
     }
 }
 

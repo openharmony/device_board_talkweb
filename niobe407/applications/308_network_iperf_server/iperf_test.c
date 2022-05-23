@@ -58,7 +58,7 @@ static void eth_enable_state_callBack(EthLinkState state)
             attr.priority = 25;
             iperf_test_id = osThreadNew((osThreadFunc_t)iperf_test, NULL, &attr);
             if (iperf_test_id == NULL) {
-                printf("Falied to create iperf_test thread!\n");
+                printf("Failed to create iperf_test thread!\n");
             }
             net_init_finish = 1;
         }

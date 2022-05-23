@@ -200,7 +200,7 @@ root {
 
 ## 例程原理简介
     NIOBE407开发板有USART1,USART2,USART3,UART4,UART5,USART6总共6路串口，本例程用的是USART2,和USART3，USART2为RS232, USART3为RS485。如需修改UART的硬件配置，可前往device\board\talkweb\niobe407\sdk\hdf_config\hdf_uart.hcs中根据您的开发板原理图进行修改
-``` c
+```c
 static void* HdfUsartTestEntry(void* arg)
 {
     DevHandle handle = NULL;    /* UART设备句柄  */
@@ -218,7 +218,7 @@ static void* HdfUsartTestEntry(void* arg)
     if (ret != 0) {
         HDF_LOGE("UartGetBaud: failed, ret %d\n", ret);
     } else {
-        HDF_LOGI("UartGetBaud: success, badurate %d\n", baudRate);
+        HDF_LOGI("UartGetBaud: success, baudrate %d\n", baudRate);
     }
 
     baudRate = 115200;
@@ -226,7 +226,7 @@ static void* HdfUsartTestEntry(void* arg)
     if (ret != 0) {
         HDF_LOGE("UartGetBaud: failed, ret %d\n", ret);
     } else {
-        HDF_LOGI("UartSetBaud: success, badurate %d\n", baudRate);
+        HDF_LOGI("UartSetBaud: success, baudrate %d\n", baudRate);
     }
 
     struct UartAttribute attribute = {0};
@@ -276,4 +276,4 @@ _ERR:
     UartClose(handle); 
 
 }
-    ```
+```

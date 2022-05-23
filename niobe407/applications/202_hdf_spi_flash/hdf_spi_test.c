@@ -477,7 +477,7 @@ void StartHdfSpiTest(void)
     attr.priority = HDF_SPI_TASK_PRIORITY;
 
     if (osThreadNew((osThreadFunc_t)HdfSpiTestEntry, NULL, &attr) == NULL) {
-        printf("Falied to create thread1!\n");
+        printf("Failed to create thread1!\n");
     }
 }
 

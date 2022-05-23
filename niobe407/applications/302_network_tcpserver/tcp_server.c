@@ -111,7 +111,7 @@ static void eth_enable_state_callBack(EthLinkState state)
             attr.priority = TCP_SERVER_PRIORITY;
             tcp_server_id = osThreadNew((osThreadFunc_t)tcp_server, NULL, &attr);
             if (tcp_server_id == NULL) {
-                printf("Falied to create tcp_server thread!\n");
+                printf("Failed to create tcp_server thread!\n");
             }
             net_init_finish = 1;
         }

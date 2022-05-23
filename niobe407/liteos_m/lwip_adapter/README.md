@@ -88,7 +88,7 @@
                 tcp_client_id = osThreadNew((osThreadFunc_t)tcp_client, NULL, &attr);
                 if (tcp_client_id == NULL)
                 {
-                    printf("Falied to create tcp_client thread!\n");
+                    printf("Failed to create tcp_client thread!\n");
                 }
             }      
         }

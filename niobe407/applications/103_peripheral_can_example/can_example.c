@@ -100,7 +100,7 @@ static void can_send_example(void)
     attr.priority = 25;
 
     if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL) {
-        printf("Falied to create thread!\n");
+        printf("Failed to create thread!\n");
     }
 }
 

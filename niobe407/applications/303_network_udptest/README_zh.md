@@ -121,7 +121,7 @@ struct sockaddr {
                     udp_test_id = osThreadNew((osThreadFunc_t)udp_test, NULL, &attr);
                     if (udp_test_id == NULL)
                     {
-                        printf("Falied to create udp_test thread!\n");
+                        printf("Failed to create udp_test thread!\n");
                     }
                     net_init_finish = 1;
                 }
