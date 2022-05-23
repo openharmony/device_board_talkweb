@@ -32,7 +32,7 @@
 #define HDF_PWM_TASK_NAME "hdf_pwm_test_task"
 #define HDF_PWM_TASK_PRIORITY 25
 
-#define HDF_PWM_DEALY_MS 1000
+#define HDF_PWM_DELAY_MS 1000
 
 #define PWM2 1
 #define PWM3 2
@@ -118,7 +118,7 @@ static void* HdfPwmTestEntry(void* arg)
     }
 #endif
     while (1) {
-        LOS_TaskDelay(HDF_PWM_DEALY_MS);
+        LOS_TaskDelay(HDF_PWM_DELAY_MS);
     }
 _ERR1:
     PwmClose(handle);
@@ -143,7 +143,7 @@ void StartHdfPwmTest(void)
     attr.priority = HDF_PWM_TASK_PRIORITY;
 
     if (osThreadNew((osThreadFunc_t)HdfPwmTestEntry, NULL, &attr) == NULL) {
-        printf("Falied to create thread1!\n");
+        printf("Failed to create thread1!\n");
     }
 }
 

@@ -150,7 +150,7 @@ root {
     NIOBE407开发板有可以使用TIM定时器来产生PWM波形，系统有TIM1和TIM8两个高级定时器，TIM2-TIM5，TIM9-TIM14为通用定时器，TIM6和TIM7是基本定时器，这两个定时器不用做PWM输出，Tim2-Tim7, Tim12-Tim14为84M，TIM1、TIM8~TIM11 为168M,Tim1~Tim5 Tim8 有4个channel Tim9,Tim12有ch1, ch2,  Tim10, Tim11,Tim13,Tim14只有ch1, 本例程使用TIM2的ch4 和 TIM3 的ch1来做示例，具体可前往device\board\talkweb\niobe407\sdk\hdf_config\hdf_pwm.hcs中根据您的开发板原理图进行修改
 
 ## 示例代码解析
-``` c
+```c
 static void* HdfPwmTestEntry(void* arg)
 {
     int32_t ret;
@@ -224,4 +224,4 @@ _ERR1:
 _ERR2:
     PwmClose(handle1);
 }
-    ```
+```

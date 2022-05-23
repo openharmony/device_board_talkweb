@@ -15,8 +15,8 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    sources =[
-        "ramdom_number_example.c",
-        "rng_init.c",
-    ]
+  sources = [
+    "random_number_example.c",
+    "rng_init.c",
+  ]
 }

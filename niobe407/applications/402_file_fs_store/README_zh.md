@@ -18,7 +18,7 @@ LittleFS主要用在微控制器和flash上，是一种嵌入式文件系统，�
 
    节省ROM和RAM空间。
 
-niobe407模组外接16M flash，在外挂falsh的后8M挂载littlefs文件系统，默认挂载点为talkweb，默认创建存储数据的目录data，目录如下：
+niobe407模组外接16M flash，在外挂flash的后8M挂载littlefs文件系统，默认挂载点为talkweb，默认创建存储数据的目录data，目录如下：
 
 ```
 OHOS # ls
@@ -53,7 +53,7 @@ littlefs需要通过内核配置进行选配，操作如下：
 
 ![image-20220215153205796](figures/1.png)
 
-openharmony已经实现了vfs，注册了littlefs的相关接口，vfs向标准文件操作提供对应的接口，因此应用可以调用的newlibc标准文件操作接口进行测试。
+OpenHarmony已经实现了vfs，注册了littlefs的相关接口，vfs向标准文件操作提供对应的接口，因此应用可以调用的newlibc标准文件操作接口进行测试。
 
 涉及的部分文件操作接口如下：
 

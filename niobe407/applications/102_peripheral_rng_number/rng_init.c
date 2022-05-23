@@ -21,7 +21,7 @@ void RngInit(void)
 {
     hrng.Instance = RNG;
     if (HAL_RNG_Init(&hrng) != HAL_OK) {
-    printf("Rng modle init fail!\n");
+    printf("Rng init failed!\n");
     }
 }
 

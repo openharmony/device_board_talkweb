@@ -180,6 +180,3 @@ twoThread is Acquire.
 threeThread is Acquire.
 twoThread is Acquire.
 ```
-
-
-

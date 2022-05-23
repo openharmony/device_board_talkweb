@@ -14,7 +14,7 @@
 
 示例代码编译烧录代码后，按下开发板的RESET按键，通过串口助手查看日志，显示内容如下则表示执行成功:
 ```
-littlefs mount on spiflash 0x800000[ /talkweb ] successed!
+littlefs mount on spiflash 0x800000[ /talkweb ] successfully!
 hiview init success.
 [wifi manage] set key = talkweb0, value = 12345678
 [wifi manage] set key = talkweb1, value = 3456789

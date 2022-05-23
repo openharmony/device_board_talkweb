@@ -84,7 +84,7 @@
         status = osTimerStart(timerId1, delay);
         if (status != osOK)
         {
-            printf("Falied to start timer1!\n");
+            printf("Failed to start timer1!\n");
         }
     }
 
@@ -96,7 +96,7 @@
         status = osTimerStart(timerId2, delay);
         if (status != osOK)
         {
-            printf("Falied to start timer2!\n");
+            printf("Failed to start timer2!\n");
         }
     }
 }

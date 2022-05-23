@@ -44,7 +44,7 @@ static void OS_Timer_example(void)
         delay = 100U;
         status = osTimerStart(timerId1, delay);
         if (status != osOK) {
-            printf("Falied to start timer1!\n");
+            printf("Failed to start timer1!\n");
         }
     }
 
@@ -54,7 +54,7 @@ static void OS_Timer_example(void)
         delay = 300U;
         status = osTimerStart(timerId2, delay);
         if (status != osOK) {
-            printf("Falied to start timer2!\n");
+            printf("Failed to start timer2!\n");
         }
     }
 }

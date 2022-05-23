@@ -47,7 +47,7 @@ static void adc_temperature_example(void)
     Temperature_ADC_Init();
 
     if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL) {
-        printf("Falied to create thread!\n");
+        printf("Failed to create thread!\n");
     }
 }
 

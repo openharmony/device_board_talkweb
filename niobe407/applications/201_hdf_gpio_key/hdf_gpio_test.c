@@ -105,7 +105,7 @@ void StartHdfGpioTest(void)
     attr.priority = HDF_GPIO_TASK_PRIORITY;
 
     if (osThreadNew((osThreadFunc_t)HdfGpioTestEntry, NULL, &attr) == NULL) {
-        printf("Falied to create thread1!\n");
+        printf("Failed to create thread1!\n");
     }
 }
 #else

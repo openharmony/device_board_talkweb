@@ -55,7 +55,7 @@ void OS_Event_example(void)
     printf("Start OS_Event_example.\n");
     g_event_flags_id = osEventFlagsNew(NULL);
     if (g_event_flags_id == NULL) {
-        printf("Falied to create EventFlags!\n");
+        printf("Failed to create EventFlags!\n");
         return;
     }
 
@@ -70,13 +70,13 @@ void OS_Event_example(void)
 
     attr.name = "Thread_EventSender";
     if (osThreadNew(OS_Thread_EventSender, NULL, &attr) == NULL) {
-        printf("Falied to create Thread_EventSender!\n");
+        printf("Failed to create Thread_EventSender!\n");
         return;
     }
     
     attr.name = "Thread_EventReceiver";
     if (osThreadNew(OS_Thread_EventReceiver, NULL, &attr) == NULL) {
-        printf("Falied to create Thread_EventReceiver!\n");
+        printf("Failed to create Thread_EventReceiver!\n");
         return;
     }
 }

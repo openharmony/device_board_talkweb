@@ -183,6 +183,3 @@ ThreadMsgQueue2 Get msg: hello niobe407
 ThreadMsgQueue2 Get msg: hello niobe407
 ThreadMsgQueue2 Get msg: hello niobe407
 ```
-
-
-

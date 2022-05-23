@@ -51,13 +51,13 @@ static void OS_Thread_example(void)
     attr.priority = 25;
 
     if (osThreadNew((osThreadFunc_t)thread_entry1, NULL, &attr) == NULL) {
-        printf("Falied to create thread1!\n");
+        printf("Failed to create thread1!\n");
     }
 
     attr.name = "thread2";
 
     if (osThreadNew((osThreadFunc_t)thread_entry2, NULL, &attr) == NULL) {
-        printf("Falied to create thread2!\n");
+        printf("Failed to create thread2!\n");
     }
 }
 

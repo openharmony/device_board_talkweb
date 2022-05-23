@@ -39,7 +39,7 @@ void thread_entry(void)
     }
 }
 
-static void get_ramdom_number_example(void)
+static void get_random_number_example(void)
 {
     osThreadAttr_t attr;
 
@@ -52,8 +52,8 @@ static void get_ramdom_number_example(void)
     attr.priority = osPriorityNormal;
 
     if (osThreadNew((osThreadFunc_t)thread_entry, NULL, &attr) == NULL) {
-        printf("Falied to create thread!\n");
+        printf("Failed to create thread!\n");
     }
 }
 
-OHOS_APP_RUN(get_ramdom_number_example);
+OHOS_APP_RUN(get_random_number_example);
