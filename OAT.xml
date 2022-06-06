@@ -37,7 +37,8 @@
                 <filteritem type="filename" name="*.img" desc="Temp files"/>
             </filefilter>
             <filefilter name="defaultPolicyFilter" desc="Filters for copyright header policies">
-                <filteritem type="filepath" name="niobe407/liteos_m/bsp/src/system_stm32f4xx.c" desc="InvalidLicense"/>       
+                <filteritem type="filepath" name="niobe407/liteos_m/bsp/src/system_stm32f4xx.c" desc="InvalidLicense"/>    
+                <filteritem type="filepath" name="niobe407/liteos_m/lwip_adapter/src/stm32f4xx_hal_eth.c" desc="InvalidLicense"/>   
                 <filteritem type="filepath" name="niobe407/liteos_m/bsp/include/stm32f4xx_hal_conf.h" desc="InvalidLicense"/>
                 <filteritem type="filepath" name="niobe407/liteos_m/bootloader/inc/stm32f4xx_hal_conf.h" desc="InvalidLicense"/>
                 <filteritem type="filepath" name="niobe407/liteos_m/bootloader/inc/stm32f4xx_it.h" desc="InvalidLicense"/>

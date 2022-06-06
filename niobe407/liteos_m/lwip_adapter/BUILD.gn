@@ -19,34 +19,30 @@ module_switch = defined(LOSCFG_NET_LWIP)
 module_name = "lwip"
 kernel_module(module_name) {
   sources = LWIP_PORTING_FILES + LWIPNOAPPSFILES - [ "$LWIPDIR/api/sockets.c" ]
-  if (defined(LOSCFG_NIOBE407_USE_308_NETWORK))
-  {
+  if (defined(LOSCFG_NIOBE407_USE_308_NETWORK)) {
     sources += LWIPERFFILES
   }
-  deps = [":tw_ethernet_static"]
+  deps = [ ":tw_ethernet_static" ]
 }
 
-use_copy_static_library = true
+use_copy_static_library = false
 lite_library("tw_ethernet_static") {
-    target_type = "static_library"
-    if (use_copy_static_library)
-    {
-      sources = []
-      deps = [":copy_tw_ethernet_static"]
-    }
-    else
-    {
-      sources =  [ 
-        "src/ethernetif.c", 
-        "src/app_ethernet.c",
-        "src/stm32f4xx_hal_eth.c",
-      ]
-    }
+  target_type = "static_library"
+  if (use_copy_static_library) {
+    sources = []
+    deps = [ ":copy_tw_ethernet_static" ]
+  } else {
+    sources = [
+      "src/app_ethernet.c",
+      "src/ethernetif.c",
+      "src/stm32f4xx_hal_eth.c",
+    ]
+  }
 }
 
 build_ext_component("copy_tw_ethernet_static") {
-    exec_path = rebase_path(".", root_build_dir)
-    command = "cp lib/libtw_ethernet_static.a ../../../../../../out/niobe407/niobe407/libs/libtw_ethernet_static.a"
+  exec_path = rebase_path(".", root_build_dir)
+  command = "cp lib/libtw_ethernet_static.a ../../../../../../out/niobe407/niobe407/libs/libtw_ethernet_static.a"
 }
 
 config("public") {
