@@ -25,19 +25,13 @@ kernel_module(module_name) {
   deps = [ ":tw_ethernet_static" ]
 }
 
-use_copy_static_library = false
 lite_library("tw_ethernet_static") {
   target_type = "static_library"
-  if (use_copy_static_library) {
-    sources = []
-    deps = [ ":copy_tw_ethernet_static" ]
-  } else {
-    sources = [
-      "src/app_ethernet.c",
-      "src/ethernetif.c",
-      "src/stm32f4xx_hal_eth.c",
-    ]
-  }
+  sources = [
+    "src/app_ethernet.c",
+    "src/ethernetif.c",
+    "src/stm32f4xx_hal_eth.c",
+  ]
 }
 
 build_ext_component("copy_tw_ethernet_static") {
