@@ -26,6 +26,11 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_eth.h"
 
+#define ETH_DEBUG(format, ...) printf("[%s] "format"", __FUNCTION__, ##__VA_ARGS__)
+
+extern struct netif gNetif;
+extern ETH_HandleTypeDef gEthHandle;
+
 err_t ethernetif_init(struct netif *netif);
 void ethernetif_input(void const *argument);
 struct pbuf *low_level_input(struct netif *netif);
