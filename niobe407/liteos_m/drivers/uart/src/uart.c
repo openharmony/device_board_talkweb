@@ -120,7 +120,7 @@ RingBuffer* RingBufInit(int size)
     if (size <= 0) {
         return NULL;
     }
-    buf = malloc(size + sizeof(RingBuffer));
+    buf = (RingBuffer*)malloc(size + sizeof(RingBuffer));
     if (buf != NULL) {
         buf->buf = (unsigned char*) buf + sizeof(RingBuffer);
         buf->dataLen = 0;
@@ -154,7 +154,6 @@ static INT32 InitDebugShellUart(uint32_t port)
 static void HdfShellTaskEntry(void)
 {
     while (1) {
-        int ret = 0;
         memset_s(rbuf, MAX_BUF_SIZE, 0, MAX_BUF_SIZE);
         int32_t readLen = UartRead(handle, rbuf, MAX_BUF_SIZE);
         if (readLen < 0) {
