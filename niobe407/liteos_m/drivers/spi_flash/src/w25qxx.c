@@ -289,7 +289,7 @@ uint32_t W25x_ReadDeviceID(void)
 {
     if (spiHandle == NULL) {
         HDF_LOGE("spi flash haven't been inited\n");
-        return;
+        return 0;
     }
     struct SpiMsg msg;
     uint16_t deviceId = 0;
