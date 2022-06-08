@@ -17,27 +17,27 @@
 #include <string.h>
 #include "los_memory.h"
 
-int32_t LittlefsRead(const struct lfs_config *cfg, lfs_block_t block,
+int LittlefsRead(const struct lfs_config *cfg, lfs_block_t block,
     lfs_off_t off, void *buffer, lfs_size_t size)
 {
     W25x_BufferRead(buffer, cfg->context + cfg->block_size * block + off, size);
     return LFS_ERR_OK;
 }
 
-int32_t LittlefsProg(const struct lfs_config *cfg, lfs_block_t block,
+int LittlefsProg(const struct lfs_config *cfg, lfs_block_t block,
     lfs_off_t off, const void *buffer, lfs_size_t size)
 {
     W25x_BufferWrite((uint8_t *)buffer, cfg->context + cfg->block_size * block + off,size);
     return LFS_ERR_OK;
 }
 
-int32_t LittlefsErase(const struct lfs_config *cfg, lfs_block_t block)
+int LittlefsErase(const struct lfs_config *cfg, lfs_block_t block)
 {
     W25x_SectorErase(cfg->context + cfg->block_size * block);
     return LFS_ERR_OK;
 }
 
-int32_t LittlefsSync(const struct lfs_config *cfg)
+int LittlefsSync(const struct lfs_config *cfg)
 {
     return LFS_ERR_OK;
 }
