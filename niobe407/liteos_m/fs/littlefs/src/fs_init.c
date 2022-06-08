@@ -168,7 +168,7 @@ static int32_t FsDriverInit(struct HdfDeviceObject *object)
             ret = mkdir(fs[i].mount_point, S_IRUSR | S_IWUSR);
             if (ret != LOS_OK) {
                 HDF_LOGE("Mkdir failed %d\n", ret);
-                return;
+                return HDF_FAILURE;
             } else {
                 HDF_LOGI("mkdir success %d\n", ret);
             }

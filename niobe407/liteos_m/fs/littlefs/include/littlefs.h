@@ -22,12 +22,12 @@
 extern "C" {
 #endif
 
-int32_t LittlefsRead(const struct lfs_config *cfg, lfs_block_t block,
+int LittlefsRead(const struct lfs_config *cfg, lfs_block_t block,
     lfs_off_t off, void *buffer, lfs_size_t size);
-int32_t LittlefsProg(const struct lfs_config *cfg, lfs_block_t block,
+int LittlefsProg(const struct lfs_config *cfg, lfs_block_t block,
     lfs_off_t off, const void *buffer, lfs_size_t size);
-int32_t LittlefsErase(const struct lfs_config *cfg, lfs_block_t block);
-int32_t LittlefsSync(const struct lfs_config *cfg);
+int LittlefsErase(const struct lfs_config *cfg, lfs_block_t block);
+int LittlefsSync(const struct lfs_config *cfg);
 
 #ifdef __cplusplus
 }
