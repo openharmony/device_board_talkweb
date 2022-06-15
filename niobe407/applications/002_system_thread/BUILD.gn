@@ -14,11 +14,7 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    sources = [
-        "os_thread_example.c"
-    ]
+  sources = [ "os_thread_example.c" ]
 
-    include_dirs = [
-        "//third_party/cmsis/CMSIS/RTOS2/Include"
-    ]
+  include_dirs = [ "//third_party/cmsis/CMSIS/RTOS2/Include" ]
 }

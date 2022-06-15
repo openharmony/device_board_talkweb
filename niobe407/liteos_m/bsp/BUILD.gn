@@ -15,80 +15,78 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    sources = [
-        "startup/startup_stm32f407xx.s",
-    ]
+  sources = [ "startup/startup_stm32f407xx.s" ]
 
-    sources += [
-        "src/sys_service_config.c",
-        "src/run_sys_before.c",
-        "src/dprintf.c",
-        "src/main.c",
-        "src/ohos_main.c",
-        "src/system_stm32f4xx.c"
-    ]
+  sources += [
+    "src/dprintf.c",
+    "src/main.c",
+    "src/ohos_main.c",
+    "src/run_sys_before.c",
+    "src/sys_service_config.c",
+    "src/system_stm32f4xx.c",
+  ]
 
-    include_dirs = [ 
-        "include",
-        "../test",
-        "../fs",
-        "../drivers/watch_dog/include"
-    ]
+  include_dirs = [
+    "include",
+    "../test",
+    "../fs",
+    "../drivers/watch_dog/include",
+  ]
 
-    include_dirs += [
-        "//base/hiviewdfx/hiview_lite",
-        "//base/hiviewdfx/hilog_lite/frameworks/mini",
-        "//base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite",
-    ]
+  include_dirs += [
+    "//base/hiviewdfx/hiview_lite",
+    "//base/hiviewdfx/hilog_lite/frameworks/mini",
+    "//base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite",
+  ]
 }
 
 config("public") {
-    include_dirs = [
-        ".",
-        "include",
-        "//device/soc/st/stm32f4xx/sdk/Core/Inc",
-        "//device/soc/st/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
-        "//device/soc/st/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
-        "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
-        "//drivers/framework/core/common/include/manager",
+  include_dirs = [
+    ".",
+    "include",
+    "//device/soc/st/stm32f4xx/sdk/Core/Inc",
+    "//device/soc/st/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
+    "//device/soc/st/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+    "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
+    "//drivers/hdf_core/framework/core/common/include/manager",
+  ]
+
+  ldflags = [
+    "-Wl,-T" + rebase_path("ld/STM32F407IGTx_FLASH.ld"),
+    "-Wl,-u_printf_float",
+  ]
+
+  if (build_xts) {
+    lib_dirs = [ "$root_out_dir/libs" ]
+
+    ldflags += [
+      "-Wl,--whole-archive",
+      "-lbootstrap",
+      "-lbroadcast",
+      "-lhctest",
+
+      #公共基础库
+      # "-lmodule_ActsUtilsFileTest",
+      # "-lmodule_ActsKvStoreTest",
+
+      #DFX
+      "-lmodule_ActsDfxFuncTest",
+      "-lmodule_ActsHieventLiteTest",
+
+      #启动恢复
+      # "-lmodule_ActsBootstrapTest",
+      # "-lmodule_ActsParameterTest",
+
+      #分布式任务调度
+      # "-lmodule_ActsSamgrTest",
+
+      "-Wl,--no-whole-archive",
     ]
-  
-    ldflags = [
-        "-Wl,-T" + rebase_path("ld/STM32F407IGTx_FLASH.ld"),
-        "-Wl,-u_printf_float",
-    ]
+  }
 
-    if (build_xts) {
-        lib_dirs = [ "$root_out_dir/libs" ]
-        
-        ldflags += [
-            "-Wl,--whole-archive",
-            "-lbootstrap",
-            "-lbroadcast",
-            "-lhctest",
-
-            #公共基础库
-            # "-lmodule_ActsUtilsFileTest",
-            # "-lmodule_ActsKvStoreTest",
-            
-            #DFX
-            "-lmodule_ActsDfxFuncTest",
-            "-lmodule_ActsHieventLiteTest",
-
-            #启动恢复
-            # "-lmodule_ActsBootstrapTest",
-            # "-lmodule_ActsParameterTest",
-
-            #分布式任务调度
-            # "-lmodule_ActsSamgrTest",
-            
-            "-Wl,--no-whole-archive",
-        ]
-    }
-
-    libs = [
-        "c",
-        "m",
-        "nosys",
-    ]
+  libs = [
+    "c",
+    "m",
+    "nosys",
+  ]
 }

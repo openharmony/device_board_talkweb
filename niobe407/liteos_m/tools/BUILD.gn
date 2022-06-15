@@ -15,11 +15,11 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 module_group(module_name) {
-    modules = []
-    deps = [ ":build_merge_bin" ]
+  modules = []
+  deps = [ ":build_merge_bin" ]
 }
 
 build_ext_component("build_merge_bin") {
-    exec_path = rebase_path("./merge_bin", root_build_dir)
-    command = "make"
+  exec_path = rebase_path("./merge_bin", root_build_dir)
+  command = "make"
 }

@@ -12,11 +12,10 @@
 # limitations under the License.
 import("//kernel/liteos_m/liteos.gni")
 
-assert(defined(LOSCFG_NET_LWIP), "Must Config LOSCFG_NET_LWIP in kernel/liteos_m menuconfig!")
+assert(defined(LOSCFG_NET_LWIP),
+       "Must Config LOSCFG_NET_LWIP in kernel/liteos_m menuconfig!")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    sources = [
-        "tcp_server.c",
-    ]
+  sources = [ "tcp_server.c" ]
 }

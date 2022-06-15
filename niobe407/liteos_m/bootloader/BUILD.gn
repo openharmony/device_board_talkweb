@@ -15,11 +15,11 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 module_group(module_name) {
-    modules = []
-    deps = [ ":build_bootloader_bin" ]
+  modules = []
+  deps = [ ":build_bootloader_bin" ]
 }
 
 build_ext_component("build_bootloader_bin") {
-    exec_path = rebase_path(".", root_build_dir)
-    command = "make"
+  exec_path = rebase_path(".", root_build_dir)
+  command = "make"
 }

@@ -15,20 +15,18 @@ import("//kernel/liteos_m/liteos.gni")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
-        sources = [
-            "src/hdf_base_hal.c",
-        ]
-    } else {
-        sources = []
-    }
+  if (defined(LOSCFG_DRIVERS_HDF_PLATFORM)) {
+    sources = [ "src/hdf_base_hal.c" ]
+  } else {
+    sources = []
+  }
 }
 
 config("public") {
-    include_dirs = [ 
-        "include",
-        "//drivers/framework/include/utils",
-        "//drivers/adapter/khdf/liteos_m/osal/include",
-        "//drivers/framework/include/utils/",
-    ]
+  include_dirs = [
+    "include",
+    "//drivers/hdf_core/framework/include/utils",
+    "//drivers/hdf_core/adapter/khdf/liteos_m/osal/include",
+    "//drivers/hdf_core/framework/include/utils/",
+  ]
 }
