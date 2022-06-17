@@ -41,48 +41,49 @@ board_toolchain_type = "gcc"
 
 #Debug compiler optimization level options
 board_opt_flags = [
-    "-mcpu=cortex-m4",
-    "-mthumb",
-    "-mfpu=fpv4-sp-d16",
-    "-mfloat-abi=hard",
+  "-mcpu=cortex-m4",
+  "-mthumb",
+  "-mfpu=fpv4-sp-d16",
+  "-mfloat-abi=hard",
 ]
 
 # Board related common compile flags.
 board_cflags = [
-    "-Og",
-    "-Wall",
-    "-fdata-sections",
-    "-ffunction-sections",
-    "-DUSE_HAL_DRIVER", 
-    "-DSTM32F407xx",
-    "-DUSE_FULL_LL_DRIVER",
-    # "-MMD",
-    # "-MP", 
-    # "-MF\"$(@:%.o=%.d)\"",
-    "-D__LITEOS_M__",
+  "-Og",
+  "-Wall",
+  "-fdata-sections",
+  "-ffunction-sections",
+  "-DUSE_HAL_DRIVER",
+  "-DSTM32F407xx",
+  "-DUSE_FULL_LL_DRIVER",
+
+  # "-MMD",
+  # "-MP",
+  # "-MF\"$(@:%.o=%.d)\"",
+  "-D__LITEOS_M__",
 ]
 board_cflags += board_opt_flags
 
 board_asmflags = [
-    "-Og",
-    "-Wall",
-    "-fdata-sections",
-    "-ffunction-sections",
+  "-Og",
+  "-Wall",
+  "-fdata-sections",
+  "-ffunction-sections",
 ]
 board_asmflags += board_opt_flags
 
 board_cxx_flags = board_cflags
 
 board_ld_flags = [
-    "--specs=nano.specs",
-    "-Wl,--gc-sections",
-    "-Wl,--wrap=_calloc_r",
-    "-Wl,--wrap=_malloc_r",
-    "-Wl,--wrap=_realloc_r",
-    "-Wl,--wrap=_reallocf_r",
-    "-Wl,--wrap=_free_r",
-    "-Wl,--wrap=_memalign_r",
-    "-Wl,--wrap=_malloc_usable_size_r",
+  "--specs=nano.specs",
+  "-Wl,--gc-sections",
+  "-Wl,--wrap=_calloc_r",
+  "-Wl,--wrap=_malloc_r",
+  "-Wl,--wrap=_realloc_r",
+  "-Wl,--wrap=_reallocf_r",
+  "-Wl,--wrap=_free_r",
+  "-Wl,--wrap=_memalign_r",
+  "-Wl,--wrap=_malloc_usable_size_r",
 ]
 board_ld_flags += board_opt_flags
 

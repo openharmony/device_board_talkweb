@@ -12,11 +12,11 @@
 # limitations under the License.
 import("//kernel/liteos_m/liteos.gni")
 
-assert(defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI), "Must Config LOSCFG_FS_LITTLEFS and LOSCFG_DRIVERS_HDF_PLATFORM_SPI in kernel/liteos_m menuconfig!")
+assert(
+    defined(LOSCFG_FS_LITTLEFS) && defined(LOSCFG_DRIVERS_HDF_PLATFORM_SPI),
+    "Must Config LOSCFG_FS_LITTLEFS and LOSCFG_DRIVERS_HDF_PLATFORM_SPI in kernel/liteos_m menuconfig!")
 
 module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
-    sources = [
-        "fs_test.c",
-    ]
+  sources = [ "fs_test.c" ]
 }

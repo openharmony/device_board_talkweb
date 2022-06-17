@@ -16,13 +16,11 @@ if (ohos_kernel_type == "liteos_m") {
   module_name = get_path_info(rebase_path("."), "name")
   module_group(module_name) {
     modules = []
-    if (defined(LOSCFG_USE_TALKWEB_APPLICATION)){
+    if (defined(LOSCFG_USE_TALKWEB_APPLICATION)) {
       modules += [ LOSCFG_NIOBE407_APPLICATION_NAME ]
-    }
-    else
-    {
+    } else {
       #Add application dir name in [ ],if you want to write yourself application.
-      modules += [ ]
+      modules += []
     }
   }
 }
