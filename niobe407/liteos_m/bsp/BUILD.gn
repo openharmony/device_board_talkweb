@@ -47,7 +47,7 @@ config("public") {
     "//device/soc/st/stm32f4xx/sdk/Core/Inc",
     "//device/soc/st/stm32f4xx/sdk/Drivers/STM32F4xx_HAL_Driver/Inc",
     "//device/soc/st/stm32f4xx/sdk/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
-    "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
+    "//foundation/systemabilitymgr/samgr_lite/interfaces/kits/samgr",
     "//drivers/hdf_core/framework/core/common/include/manager",
   ]
 
