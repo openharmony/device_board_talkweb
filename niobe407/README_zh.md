@@ -46,4 +46,4 @@ Niobe407开发板采用双板层叠结构：包括核心板（Core）+ 底板（
 - [快速开发指南](docs/software/快速开发指南.md)
 
 # 联系
-如果您在开发过程中有问题，请在仓库[issues](https://gitee.com/openharmony-sig/device_board_talkweb/issues)中提问。
+如果您在开发过程中有问题，请在仓库[issues](https://gitee.com/openharmony/device_board_talkweb/issues)中提问。
