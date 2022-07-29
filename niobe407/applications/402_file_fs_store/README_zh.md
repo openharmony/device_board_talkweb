@@ -208,7 +208,7 @@ void fs_test(void)
 }
 ```
 
-BUID.gn
+BUILD.gn
 
 ```
 import("//kernel/liteos_m/liteos.gni")
