@@ -271,7 +271,7 @@ void UART_IRQ_INIT(USART_TypeDef * UART, uint8_t num, uint32_t irqNum, BOOL isBl
             int32_t ret = LOS_EventInit(&g_uartInputEvent);
             if (ret != LOS_OK) {
                 printf("Init uartInputEvent failed! ERROR: 0x%x\n", ret);
-                return ret;
+                return;
             } else {
                 g_eventInited = TRUE;
             }
