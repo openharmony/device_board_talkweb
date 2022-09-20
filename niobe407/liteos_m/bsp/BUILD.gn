@@ -64,6 +64,7 @@ config("public") {
       "-lbootstrap",
       "-lbroadcast",
       "-lhctest",
+      "-lhal_sysparam",
 
       #公共基础库
       # "-lmodule_ActsUtilsFileTest",
