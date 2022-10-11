@@ -1,13 +1,13 @@
 # device_board_talkweb
 
-## 介绍
-本仓用于放置talkweb开发板相关内容，各开发板的安装教程和使用说明可点击下表开发板名称查看。
+## 简介
+该仓用于放置talkweb开发板相关内容，各开发板的安装教程和使用说明可点击下表开发板名称查看。
 
 |开发板名称|SoC型号|应用领域|设备互联类型|
 |:-:|:-:|:-:|:-:|
 |[Niobe407](niobe407/README_zh.md)|`STM32F407IGT6`|交通、工业|有线以太网|
 
-## 软件架构
+## 目录结构
 
 ```
 device/board/talkweb
@@ -27,8 +27,13 @@ device/board/talkweb
 ├── xxx                                   # 其它板型，持续开发中...                    
 ```
 
-## 参与贡献
-- Fork 本仓库
-- 新建 Feat_xxx 分支
-- 提交代码至Feat_xxx 分支
-- 新建 Pull Request
+## 使用说明
+
+Niobe407参考：
+
+- [Niobe407](niobe407/README_zh.md)
+
+## 相关仓
+
+- [ vendor_talkweb](https://gitee.com/openharmony/vendor_talkweb)
+- [device_soc_st](https://gitee.com/openharmony/device_soc_st)
