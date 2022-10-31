@@ -26,3 +26,5 @@ OUTPUT_ALLINONE_PATH=$root_path/out/$board_name/$board_name/OHOS_Image_allinone.
 
 #合并bootloader程序
 $MERGE_TOOL_PATH $BOOT_LOADER_PATH $APP_PATH $OUTPUT_ALLINONE_PATH
+rm $APP_PATH
+mv $OUTPUT_ALLINONE_PATH $APP_PATH
