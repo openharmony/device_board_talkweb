@@ -38,6 +38,10 @@ kernel_module(module_name) {
     "//base/hiviewdfx/hilog_lite/frameworks/mini",
     "//base/hiviewdfx/hilog_lite/interfaces/native/kits/hilog_lite",
   ]
+
+  if (build_xts) {
+    deps = [ "//base/startup/init/interfaces/innerkits:libbegetutil" ]
+  }
 }
 
 config("public") {
@@ -58,7 +62,6 @@ config("public") {
 
   if (build_xts) {
     lib_dirs = [ "$root_out_dir/libs" ]
-
     ldflags += [
       "-Wl,--whole-archive",
       "-lbootstrap",
