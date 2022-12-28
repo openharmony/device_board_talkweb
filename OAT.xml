@@ -29,6 +29,7 @@
                 <policyitem type="license" name="EndUserLicenseAgreement" path=".*"  desc="License Header Invalid"/>
                 <policyitem type="license" name="BSD-3-Clause" path=".*"  desc="License Header Invalid"/>
                 <policyitem type="license" name="BSDStyleLicense" path="niobe407/liteos_m/bootloader/.*"  desc="bootloader file License Header Invalid"/>
+                <policyitem type="license" name="BSDStyleLicense" path="niobe407/liteos_m/bsp/startup/.*"  desc="bootloader file License Header Invalid"/>
             </policy>
         </policylist>
         <filefilterlist>
