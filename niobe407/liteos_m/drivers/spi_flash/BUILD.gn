@@ -17,5 +17,8 @@ module_name = get_path_info(rebase_path("."), "name")
 kernel_module(module_name) {
   sources = [ "src/w25qxx.c" ]
 
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "//drivers/hdf_core/interfaces/inner_api/osal/shared",
+  ]
 }

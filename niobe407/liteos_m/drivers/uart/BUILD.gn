@@ -26,6 +26,7 @@ config("public") {
       "//drivers/hdf_core/framework/include/platform",
       "//drivers/hdf_core/framework/include/utils",
       "//drivers/hdf_core/adapter/khdf/liteos_m/osal/include",
+      "//drivers/hdf_core/interfaces/inner_api/osal/shared",
       "//drivers/hdf_core/framework/include/osal",
     ]
   }
