@@ -10,12 +10,9 @@ config USE_TALKWEB_APPLICATION
 choice APPLICATION_CHOOSE_NIOBE407
     prompt "niobe407 application choose"
     depends on USE_TALKWEB_APPLICATION
-    default NIOBE407_USE_001_SYSTEM
+    default NIOBE407_USE_002_SYSTEM
     help
         This is a choose for application name
-    config NIOBE407_USE_001_SYSTEM
-        bool
-        prompt "001_system_helloworld"
     config NIOBE407_USE_002_SYSTEM
         bool
         prompt "002_system_thread"
@@ -87,7 +84,6 @@ endchoice
 config NIOBE407_APPLICATION_NAME
     depends on USE_TALKWEB_APPLICATION
     string
-    default "001_system_helloworld"          if NIOBE407_USE_001_SYSTEM
     default "002_system_thread"              if NIOBE407_USE_002_SYSTEM
     default "003_system_timer"               if NIOBE407_USE_003_SYSTEM
     default "004_system_event"               if NIOBE407_USE_004_SYSTEM
