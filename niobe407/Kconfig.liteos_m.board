@@ -16,4 +16,4 @@ menuconfig BOARD_NIOBE407
     depends on SOC_STM32F407
 
 orsource "liteos_m/hdf_config/Kconfig.liteos_m.board"
-orsource "applications/Kconfig.board.applications"
+orsource "../../../../vendor/talkweb/niobe407/demo/Kconfig.board.applications"
